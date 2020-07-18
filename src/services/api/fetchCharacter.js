@@ -1,7 +1,7 @@
 import React from 'react'; 
 const { useState, useEffect } = require("react");
 
-function MyComponent() {
+function FetchCharacter() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
@@ -43,3 +43,5 @@ function MyComponent() {
     );
   }
 }
+
+export default FetchCharacter;
