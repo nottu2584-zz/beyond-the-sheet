@@ -1,26 +1,27 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 
 function ImportCharacterForm(props) {
-    const [data, setData] = useState("Import Character Sheet Json")
+  const [data, setData] = useState("Import Character Sheet Json");
 
-    const handleChange = (event) => {
-        setData({ value: event.target.value });
-    }
+  const handleChange = (e) => {
+    console.log("DATA INPUT CHANGED", data);
+    setData(e.target.value);
+  };
 
-    const handleSubmit = (event) => {
-        alert('Json was submitted: ' + data);
-        event.preventDefault();
-    }
+  const handleSubmit = (e) => {
+    console.log("DATA SUMMITTED", data);
+    e.preventDefault();
+  };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Essay:
-        <textarea value={data} onChange={handleChange} />
-            </label>
-            <input type="submit" value="Submit" />
-        </form>
-    );
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Essay:
+        <textarea placeholder={data} onChange={handleChange} />
+      </label>
+      <input type="submit" value="Submit" />
+    </form>
+  );
 }
 
 export default ImportCharacterForm;
