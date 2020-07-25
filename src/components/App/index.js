@@ -1,8 +1,17 @@
-import React from 'react';
-import logo from '../../images/logo.svg';
-import './App.css';
+import React, { useReducer } from "react";
+import logo from "../../images/logo.svg";
+import "./App.css";
+
+const initialState = {
+  data: {},
+  characters: [],
+};
+
+const StoreContext = React.createContext(initialState);
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -19,6 +28,9 @@ function App() {
           Learn React
         </a>
       </header>
+      <StoreContext.Provider value={{ state, dispatch }}>
+        <content></content>
+      </StoreContext.Provider>
     </div>
   );
 }
