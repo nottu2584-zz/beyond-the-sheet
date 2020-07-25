@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 
-function ImportCharacterForm(props) {
-  const [data, setData] = useState("Import Character Sheet Json");
+const placeholder = "Import Character Sheet Json";
 
-  const handleChange = (e) => {
-    console.log("DATA INPUT CHANGED", data);
-    setData(e.target.value);
-  };
+function ImportCharacterForm(props) {
+  const [data, setData] = useState(placeholder);
 
   const handleSubmit = (e) => {
     console.log("DATA SUMMITTED", data);
@@ -16,8 +13,7 @@ function ImportCharacterForm(props) {
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Essay:
-        <textarea placeholder={data} onChange={handleChange} />
+        <textarea placeholder={placeholder} onChange={e => setData(e.target.value)} />
       </label>
       <input type="submit" value="Submit" />
     </form>
