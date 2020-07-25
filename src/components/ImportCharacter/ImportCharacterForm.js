@@ -8,10 +8,9 @@ function ImportCharacterForm(props) {
     }
 
     const handleSubmit = (event) => {
-        alert('An essay was submitted: ' + data);
+        alert('Json was submitted: ' + data);
         event.preventDefault();
     }
-
 
     return (
         <form onSubmit={handleSubmit}>
@@ -22,8 +21,6 @@ function ImportCharacterForm(props) {
             <input type="submit" value="Submit" />
         </form>
     );
-    }
-
+}
 
 export default ImportCharacterForm;
-
