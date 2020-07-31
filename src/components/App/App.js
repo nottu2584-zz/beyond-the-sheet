@@ -1,7 +1,14 @@
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import React, { useReducer } from "react";
-import logo from "../../images/logo.svg";
-import "./App.css";
 import { parser } from "../../reducers";
+import ImportCharacterForm from "../ImportCharacter";
+import "./App.css";
+
+const darkTheme = createMuiTheme({
+  palette: {
+    type: "dark",
+  },
+});
 
 const initialState = {
   data: {},
@@ -14,25 +21,18 @@ const App = () => {
   const [state, dispatch] = useReducer(parser, initialState);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <StoreContext.Provider value={{ state, dispatch }}>
-        <content></content>
-      </StoreContext.Provider>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <div className="App">
+        <StoreContext.Provider value={{ state, dispatch }}>
+          <content className="App-content">
+            <p>
+              Edit <code>src/App.js</code> and save to reload.
+            </p>
+            <ImportCharacterForm></ImportCharacterForm>
+          </content>
+        </StoreContext.Provider>
+      </div>
+    </ThemeProvider>
   );
 };
 
