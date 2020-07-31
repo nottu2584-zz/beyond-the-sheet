@@ -21,8 +21,8 @@ const App = () => {
   const [state, dispatch] = useReducer(parser, initialState);
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <div className="App">
+    <div className="App">
+      <ThemeProvider theme={darkTheme}>
         <StoreContext.Provider value={{ state, dispatch }}>
           <content className="App-content">
             <p>
@@ -31,8 +31,8 @@ const App = () => {
             <ImportCharacterForm></ImportCharacterForm>
           </content>
         </StoreContext.Provider>
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
+    </div>
   );
 };
 
