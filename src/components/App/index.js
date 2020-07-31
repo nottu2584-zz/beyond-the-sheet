@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from '../../images/logo.svg';
 import './App.css';
+//import { CharacterStats } from '../';
 
 function App() {
   return (
