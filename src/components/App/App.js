@@ -1,9 +1,9 @@
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import React, { useReducer } from "react";
-import { parser } from "../../reducers";
-import ImportCharacterForm from "../ImportCharacter";
-import "./App.css";
-import CharacterStats from "../CharacterStats";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import React, { createContext, useReducer } from 'react';
+import CharacterReducer from '../../reducers/CharacterReducer';
+import { CharacterStats } from '../CharacterStats';
+import { ImportCharacterForm } from '../ImportCharacter';
+import './App.css';
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -11,7 +11,7 @@ const darkTheme = createMuiTheme({
   },
 });
 
-const initialState = {
+export const initialState = {
   data: {},
   characters: [],
 };
@@ -25,20 +25,20 @@ const initialStats = {
   charisma: 9
 }
 
-const StoreContext = React.createContext(initialState);
+export const StoreContext = createContext(initialState);
 
 const App = () => {
-  const [state, dispatch] = useReducer(parser, initialState);
+  const [state, dispatch] = useReducer(CharacterReducer, initialState);
 
   return (
     <div className="App">
       <ThemeProvider theme={darkTheme}>
         <StoreContext.Provider value={{ state, dispatch }}>
-          <content className="App-content">
+          <content className="App-content useContext">
             <p>
               Edit <code>src/App.js</code> and save to reload.
             </p>
-            <ImportCharacterForm></ImportCharacterForm>
+            <ImportCharacterForm dispatch={dispatch}></ImportCharacterForm>
             <CharacterStats {...initialStats}></CharacterStats>
           </content>
         </StoreContext.Provider>

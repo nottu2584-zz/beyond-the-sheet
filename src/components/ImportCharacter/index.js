@@ -1,3 +1,1 @@
-import ImportCharacterForm from "./ImportCharacterForm";
-
-export default ImportCharacterForm;
+export { default as ImportCharacterForm } from './ImportCharacterForm';

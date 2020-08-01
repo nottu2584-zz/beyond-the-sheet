@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import React, { useContext, useState } from "react";
+import { StoreContext } from "../App/App";
 
 const placeholder = "Import Character Sheet Json";
 
@@ -26,16 +27,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ImportCharacterForm = (props) => {
+  const { state, dispatch } = useContext(StoreContext);
   const classes = useStyles();
   const [data, setData] = useState(placeholder);
 
-  const handleClick = (e) => {
-
-  };
+  const handleClick = (e) => {};
 
   const handleSubmit = (e) => {
-    console.log(data);
     e.preventDefault();
+    // Store data.
+    dispatch({ type: "GET", payload: data });
+    // Parse the character.
+    dispatch({ type: "PARSE", payload: data });
   };
 
   return (
@@ -67,6 +70,6 @@ const ImportCharacterForm = (props) => {
       </Button>
     </form>
   );
-}
+};
 
 export default ImportCharacterForm;
