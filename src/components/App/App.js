@@ -1,9 +1,9 @@
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import React, { createContext, useReducer } from 'react';
-import CharacterReducer from '../../reducers/CharacterReducer';
-import { CharacterStats } from '../CharacterStats';
-import { ImportCharacterForm } from '../ImportCharacter';
-import './App.css';
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import React, { createContext, useReducer } from "react";
+import CharacterReducer from "../../reducers/CharacterReducer";
+import { CharacterStats } from "../CharacterStats";
+import { ImportCharacterForm } from "../ImportCharacter";
+import "./App.css";
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -16,15 +16,6 @@ export const initialState = {
   characters: [],
 };
 
-const initialStats = {
-  strenght: 18,
-  dexterity: 15,
-  constitution: 16,
-  intelligence: 11,
-  wisdom: 8,
-  charisma: 9
-}
-
 export const StoreContext = createContext(initialState);
 
 const App = () => {
@@ -35,11 +26,20 @@ const App = () => {
       <ThemeProvider theme={darkTheme}>
         <StoreContext.Provider value={{ state, dispatch }}>
           <content className="App-content useContext">
-            <p>
-              Edit <code>src/App.js</code> and save to reload.
-            </p>
             <ImportCharacterForm dispatch={dispatch}></ImportCharacterForm>
-            <CharacterStats {...initialStats}></CharacterStats>
+            {state.characters.map((character,key) => {
+              return (
+                <CharacterStats
+                  key={key}
+                  strenght={character.data.stats[0].value}
+                  dexterity={character.data.stats[1].value}
+                  constitution={character.data.stats[2].value}
+                  intelligence={character.data.stats[3].value}
+                  wisdom={character.data.stats[4].value}
+                  charisma={character.data.stats[5].value}
+                ></CharacterStats>
+              );
+            })}
           </content>
         </StoreContext.Provider>
       </ThemeProvider>

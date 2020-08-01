@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ImportCharacterForm = (props) => {
-  const { state, dispatch } = useContext(StoreContext);
+  const { dispatch } = useContext(StoreContext);
   const classes = useStyles();
   const [data, setData] = useState(placeholder);
 
@@ -36,9 +36,9 @@ const ImportCharacterForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Store data.
-    dispatch({ type: "GET", payload: data });
+    dispatch({ type: "GET", payload: JSON.parse(data) });
     // Parse the character.
-    dispatch({ type: "PARSE", payload: data });
+    dispatch({ type: "PARSE", payload: JSON.parse(data) });
   };
 
   return (
@@ -52,8 +52,6 @@ const ImportCharacterForm = (props) => {
         helperText="Paste character data"
         fullWidth
         margin="normal"
-        multiline
-        rows={4}
         InputLabelProps={{
           shrink: true,
         }}
