@@ -1,9 +1,9 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import React, { useReducer } from "react";
-import { parser } from "../../reducers";
-import ImportCharacterForm from "../ImportCharacter";
+import React, { createContext, useReducer } from "react";
+import CharacterReducer from "../../reducers/CharacterReducer";
+import { CharacterStats } from "../CharacterStats";
+import { ImportCharacterForm } from "../ImportCharacter";
 import "./App.css";
-import CharacterStats from "../CharacterStats";
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -11,35 +11,35 @@ const darkTheme = createMuiTheme({
   },
 });
 
-const initialState = {
+export const initialState = {
   data: {},
   characters: [],
 };
 
-const initialStats = {
-  strenght: 18,
-  dexterity: 15,
-  constitution: 16,
-  intelligence: 11,
-  wisdom: 8,
-  charisma: 9
-}
-
-const StoreContext = React.createContext(initialState);
+export const StoreContext = createContext(initialState);
 
 const App = () => {
-  const [state, dispatch] = useReducer(parser, initialState);
+  const [state, dispatch] = useReducer(CharacterReducer, initialState);
 
   return (
     <div className="App">
       <ThemeProvider theme={darkTheme}>
         <StoreContext.Provider value={{ state, dispatch }}>
-          <content className="App-content">
-            <p>
-              Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <ImportCharacterForm></ImportCharacterForm>
-            <CharacterStats {...initialStats}></CharacterStats>
+          <content className="App-content useContext">
+            <ImportCharacterForm dispatch={dispatch}></ImportCharacterForm>
+            {state.characters.map((character,key) => {
+              return (
+                <CharacterStats
+                  key={key}
+                  strenght={character.data.stats[0].value}
+                  dexterity={character.data.stats[1].value}
+                  constitution={character.data.stats[2].value}
+                  intelligence={character.data.stats[3].value}
+                  wisdom={character.data.stats[4].value}
+                  charisma={character.data.stats[5].value}
+                ></CharacterStats>
+              );
+            })}
           </content>
         </StoreContext.Provider>
       </ThemeProvider>

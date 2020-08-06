@@ -1,19 +1,36 @@
-import React  from 'react';
-import './CharacterStats.css';
-
+import React from "react";
+import "./CharacterStats.css";
 
 const CharacterStats = (props) => {
+  let {
+    strenght,
+    dexterity,
+    constitution,
+    intelligence,
+    wisdom,
+    charisma,
+  } = props;
 
-    return (
-      <div class="flex-container">
-        <div>{props.strenght}</div>
-        <div>{props.dexterity}</div>
-        <div>{props.constitution}</div>
-        <div>{props.intelligence}</div>
-        <div>{props.wisdom}</div>
-        <div>{props.charisma}</div>
-      </div>
-    );
-} 
+  if (props.stats)
+    [
+      strenght,
+      dexterity,
+      constitution,
+      intelligence,
+      wisdom,
+      charisma,
+    ] = props.stats;
+
+  return (
+    <div className="flex-container">
+      <div>{strenght}</div>
+      <div>{dexterity}</div>
+      <div>{constitution}</div>
+      <div>{intelligence}</div>
+      <div>{wisdom}</div>
+      <div>{charisma}</div>
+    </div>
+  );
+};
 
 export default CharacterStats;

@@ -1,3 +1,1 @@
-import CharacterStats from "./CharacterStats";
-
-export default CharacterStats;
+export { default as CharacterStats } from './CharacterStats';
