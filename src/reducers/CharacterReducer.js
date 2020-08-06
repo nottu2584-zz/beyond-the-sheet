@@ -16,11 +16,13 @@ const CharacterReducer = (state = initialState, action) => {
       const current = state.characters.map((character) => {
         return action.payload.data.id === character.data.id;
       });
-      console.log("parse", action.payload);
       return !current.includes(true)
         ? {
             ...state,
-            characters: [...state.characters, action.payload],
+            characters: [
+              ...state.characters, 
+              action.payload
+            ],
           }
         : { ...state };
     case "RESET":
