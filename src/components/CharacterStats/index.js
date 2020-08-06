@@ -1,1 +1,1 @@
-export { default as CharacterStats } from "./CharacterStats";
+export { default as CharacterStats } from './CharacterStats';
