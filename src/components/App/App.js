@@ -3,6 +3,8 @@ import React, { createContext, useReducer } from "react";
 import CharacterReducer from "../../reducers/CharacterReducer";
 import { CharacterStats } from "../CharacterStats";
 import { ImportCharacterForm } from "../ImportCharacter";
+import { Item } from "../Item";
+import { Inventory } from "../Inventory"
 import "./App.css";
 
 const darkTheme = createMuiTheme({
@@ -21,23 +23,45 @@ export const StoreContext = createContext(initialState);
 const App = () => {
   const [state, dispatch] = useReducer(CharacterReducer, initialState);
 
+
   return (
     <div className="App">
       <ThemeProvider theme={darkTheme}>
         <StoreContext.Provider value={{ state, dispatch }}>
           <content className="App-content useContext">
             <ImportCharacterForm dispatch={dispatch}></ImportCharacterForm>
-            {state.characters.map((character,key) => {
+            {state.characters.map((character, key) => {
               return (
-                <CharacterStats
+                <>
+                  <CharacterStats
+                    key={key}
+                    strenght={character.data.stats[0].value}
+                    dexterity={character.data.stats[1].value}
+                    constitution={character.data.stats[2].value}
+                    intelligence={character.data.stats[3].value}
+                    wisdom={character.data.stats[4].value}
+                    charisma={character.data.stats[5].value}
+                  ></CharacterStats>
+                  <Inventory
                   key={key}
-                  strenght={character.data.stats[0].value}
-                  dexterity={character.data.stats[1].value}
-                  constitution={character.data.stats[2].value}
-                  intelligence={character.data.stats[3].value}
-                  wisdom={character.data.stats[4].value}
-                  charisma={character.data.stats[5].value}
-                ></CharacterStats>
+                  >
+                    {character.data.inventory.map((item, itemKey) => {
+                      return (
+                        <Item
+                          key={itemKey}
+                          name={item.definition.name}
+                          weight={item.definition.weight}
+                          cost={item.definition.cost}
+                          rarity={item.definition.rarity}
+                          quantity={
+                            item.definition.stackable === true
+                            ? item.quantity: "--"}
+                        ></Item>
+                      );
+                    })}
+
+                  </Inventory>
+                </>
               );
             })}
           </content>
