@@ -7,11 +7,13 @@ const Item = (props) => {
         quantity,
         cost,
         rarity,
+        armorClass,
+        type,
+        damageDice,
+        description,
+        properties,
     } = props;
-
-
-  console.log("Prueba de Item: %s" , props.name, props)
-    
+  
     return (
       <div className="container">
         <div>{name}</div>
@@ -19,6 +21,25 @@ const Item = (props) => {
         <div>{quantity}</div>
         <div>{cost}</div>
         <div>{rarity}</div>
+        <div>{type}</div> 
+        {armorClass ? 
+          <div>{armorClass}</div>
+          : null }
+        {damageDice ?
+          <div>{damageDice}</div>
+        : null}
+        <div>{description}</div>
+        {properties ?
+          <div>{properties.map((property, key) => {
+            return (
+            <div>{property.name}
+            {property.notes?
+            " ("+ property.notes +")": null}
+            </div>
+            )
+          })}
+          </div>
+        : null}
       </div>
     );
 };

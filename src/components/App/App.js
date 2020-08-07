@@ -23,7 +23,6 @@ export const StoreContext = createContext(initialState);
 const App = () => {
   const [state, dispatch] = useReducer(CharacterReducer, initialState);
 
-
   return (
     <div className="App">
       <ThemeProvider theme={darkTheme}>
@@ -45,21 +44,38 @@ const App = () => {
                   <Inventory
                   key={key}
                   >
-                    {character.data.inventory.map((item, itemKey) => {
+                    {character.data.inventory.map((item, key) => {
                       return (
-                        <Item
-                          key={itemKey}
-                          name={item.definition.name}
-                          weight={item.definition.weight}
-                          cost={item.definition.cost}
-                          rarity={item.definition.rarity}
-                          quantity={
+                        <>
+                          <Item
+                            key={key}
+                            name={item.definition.name}
+                            weight={item.definition.weight}
+                            cost={item.definition.cost}
+                            rarity={item.definition.rarity}
+                            quantity={
                             item.definition.stackable === true
-                            ? item.quantity: "--"}
-                        ></Item>
+                              ? item.quantity: "--"}
+                            armorClass={
+                              item.definition.armorClass
+                              ? item.definition.armorClass: null}
+                            type={item.definition.filterType}
+                            damageDice={
+                              item.definition.damage
+                              ? item.definition.damage.diceString: null
+                            }
+                            description={item.definition.description}
+                            properties={
+                              item.definition.properties
+                              ? item.definition.properties: null
+                            }
+                          >
+                            {console.log("Prueba Items" , key)}
+                          </Item>
+                          <br/>
+                        </>  
                       );
                     })}
-
                   </Inventory>
                 </>
               );
