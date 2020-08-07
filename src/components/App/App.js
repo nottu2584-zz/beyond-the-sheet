@@ -31,12 +31,12 @@ const App = () => {
               return (
                 <CharacterStats
                   key={key}
-                  strenght={character.data.stats[0].value}
-                  dexterity={character.data.stats[1].value}
-                  constitution={character.data.stats[2].value}
-                  intelligence={character.data.stats[3].value}
-                  wisdom={character.data.stats[4].value}
-                  charisma={character.data.stats[5].value}
+                  strength={character.stats.strength}
+                  dexterity={character.stats.dexterity}
+                  constitution={character.stats.constitution}
+                  intelligence={character.stats.intelligence}
+                  wisdom={character.stats.wisdom}
+                  charisma={character.stats.charisma}
                 ></CharacterStats>
               );
             })}

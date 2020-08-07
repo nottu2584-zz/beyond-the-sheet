@@ -3,7 +3,7 @@ import "./CharacterStats.css";
 
 const CharacterStats = (props) => {
   let {
-    strenght,
+    strength,
     dexterity,
     constitution,
     intelligence,
@@ -13,7 +13,7 @@ const CharacterStats = (props) => {
 
   if (props.stats)
     [
-      strenght,
+      strength,
       dexterity,
       constitution,
       intelligence,
@@ -22,8 +22,8 @@ const CharacterStats = (props) => {
     ] = props.stats;
 
   return (
-    <div className="flex-container">
-      <div>{strenght}</div>
+    <div className="container">
+      <div>{strength}</div>
       <div>{dexterity}</div>
       <div>{constitution}</div>
       <div>{intelligence}</div>
