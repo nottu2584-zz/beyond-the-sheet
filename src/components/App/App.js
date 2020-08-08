@@ -26,17 +26,17 @@ const App = () => {
       <ThemeProvider theme={darkTheme}>
         <StoreContext.Provider value={{ state, dispatch }}>
           <content className="App-content useContext">
-            <ImportCharacterForm dispatch={dispatch}></ImportCharacterForm>
+            <ImportCharacterForm></ImportCharacterForm>
             {state.characters.map((character,key) => {
               return (
                 <CharacterStats
                   key={key}
-                  strenght={character.data.stats[0].value}
-                  dexterity={character.data.stats[1].value}
-                  constitution={character.data.stats[2].value}
-                  intelligence={character.data.stats[3].value}
-                  wisdom={character.data.stats[4].value}
-                  charisma={character.data.stats[5].value}
+                  strength={character.stats.strength}
+                  dexterity={character.stats.dexterity}
+                  constitution={character.stats.constitution}
+                  intelligence={character.stats.intelligence}
+                  wisdom={character.stats.wisdom}
+                  charisma={character.stats.charisma}
                 ></CharacterStats>
               );
             })}
