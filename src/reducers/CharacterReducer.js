@@ -12,20 +12,10 @@ const characterStats = [
 const CharacterReducer = (state = initialState, action) => {
   switch (action.type) {
     case "GET":
-      // Lazy store valid JSON
-      return action.payload &&
-        action.payload.success === true &&
-        action.payload.data
-        ? {
-            ...state,
-            data: action.payload,
-          }
-        : { ...state };
-    case "PARSE":
       const current = state.characters.map(
         (character) => action.payload.data.id === character.data.id
       );
-
+      
       const [
         strength,
         dexterity,
@@ -80,9 +70,10 @@ const CharacterReducer = (state = initialState, action) => {
           }
         : { ...state };
     case "RESET":
-      return state.map((todo) =>
-        todo.id === action.id ? { ...todo, completed: !todo.completed } : todo
-      );
+      return {
+        ...state,
+        characters: []
+      }
     default:
       return state;
   }

@@ -1,7 +1,19 @@
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import "./CharacterStats.css";
+
+const useStyles = makeStyles((theme) => ({
+  root: {},
+  stat: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  },
+}));
 
 const CharacterStats = (props) => {
+  const classes = useStyles();
   let {
     strength,
     dexterity,
@@ -22,14 +34,26 @@ const CharacterStats = (props) => {
     ] = props.stats;
 
   return (
-    <div className="container">
-      <div>{strength}</div>
-      <div>{dexterity}</div>
-      <div>{constitution}</div>
-      <div>{intelligence}</div>
-      <div>{wisdom}</div>
-      <div>{charisma}</div>
-    </div>
+    <Grid container spacing={3}>
+      <Grid item xs={2}>
+        <Paper className={classes.stat}>{strength}</Paper>
+      </Grid>
+      <Grid item xs={2}>
+        <Paper className={classes.stat}>{dexterity}</Paper>
+      </Grid>
+      <Grid item xs={2}>
+        <Paper className={classes.stat}>{constitution}</Paper>
+      </Grid>
+      <Grid item xs={2}>
+        <Paper className={classes.stat}>{intelligence}</Paper>
+      </Grid>
+      <Grid item xs={2}>
+        <Paper className={classes.stat}>{wisdom}</Paper>
+      </Grid>
+      <Grid item xs={2}>
+        <Paper className={classes.stat}>{charisma}</Paper>
+      </Grid>
+    </Grid>
   );
 };
 
