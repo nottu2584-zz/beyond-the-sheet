@@ -5,6 +5,7 @@ import { CharacterStats } from "../CharacterStats";
 import { ImportCharacterForm } from "../ImportCharacter";
 import { Item } from "../Item";
 import { Inventory } from "../Inventory"
+import { Currencies } from "../Currencies"
 import "./App.css";
 
 const darkTheme = createMuiTheme({
@@ -76,6 +77,13 @@ const App = () => {
                         </>  
                       );
                     })}
+                    <Currencies
+                      cp={character.data.currencies.cp}
+                      sp={character.data.currencies.sp}
+                      ep={character.data.currencies.ep}
+                      gp={character.data.currencies.gp}
+                      pp={character.data.currencies.pp}
+                    ></Currencies>
                   </Inventory>
                 </>
               );
