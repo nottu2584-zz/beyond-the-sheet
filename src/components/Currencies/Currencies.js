@@ -11,7 +11,7 @@ const Currencies = (props) => {
 
     return (
         <div className="container">
-            <div>Platinum: {pp}</div>
+            <div>Platinum: {pp}</div> 
             <div>Gold: {gp}</div>
             <div>Electrum: {ep}</div>
             <div>Silver: {sp}</div>
