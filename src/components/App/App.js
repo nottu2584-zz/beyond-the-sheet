@@ -51,11 +51,15 @@ const App = () => {
                           <Item
                             key={key}
                             name={item.definition.name}
-                            weight={item.definition.weight}
-                            cost={item.definition.cost}
+                            weight={
+                              item.definition.weight === 0
+                              ? "--": item.definition.weight}
+                            cost={
+                              item.definition.cost
+                            ? item.definition.cost : "--"}
                             rarity={item.definition.rarity}
                             quantity={
-                            item.definition.stackable === true
+                              item.definition.stackable === true
                               ? item.quantity: "--"}
                             armorClass={
                               item.definition.armorClass
