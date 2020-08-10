@@ -4,3 +4,4 @@ export * from "./CharacterStats";
 export * from "./Item";
 export * from "./Inventory";
 export * from "./Currencies";
+export * from "./PersonalPossessions;"
