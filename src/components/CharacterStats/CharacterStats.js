@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CharacterStats = (props) => {
   const classes = useStyles();
+  
   let {
     strength,
     dexterity,
