@@ -6,7 +6,7 @@ import { ImportCharacterForm } from "../ImportCharacter";
 import { Item } from "../Item";
 import { Inventory } from "../Inventory";
 import { Currencies } from "../Currencies";
-import { PersonalPossesions } from  "../PersonalPossessions";
+import { PersonalBelongings } from "../PersonalBelongings";
 import "./App.css";
 
 const darkTheme = createMuiTheme({
@@ -89,9 +89,9 @@ const App = () => {
                       gp={character.data.currencies.gp}
                       pp={character.data.currencies.pp}
                     ></Currencies>
-                    <PersonalPossesions>
-                      {character.data.notes.personalPossesions}
-                    </PersonalPossesions>
+                    <PersonalBelongings>
+                      {character.data.notes.personalPossessions}
+                    </PersonalBelongings>
                   </Inventory>
                 </>
               );

@@ -1,6 +1,6 @@
 import React from "react";
 
-const PersonalPossessions = (props) => {
+const PersonalBelongings = (props) => {
 
     return (
         <div className="container">
@@ -9,4 +9,4 @@ const PersonalPossessions = (props) => {
     );
 };
 
-export default PersonalPossessions;
+export default PersonalBelongings;
