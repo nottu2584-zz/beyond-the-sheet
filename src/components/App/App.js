@@ -58,7 +58,6 @@ const App = () => {
                                 spell.definition.range.rangeValue
                                 ? spell.definition.range.rangeValue
                                 : spell.definition.range.origin}
-                              
                             ></Spells>
                           <br></br>
                           </>

@@ -6,7 +6,8 @@ const Spells = (props) => {
         lvl,
         time,
         range,
-        hitDC,
+        hit,
+        DC,
         duration,
         components,
     } = props;
@@ -17,7 +18,8 @@ const Spells = (props) => {
             <div>Level: {lvl}</div>
             <div>Time: {time}</div>
             <div>Range: {range}</div>
-            <div>hit/DC: {hitDC}</div>
+            <div>hit: {hit}</div>
+            <div>DC: {DC}</div>
             {duration ?
                 <div>Duration: {duration}</div>
                 : null }
