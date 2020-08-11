@@ -30,21 +30,20 @@ const App = () => {
             <ImportCharacterForm></ImportCharacterForm>
             {state.characters.map((character, key) => {
               return (
-                <>
-                  <Character
-                    avatar={character.data.avatarUrl}
-                    name={character.data.name}
-                    characterRace={
-                      character.data.race.isSubrace
-                        ? character.data.race.fullName +
-                          " (" +
-                          character.data.race.baseRaceName +
-                          ")"
-                        : character.data.race.baseRaceName
-                    }
-                  ></Character>
+                <Character
+                  key={key}
+                  avatar={character.data.avatarUrl}
+                  name={character.data.name}
+                  characterRace={
+                    character.data.race.isSubrace
+                      ? character.data.race.fullName +
+                        " (" +
+                        character.data.race.baseRaceName +
+                        ")"
+                      : character.data.race.baseRaceName
+                  }
+                >
                   <CharacterStats
-                    key={key}
                     strength={character.stats.strength}
                     dexterity={character.stats.dexterity}
                     constitution={character.stats.constitution}
@@ -52,7 +51,7 @@ const App = () => {
                     wisdom={character.stats.wisdom}
                     charisma={character.stats.charisma}
                   ></CharacterStats>
-                </>
+                </Character>
               );
             })}
           </content>

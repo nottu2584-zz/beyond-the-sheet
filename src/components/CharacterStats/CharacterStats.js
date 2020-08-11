@@ -1,19 +1,14 @@
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import { makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  stat: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
+const lightTheme = createMuiTheme({
+  palette: {
+    type: "light",
   },
-}));
+});
 
 const CharacterStats = (props) => {
-  const classes = useStyles();
   
   let {
     strength,
@@ -35,26 +30,16 @@ const CharacterStats = (props) => {
     ] = props.stats;
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={2}>
-        <Paper className={classes.stat}>{strength}</Paper>
+    <ThemeProvider theme={lightTheme}>
+      <Grid container spacing={3}>
+        <Grid item xs={2}>{strength}</Grid>
+        <Grid item xs={2}>{dexterity}</Grid>
+        <Grid item xs={2}>{constitution}</Grid>
+        <Grid item xs={2}>{intelligence}</Grid>
+        <Grid item xs={2}>{wisdom}</Grid>
+        <Grid item xs={2}>{charisma}</Grid>
       </Grid>
-      <Grid item xs={2}>
-        <Paper className={classes.stat}>{dexterity}</Paper>
-      </Grid>
-      <Grid item xs={2}>
-        <Paper className={classes.stat}>{constitution}</Paper>
-      </Grid>
-      <Grid item xs={2}>
-        <Paper className={classes.stat}>{intelligence}</Paper>
-      </Grid>
-      <Grid item xs={2}>
-        <Paper className={classes.stat}>{wisdom}</Paper>
-      </Grid>
-      <Grid item xs={2}>
-        <Paper className={classes.stat}>{charisma}</Paper>
-      </Grid>
-    </Grid>
+    </ThemeProvider>
   );
 };
 

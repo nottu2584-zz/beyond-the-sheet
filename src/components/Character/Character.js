@@ -1,5 +1,6 @@
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 const Character = (props) => {
   const classes = useStyles();
 
-  const { avatar, name, characterClass, characterRace, gender } = props;
+  const { avatar, name, characterClass, characterRace } = props;
 
   return (
     <Card className={classes.root}>
@@ -25,8 +26,9 @@ const Character = (props) => {
         }
         action={null}
         title={name}
-        subheader={gender + " " + characterRace}
+        subheader={(characterRace + " " || null) + (characterClass || null)}
       />
+      <CardContent>{props.children}</CardContent>
     </Card>
   );
 };
