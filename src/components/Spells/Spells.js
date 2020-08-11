@@ -23,7 +23,18 @@ const Spells = (props) => {
             {duration ?
                 <div>Duration: {duration}</div>
                 : null }
-            <div>components: {components}</div>
+            <div>{components.map((component,key) => {
+                return (
+                    <div>{component[1]
+                    ? "V": null}
+                    {component[2]
+                    ? "S": null}
+                    {component[3]
+                    ? "M": null}
+                    </div>
+                )
+            })}
+            </div>
         </div>
     );
 };
