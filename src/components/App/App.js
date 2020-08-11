@@ -29,15 +29,17 @@ const App = () => {
             <ImportCharacterForm></ImportCharacterForm>
             {state.characters.map((character,key) => {
               return (
-                <CharacterStats
-                  key={key}
-                  strength={character.stats.strength}
-                  dexterity={character.stats.dexterity}
-                  constitution={character.stats.constitution}
-                  intelligence={character.stats.intelligence}
-                  wisdom={character.stats.wisdom}
-                  charisma={character.stats.charisma}
-                ></CharacterStats>
+                <>
+                  <CharacterStats
+                    key={key}
+                    strength={character.stats.strength}
+                    dexterity={character.stats.dexterity}
+                    constitution={character.stats.constitution}
+                    intelligence={character.stats.intelligence}
+                    wisdom={character.stats.wisdom}
+                    charisma={character.stats.charisma}
+                  ></CharacterStats>
+                </>
               );
             })}
           </content>
