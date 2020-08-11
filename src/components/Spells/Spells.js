@@ -3,6 +3,7 @@ import React from 'react';
 const Spells = (props) => {
     const {
         name,
+        lvl,
         time,
         range,
         hitDC,
@@ -12,12 +13,15 @@ const Spells = (props) => {
 
     return (
         <div className="container">
-            <div>{name}</div>
-            <div>{time}</div>
-            <div>{range}</div>
-            <div>{hitDC}</div>
-            <div>{duration}</div>
-            <div>{components}</div>
+            <div>Name: {name}</div>
+            <div>Level: {lvl}</div>
+            <div>Time: {time}</div>
+            <div>Range: {range}</div>
+            <div>hit/DC: {hitDC}</div>
+            {duration ?
+                <div>Duration: {duration}</div>
+                : null }
+            <div>components: {components}</div>
         </div>
     );
 };
