@@ -75,9 +75,7 @@ const App = () => {
                               item.definition.properties
                               ? item.definition.properties: null
                             }
-                          >
-                            {console.log("Prueba Items" , key)}
-                          </Item>
+                          ></Item>
                           <br/>
                         </>  
                       );
