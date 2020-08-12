@@ -1,16 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const Spells = (props) => {
-    const {
-        name,
-        lvl,
-        time,
-        range,
-        hit,
-        DC,
-        duration,
-        components,
-    } = props;
+  const { name, lvl, time, range, hit, DC, duration, components } = props;
 
     return (
         <div className="container">
@@ -36,7 +27,7 @@ const Spells = (props) => {
                 })}
                 </div>
             :"prueba"}
-        </div>
+      </div>
     );
 };
 
