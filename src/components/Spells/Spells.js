@@ -20,22 +20,22 @@ const Spells = (props) => {
             <div>Range: {range}</div>
             <div>hit: {hit}</div>
             <div>DC: {DC}</div>
-            {duration ?
-                <div>Duration: {duration}</div>
-                : null }
-            {components?
-                <div>{props.components.map((component, key) => {
-                return (
-                <div>{component?
-                "V": null}
-                {component?
-                "S": null}
-                {component[3]?
-                "M": null}</div>
-                )
-                
-            })}</div>
-            : "prueba"}    
+            {duration ? <div>Duration: {duration}</div>: null }
+            {components ? 
+                <div>{components.map((component,key) => {
+                    switch (component) {
+                        case 1:
+                            return "V";
+                        case 2:
+                            return "S";
+                        case 3:
+                            return "M";
+                        default:
+                            return null;
+                    }
+                })}
+                </div>
+            :"prueba"}
         </div>
     );
 };
