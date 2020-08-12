@@ -2,7 +2,7 @@ import React from "react";
 
 const Spells = (props) => {
   const { name, lvl, time, range, hit, DC, duration, components } = props;
-
+  console.log(components);
     return (
         <div className="container">
             <div>Name: {name}</div>
@@ -13,7 +13,7 @@ const Spells = (props) => {
             <div>DC: {DC}</div>
             {duration ? <div>Duration: {duration}</div>: null }
             {components ? 
-                <div>{components.map((component,key) => {
+                <div>Components: {components.map((component,key) => {
                     switch (component) {
                         case 1:
                             return "V";
@@ -26,9 +26,9 @@ const Spells = (props) => {
                     }
                 })}
                 </div>
-            :"prueba"}
+            :null}
       </div>
-    );
+    )
 };
 
 export default Spells;
