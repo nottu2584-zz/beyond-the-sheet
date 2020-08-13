@@ -14,7 +14,7 @@ const Spells = (props) => {
               : null}
         </div>
         <div>Range: {range}</div>
-        <div>hit: {hit}</div>
+        {hit ? <div>hit: {hit}</div> : null}
         <div> SaveDC: {" "}
           {DC ?
             {

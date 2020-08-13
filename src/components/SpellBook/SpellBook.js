@@ -9,8 +9,8 @@ const SpellBook = (props) => {
 
     return (
         <div className="container">
-            <div>{cantripsKnown}</div>
-            <div>{spellsKnown}</div>
+            <div>Cantrips Known: {cantripsKnown}</div>
+            <div>Spells Known: {spellsKnown}</div>
             <div>{spellSlots}</div>
             <div>{props.children}</div>
         </div>
