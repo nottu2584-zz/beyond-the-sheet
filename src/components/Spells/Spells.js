@@ -15,20 +15,17 @@ const Spells = (props) => {
         </div>
         <div>Range: {range}</div>
         <div>hit: {hit}</div>
-        <div>
-          SaveDC: {DC === 1
-            ? "STR"
-            : DC === 2
-            ? "DEX"
-            : DC === 3
-            ? "CON"
-            : DC === 4
-            ? "INT"
-            : DC === 5
-            ? "WIS"
-            : DC === 6
-            ? "CHA"
-            : "--"}
+        <div> SaveDC: {" "}
+          {DC ?
+            {
+              1: "STR",
+              2: "DEX",
+              3: "CON",
+              4: "INT",
+              5: "WIS",
+              6: "CHA"
+            }[DC]
+          :"--"}
         </div>
         {duration ? <div>Duration: {duration}</div> : null}
         {components ? (
