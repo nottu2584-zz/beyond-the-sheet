@@ -68,9 +68,8 @@ const App = () => {
                             type={item.definition.filterType}
                             damageDice={
                               item.definition.damage
-                              ? item.definition.damage.diceString: null
+                              ? item.definition.damage.diceString + " " + item.definition.damageType: null
                             }
-                            description={item.definition.description}
                             properties={
                               item.definition.properties
                               ? item.definition.properties: null

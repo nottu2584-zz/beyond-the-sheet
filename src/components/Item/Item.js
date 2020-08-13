@@ -27,7 +27,7 @@ const Item = (props) => {
           : null }
         {damageDice ?
           <div>{damageDice}</div>
-        : null}
+          : null}
         <div>{description}</div>
         {properties ?
           <div>{properties.map((property, key) => {
