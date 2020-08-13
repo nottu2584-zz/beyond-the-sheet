@@ -49,6 +49,7 @@ const App = () => {
                             <Spells
                               key={key}
                               name={spell.definition.name}
+                              time={spell.activation.activationType}
                               lvl={spell.definition.level}
                               duration={
                                 spell.definition.duration.durationUnit
@@ -59,6 +60,7 @@ const App = () => {
                                 ? spell.definition.range.rangeValue
                                 : spell.definition.range.origin}
                               components={spell.definition.components}
+                              DC={spell.definition.saveDcAbilityId}
                             ></Spells>
                           <br></br>
                           </>
