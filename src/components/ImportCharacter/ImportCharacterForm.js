@@ -1,17 +1,18 @@
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import ClearIcon from "@material-ui/icons/Clear";
+import SendIcon from "@material-ui/icons/Send";
 import React, { useContext, useState } from "react";
 import { StoreContext } from "../App/App";
 
-const placeholder = "Import Character Sheet Json";
+const placeholder = "{ ... }";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: "2px 4px",
     display: "flex",
     alignItems: "center",
-    width: 400,
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -29,42 +30,61 @@ const useStyles = makeStyles((theme) => ({
 const ImportCharacterForm = (props) => {
   const { dispatch } = useContext(StoreContext);
   const classes = useStyles();
-  const [data, setData] = useState(placeholder);
+  const [data, setData] = useState();
 
-  const handleClick = (e) => {};
+  const handleSubmitClick = (e) => {};
+
+  const handleResetClick = (e) => {
+    setData("");
+  };
 
   const handleSubmit = (e) => {
+    // Prevent submit
     e.preventDefault();
-    // Store data.
-    dispatch({ type: "GET", payload: JSON.parse(data) });
-    // Parse the character.
-    dispatch({ type: "PARSE", payload: JSON.parse(data) });
+    // Get characters
+    if (data && typeof data === "string")
+      dispatch({ type: "GET", payload: JSON.parse(data) });
+  };
+
+  const handleChange = (e) => {
+    e.target.value && typeof e.target.value === "string"
+      ? setData(e.target.value)
+      : setData("");
   };
 
   return (
     <form className={classes} onSubmit={handleSubmit}>
       <TextField
-        id="outlined-full-width"
+        id="character-data"
         label="Character Data"
         color="primary"
         style={{ margin: 8 }}
         placeholder={placeholder}
-        helperText="Paste character data"
         fullWidth
         margin="normal"
         InputLabelProps={{
           shrink: true,
         }}
         variant="outlined"
-        onChange={(e) => setData(e.target.value)}
+        onChange={handleChange}
       />
       <Button
         type="submit"
         variant="contained"
         color="primary"
-        onClick={handleClick}
+        startIcon={<SendIcon />}
+        onClick={handleSubmitClick}
       >
         Submit
+      </Button>
+      <Button
+        type="reset"
+        variant="outlined"
+        color="secondary"
+        startIcon={<ClearIcon />}
+        onClick={handleResetClick}
+      >
+        Clear
       </Button>
     </form>
   );

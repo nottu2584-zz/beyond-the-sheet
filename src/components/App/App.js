@@ -26,7 +26,7 @@ const App = () => {
       <ThemeProvider theme={darkTheme}>
         <StoreContext.Provider value={{ state, dispatch }}>
           <content className="App-content useContext">
-            <ImportCharacterForm dispatch={dispatch}></ImportCharacterForm>
+            <ImportCharacterForm></ImportCharacterForm>
             {state.characters.map((character,key) => {
               return (
                 <CharacterStats
