@@ -41,6 +41,8 @@ const App = () => {
                     wisdom={character.stats.wisdom}
                     charisma={character.stats.charisma}
                   ></CharacterStats>
+                  {character.skills.acrobatics}
+                  {character.skills.animalHandling}
                   {character.data.classes.map((characterClass,key) => {
                     return (
                       <SpellBook 

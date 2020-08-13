@@ -15,7 +15,7 @@ const CharacterReducer = (state = initialState, action) => {
       const current = state.characters.map(
         (character) => action.payload.data.id === character.data.id
       );
-      
+
       const [
         strength,
         dexterity,
@@ -66,12 +66,31 @@ const CharacterReducer = (state = initialState, action) => {
                   charisma: charisma,
                 },
                 statsModifiers: {
-                  strength: modStats(strength),
-                  dexterity: modStats(dexterity),
-                  constitution: modStats(constitution),
-                  intelligence: modStats(intelligence),
-                  wisdom: modStats(wisdom),
-                  charisma: modStats(charisma),
+                  strength: stringifyModStats(strength),
+                  dexterity: stringifyModStats(dexterity),
+                  constitution: stringifyModStats(constitution),
+                  intelligence: stringifyModStats(intelligence),
+                  wisdom: stringifyModStats(wisdom),
+                  charisma: stringifyModStats(charisma),
+                },
+                skills: {
+                  acrobatics: stringifyModSkills(dexterity),
+                  animalHandling: stringifyModSkills(wisdom),
+                  arcana: stringifyModSkills(intelligence),
+                  athletics: stringifyModSkills(dexterity),
+                  deception: stringifyModSkills(charisma),
+                  history: stringifyModSkills(intelligence),
+                  insight: stringifyModSkills(wisdom),
+                  intimidation: stringifyModSkills(charisma),
+                  investigation: stringifyModSkills(wisdom),
+                  nature: stringifyModSkills(intelligence),
+                  perception: stringifyModSkills(wisdom),
+                  performance: stringifyModSkills(charisma),
+                  persuasion: stringifyModSkills(charisma),
+                  religion: stringifyModSkills(intelligence),
+                  sleightOfHand: stringifyModSkills(dexterity),
+                  stealth: stringifyModSkills(dexterity),
+                  survival: stringifyModSkills(wisdom),
                 },
               },
             ],
@@ -80,8 +99,8 @@ const CharacterReducer = (state = initialState, action) => {
     case "RESET":
       return {
         ...state,
-        characters: []
-      }
+        characters: [],
+      };
     default:
       return state;
   }
@@ -112,8 +131,27 @@ const isStat = (modifier) =>
   modifier.subType === "charisma-score";
 
 const modStats = (stat) => {
-  const result = Math.floor((stat - 10) / 2);
-  return result > 0 ? "+" + result : result;
+  return Math.floor((stat - 10) / 2);
 };
 
+const modSkills = (skill, proficiency = false, expertise = false) => {
+  return proficiency
+    ? expertise
+      ? modStats(skill) + 2*(Math.ceil(proficiency / 4) + 1)
+      : modStats(skill) + (Math.ceil(proficiency / 4) + 1)
+    : modStats(skill);
+};
+
+const stringifyMod = (modifier) => {
+  return modifier > 0 ? "+" + modifier: modifier;
+}
+
+const stringifyModStats = (modifier) => {
+  return stringifyMod(modStats(modifier));
+}
+
+const stringifyModSkills = (modifier, proficiency = false, expertise = false) => {
+  return stringifyMod(modSkills(modifier, proficiency, expertise ))
+}
+ 
 export default CharacterReducer;
