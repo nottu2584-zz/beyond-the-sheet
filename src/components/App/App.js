@@ -42,7 +42,8 @@ const App = () => {
                     charisma={character.stats.charisma}
                   ></CharacterStats>
                   {character.skills.acrobatics}
-                  {character.skills.animalHandling}
+                  {character.skills.performance}
+                  {character.skills.nature}
                   {character.data.classes.map((characterClass,key) => {
                     return (
                       <SpellBook 
