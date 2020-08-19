@@ -1,16 +1,22 @@
-import Grid from "@material-ui/core/Grid";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import Avatar from "@material-ui/core/Avatar";
+import Chip from "@material-ui/core/Chip";
+import { makeStyles } from "@material-ui/core/styles";
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
 import React from "react";
 
-const lightTheme = createMuiTheme({
-  palette: {
-    type: "light",
-  },
-});
+const useStyles = makeStyles((theme) => ({
+  root: {},
+}));
 
 const CharacterStats = (props) => {
-  
+  const classes = useStyles();
+
+  const handleCharacter = () => {};
+
   let {
+    avatar,
+    name,
     strength,
     dexterity,
     constitution,
@@ -21,6 +27,8 @@ const CharacterStats = (props) => {
 
   if (props.stats)
     [
+      avatar,
+      name,
       strength,
       dexterity,
       constitution,
@@ -30,16 +38,22 @@ const CharacterStats = (props) => {
     ] = props.stats;
 
   return (
-    <ThemeProvider theme={lightTheme}>
-      <Grid container spacing={3}>
-        <Grid item xs={2}>{strength}</Grid>
-        <Grid item xs={2}>{dexterity}</Grid>
-        <Grid item xs={2}>{constitution}</Grid>
-        <Grid item xs={2}>{intelligence}</Grid>
-        <Grid item xs={2}>{wisdom}</Grid>
-        <Grid item xs={2}>{charisma}</Grid>
-      </Grid>
-    </ThemeProvider>
+    <TableRow>
+      <TableCell>
+        <Chip
+          avatar={<Avatar alt={name} src={avatar} className={classes.avatar} />}
+          label={name}
+          onClick={handleCharacter}
+          variant="outlined"
+        />
+      </TableCell>
+      <TableCell>{strength}</TableCell>
+      <TableCell>{dexterity}</TableCell>
+      <TableCell>{constitution}</TableCell>
+      <TableCell>{intelligence}</TableCell>
+      <TableCell>{wisdom}</TableCell>
+      <TableCell>{charisma}</TableCell>
+    </TableRow>
   );
 };
 
