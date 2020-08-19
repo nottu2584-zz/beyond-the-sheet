@@ -5,6 +5,10 @@ import { CharacterStats } from "../CharacterStats";
 import { ImportCharacterForm } from "../ImportCharacter";
 import { SpellBook } from "../SpellBook";
 import { Spells } from "../Spells";
+import { Item } from "../Item";
+import { Inventory } from "../Inventory";
+import { Currencies } from "../Currencies";
+import { PersonalBelongings } from "../PersonalBelongings";
 import "./App.css";
 
 const darkTheme = createMuiTheme({
@@ -28,8 +32,8 @@ const App = () => {
       <ThemeProvider theme={darkTheme}>
         <StoreContext.Provider value={{ state, dispatch }}>
           <content className="App-content useContext">
-            <ImportCharacterForm></ImportCharacterForm>
-            {state.characters.map((character,key) => {
+            <ImportCharacterForm dispatch={dispatch}></ImportCharacterForm>
+            {state.characters.map((character, key) => {
               return (
                 <>
                   <CharacterStats
@@ -81,6 +85,52 @@ const App = () => {
                       </SpellBook>
                     );
                   })}
+                  <Inventory
+                  key={key}
+                  >
+                    {character.data.inventory.map((item, key) => {
+                      return (
+                        <>
+                          <Item
+                            key={key}
+                            name={item.definition.name}
+                            weight={
+                              item.definition.weight === 0
+                              ? "--": item.definition.weight}
+                            cost={
+                              item.definition.cost
+                            ? item.definition.cost : "--"}
+                            rarity={item.definition.rarity}
+                            quantity={
+                              item.definition.stackable === true
+                              ? item.quantity: "--"}
+                            armorClass={
+                              item.definition.armorClass
+                              ? item.definition.armorClass: null}
+                            type={item.definition.filterType}
+                            damageDice={
+                              item.definition.damage
+                              ? item.definition.damage.diceString + " " + item.definition.damageType: null
+                            }
+                            properties={
+                              item.definition.properties
+                              ? item.definition.properties: null
+                            }
+                          ></Item>
+                        </>  
+                      );
+                    })}
+                    <Currencies
+                      cp={character.data.currencies.cp}
+                      sp={character.data.currencies.sp}
+                      ep={character.data.currencies.ep}
+                      gp={character.data.currencies.gp}
+                      pp={character.data.currencies.pp}
+                    ></Currencies>
+                    <PersonalBelongings>
+                      {character.data.notes.personalPossessions}
+                    </PersonalBelongings>
+                  </Inventory>
                 </>
               );
             })}

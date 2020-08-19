@@ -3,3 +3,7 @@ export * from "./ImportCharacter";
 export * from "./CharacterStats";
 export * from "./SpellBook";
 export * from "./Spells";
+export * from "./Item";
+export * from "./Inventory";
+export * from "./Currencies";
+export * from "./PersonalBelongings";
