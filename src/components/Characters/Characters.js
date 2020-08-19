@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { CharacterStats,SpellBook,Spells,Inventory,Item,Currencies,PersonalBelongings } from "../"
 import { GroupStats } from "../GroupStats";
 import { GroupInventory } from "../GroupInventory";
+import { GroupCurrencies } from "../GroupCurrencies";
 import Box from "@material-ui/core/Box";
 
 import SwipeableViews from "react-swipeable-views";
@@ -73,7 +74,8 @@ const Characters = (props) => {
       >
         <Tab label="Stats" {...a11yProps(0)} />
         <Tab label="Inventory" {...a11yProps(1)} />
-        <Tab label="Spells" {...a11yProps(2)} />
+        <Tab label="Currencies" {...a11yProps(2)} />
+        <Tab label="Spells" {...a11yProps(3)} />
       </Tabs>
       <SwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -150,6 +152,23 @@ const Characters = (props) => {
           </GroupInventory>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
+          <GroupCurrencies>
+            {characters.map((character,key) => {
+              return (
+                <Currencies
+                  key={key}
+                  avatar={character.data.avatarUrl}
+                  pp={character.data.currencies.pp}
+                  gp={character.data.currencies.gp}
+                  ep={character.data.currencies.ep}
+                  sp={character.data.currencies.sp}
+                  cp={character.data.currencies.cp}
+                ></Currencies>
+              );
+            })}
+          </GroupCurrencies>
+        </TabPanel>
+        <TabPanel value={value} index={3} dir={theme.direction}>
           {characters.map((character, key) => {
             return (
               <>
