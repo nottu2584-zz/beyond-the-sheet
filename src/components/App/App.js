@@ -1,7 +1,7 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import React, { createContext, useReducer } from "react";
 import CharacterReducer from "../../reducers/CharacterReducer";
-import { CharacterStats } from "../CharacterStats";
+import { Characters } from "../Characters";
 import { ImportCharacterForm } from "../ImportCharacter";
 import { SpellBook } from "../SpellBook";
 import { Spells } from "../Spells";
@@ -36,15 +36,6 @@ const App = () => {
             {state.characters.map((character, key) => {
               return (
                 <>
-                  <CharacterStats
-                    key={key}
-                    strength={character.stats.strength}
-                    dexterity={character.stats.dexterity}
-                    constitution={character.stats.constitution}
-                    intelligence={character.stats.intelligence}
-                    wisdom={character.stats.wisdom}
-                    charisma={character.stats.charisma}
-                  ></CharacterStats>
                   {character.data.classes.map((characterClass,key) => {
                     return (
                       <SpellBook 
@@ -134,6 +125,8 @@ const App = () => {
                 </>
               );
             })}
+            <ImportCharacterForm></ImportCharacterForm>
+            <Characters characters={state.characters}></Characters>
           </content>
         </StoreContext.Provider>
       </ThemeProvider>
