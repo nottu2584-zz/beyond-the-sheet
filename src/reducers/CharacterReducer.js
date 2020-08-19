@@ -65,6 +65,14 @@ const CharacterReducer = (state = initialState, action) => {
                   wisdom: wisdom,
                   charisma: charisma,
                 },
+                statsModifiers: {
+                  strength: modStats(strength),
+                  dexterity: modStats(dexterity),
+                  constitution: modStats(constitution),
+                  intelligence: modStats(intelligence),
+                  wisdom: modStats(wisdom),
+                  charisma: modStats(charisma),
+                },
               },
             ],
           }
@@ -102,5 +110,10 @@ const isStat = (modifier) =>
   modifier.subType === "intelligence-score" ||
   modifier.subType === "wisdom-score" ||
   modifier.subType === "charisma-score";
+
+const modStats = (stat) => {
+  const result = Math.floor((stat - 10) / 2);
+  return result > 0 ? "+" + result : result;
+};
 
 export default CharacterReducer;
