@@ -23,6 +23,7 @@ const GroupCurrencies = (props) => {
           <TableCell>EP</TableCell>
           <TableCell>SP</TableCell>
           <TableCell>CP</TableCell>
+          <TableCell>total(GP)</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>{props.children}</TableBody>

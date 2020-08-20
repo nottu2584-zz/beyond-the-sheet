@@ -158,6 +158,7 @@ const Characters = (props) => {
                 <Currencies
                   key={key}
                   avatar={character.data.avatarUrl}
+                  name={character.data.name}
                   pp={character.data.currencies.pp}
                   gp={character.data.currencies.gp}
                   ep={character.data.currencies.ep}
