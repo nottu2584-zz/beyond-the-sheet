@@ -13,6 +13,49 @@ const useStyles = makeStyles({
 const GroupCurrencies = (props) => {
   const classes = useStyles();
 
+  const pp = () => {
+    return (
+      props.children.reduce((acc, child) => {
+        return acc + child.props.pp
+      },0)
+    )
+  }
+  const gp = () => {
+    return (
+      props.children.reduce((acc, child) => {
+        return acc + child.props.gp
+      },0)
+    )
+  }
+  const ep = () => {
+    return (
+      props.children.reduce((acc, child) => {
+        return acc + child.props.ep
+      },0)
+    )
+  }
+  const sp = () => {
+    return (
+      props.children.reduce((acc, child) => {
+        return acc + child.props.pp
+      },0)
+    )
+  }
+  const cp = () => {
+    return (
+      props.children.reduce((acc, child) => {
+        return acc + child.props.pp
+      },0)
+    )
+  }
+  // const total = () => {
+  //   return (
+  //     props.children.reduce((acc, child) => {
+  //       return acc + child.props.
+  //     },0)
+  //   )
+  // }
+
   return (
     <Table className={classes.table}>
       <TableHead>
@@ -26,7 +69,18 @@ const GroupCurrencies = (props) => {
           <TableCell>total(GP)</TableCell>
         </TableRow>
       </TableHead>
-      <TableBody>{props.children}</TableBody>
+      <TableBody>
+        {props.children}
+        <TableRow>
+          <TableCell></TableCell>
+          {/* <TableCell>{accPP}</TableCell>
+          <TableCell>{pp()}</TableCell>
+          <TableCell>{accEP}</TableCell>
+          <TableCell>{accSP}</TableCell>
+          <TableCell>{accCP}</TableCell>
+          <TableCell>{acc}</TableCell> */}
+        </TableRow>
+      </TableBody>
     </Table>
   );
 };

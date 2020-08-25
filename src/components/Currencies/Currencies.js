@@ -14,25 +14,27 @@ const Currencies = (props) => {
 
   const handleCharacter = () => {};
 
-  const { avatar, name, cp, ep, gp, pp, sp } = props;
+  const { avatar, name, cp, ep, gp, pp, sp, } = props;
 
   const currencyConversion = (currencies) => {
-    currencies.map((currency) => {
+    return Object.keys(currencies).reduce((acc, currency) => {
       switch (currency) {
-        case "pp": 
-          return currency * 10;
+        case "pp":
+          return acc + currencies[currency] * 10;
+        case "gp":
+          return acc + currencies[currency];
         case "ep":
-          return currency * 0.5;
+          return acc + currencies[currency] * 0.5;
         case "sp":
-          return currency / 10;
+          return acc + currencies[currency] / 10;
         case "cp":
-          return currency /100;
+          return acc + currencies[currency] / 100;
         default:
-          return null;
-        };
-    });
+          return acc;
+      }
+    }, 0);
   };
-
+  
   return (
     <TableRow>
       <TableCell>
@@ -48,7 +50,7 @@ const Currencies = (props) => {
       <TableCell>{ep}</TableCell>
       <TableCell>{sp}</TableCell>
       <TableCell>{cp}</TableCell>
-      <TableCell></TableCell>
+      <TableCell>{currencyConversion({pp:pp, gp:gp, ep:ep, sp:sp, cp:cp})}</TableCell>
     </TableRow>
   );
 };
