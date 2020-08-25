@@ -37,24 +37,19 @@ const GroupCurrencies = (props) => {
   const sp = () => {
     return (
       props.children.reduce((acc, child) => {
-        return acc + child.props.pp
+        return acc + child.props.sp
       },0)
     )
   }
   const cp = () => {
     return (
       props.children.reduce((acc, child) => {
-        return acc + child.props.pp
+        return acc + child.props.sp
       },0)
     )
   }
-  // const total = () => {
-  //   return (
-  //     props.children.reduce((acc, child) => {
-  //       return acc + child.props.
-  //     },0)
-  //   )
-  // }
+
+
 
   return (
     <Table className={classes.table}>
