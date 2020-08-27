@@ -9,34 +9,34 @@ const useSyles = makeStyles((theme) => ({
   root: {},
 }));
 
+export const toGold = (currencies) => {
+  return Object.keys(currencies).reduce((acc, currency) => {
+    switch (currency) {
+      case "pp":
+        return acc + currencies[currency] * 10;
+      case "gp":
+        return acc + currencies[currency];
+      case "ep":
+        return acc + currencies[currency] * 0.5;
+      case "sp":
+        return acc + currencies[currency] / 10;
+      case "cp":
+        return acc + currencies[currency] / 100;
+      default:
+        return acc;
+    }
+  }, 0);
+};
+
 const Currencies = (props) => {
   const classes = useSyles();
 
   const handleCharacter = () => {};
 
-  const { avatar, name, cp, ep, gp, pp, sp, } = props;
+  const { avatar, name, cp, ep, gp, pp, sp } = props;
 
-  const currencyConversion = (currencies) => {
-    return Object.keys(currencies).reduce((acc, currency) => {
-      switch (currency) {
-        case "pp":
-          return acc + currencies[currency] * 10;
-        case "gp":
-          return acc + currencies[currency];
-        case "ep":
-          return acc + currencies[currency] * 0.5;
-        case "sp":
-          return acc + currencies[currency] / 10;
-        case "cp":
-          return acc + currencies[currency] / 100;
-        default:
-          return acc;
-      }
-    }, 0);
-  };
-  
   return (
-    <TableRow>
+    <>
       <TableCell>
         <Chip
           avatar={<Avatar alt={name} src={avatar} className={classes.avatar} />}
@@ -50,8 +50,10 @@ const Currencies = (props) => {
       <TableCell>{ep}</TableCell>
       <TableCell>{sp}</TableCell>
       <TableCell>{cp}</TableCell>
-      <TableCell>{currencyConversion({pp:pp, gp:gp, ep:ep, sp:sp, cp:cp})}</TableCell>
-    </TableRow>
+      <TableCell>
+        {toGold({ pp: pp, gp: gp, ep: ep, sp: sp, cp: cp })}
+      </TableCell>
+    </>
   );
 };
 

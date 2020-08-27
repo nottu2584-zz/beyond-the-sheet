@@ -1,16 +1,15 @@
+import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
-import PropTypes from "prop-types";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-import React, { useState } from "react";
-import { CharacterStats,SpellBook,Spells,Inventory,Item,Currencies,PersonalBelongings } from "../"
-import { GroupStats } from "../GroupStats";
-import { GroupInventory } from "../GroupInventory";
-import { GroupCurrencies } from "../GroupCurrencies";
-import Box from "@material-ui/core/Box";
-
+import PropTypes from "prop-types";
+import React from "react";
 import SwipeableViews from "react-swipeable-views";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { CharacterStats, Currencies, Item, SpellBook, Spells } from "../";
+import { GroupCurrencies } from "../GroupCurrencies";
+import { GroupInventory } from "../GroupInventory";
+import { GroupStats } from "../GroupStats";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -104,56 +103,54 @@ const Characters = (props) => {
         <TabPanel value={value} index={1} dir={theme.direction}>
           <GroupInventory>
             {characters.map((character, key) => {
-              return (
-                  character.data.inventory.map((item, key) => {
-                    return (
-                      <>
-                        <Item
-                          key={key}
-                          name={item.definition.name}
-                          weight={
-                            item.definition.weight === 0
-                              ? "--"
-                              : item.definition.weight
-                          }
-                          cost={
-                            item.definition.cost ? item.definition.cost : "--"
-                          }
-                          rarity={item.definition.rarity}
-                          quantity={
-                            item.definition.stackable === true
-                              ? item.quantity
-                              : "--"
-                          }
-                          armorClass={
-                            item.definition.armorClass
-                              ? item.definition.armorClass+" AC"
-                              : null
-                          }
-                          type={item.definition.filterType}
-                          damageDice={
-                            item.definition.damage
-                              ? item.definition.damage.diceString +
-                                " " +
-                                item.definition.damageType
-                              : null
-                          }
-                          properties={
-                            item.definition.properties
-                              ? item.definition.properties
-                              : null
-                          }
-                        ></Item>
-                      </>
-                    );
-                  })
-              );
+              return character.data.inventory.map((item, key) => {
+                return (
+                  <>
+                    <Item
+                      avatar={character.data.avatarUrl}
+                      characterName={character.data.name}
+                      key={key}
+                      name={item.definition.name}
+                      weight={
+                        item.definition.weight === 0
+                          ? "--"
+                          : item.definition.weight
+                      }
+                      cost={item.definition.cost ? item.definition.cost : "--"}
+                      rarity={item.definition.rarity}
+                      quantity={
+                        item.definition.stackable === true
+                          ? item.quantity
+                          : "--"
+                      }
+                      armorClass={
+                        item.definition.armorClass
+                          ? item.definition.armorClass + " AC"
+                          : null
+                      }
+                      type={item.definition.filterType}
+                      damageDice={
+                        item.definition.damage
+                          ? item.definition.damage.diceString +
+                            " " +
+                            item.definition.damageType
+                          : null
+                      }
+                      properties={
+                        item.definition.properties
+                          ? item.definition.properties
+                          : null
+                      }
+                    ></Item>
+                  </>
+                );
+              });
             })}
           </GroupInventory>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <GroupCurrencies>
-            {characters.map((character,key) => {
+          <GroupCurrencies characters={characters}>
+            {characters.map((character, key) => {
               return (
                 <Currencies
                   key={key}
