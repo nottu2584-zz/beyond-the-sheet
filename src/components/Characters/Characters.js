@@ -6,7 +6,7 @@ import Tabs from "@material-ui/core/Tabs";
 import PropTypes from "prop-types";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
-import { CharacterStats, Currencies, Item, SpellBook, Spells } from "../";
+import { Abilities, Currencies, Item, SpellBook, Spells } from "../";
 import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
 import { GroupStats } from "../GroupStats";
@@ -85,17 +85,13 @@ const Characters = (props) => {
           <GroupStats>
             {characters.map((character, key) => {
               return (
-                <CharacterStats
+                <Abilities
                   key={key}
                   avatar={character.data.avatarUrl}
                   name={character.data.name}
-                  strength={character.stats.strength}
-                  dexterity={character.stats.dexterity}
-                  constitution={character.stats.constitution}
-                  intelligence={character.stats.intelligence}
-                  wisdom={character.stats.wisdom}
-                  charisma={character.stats.charisma}
-                ></CharacterStats>
+                  stats={character.stats}
+                  skills={character.skills} 
+                ></Abilities>
               );
             })}
           </GroupStats>
@@ -242,7 +238,7 @@ const Characters = (props) => {
 //           <GroupStats>
 //             {characters.map((character, key) => {
 //               return (
-//                 <CharacterStats
+//                 <Abilities
 //                   key={key}
 //                   avatar={character.data.avatarUrl}
 //                   name={character.data.name}
@@ -252,7 +248,7 @@ const Characters = (props) => {
 //                   intelligence={character.stats.intelligence}
 //                   wisdom={character.stats.wisdom}
 //                   charisma={character.stats.charisma}
-//                 ></CharacterStats>
+//                 ></Abilities>
 //               );
 //             })}
 //           </GroupStats>
