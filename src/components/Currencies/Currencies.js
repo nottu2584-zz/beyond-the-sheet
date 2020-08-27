@@ -1,23 +1,60 @@
-import React from 'react';
+import Avatar from "@material-ui/core/Avatar";
+import Chip from "@material-ui/core/Chip";
+import { makeStyles } from "@material-ui/core/styles";
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
+import React from "react";
+
+const useSyles = makeStyles((theme) => ({
+  root: {},
+}));
+
+export const toGold = (currencies) => {
+  return Object.keys(currencies).reduce((acc, currency) => {
+    switch (currency) {
+      case "pp":
+        return acc + currencies[currency] * 10;
+      case "gp":
+        return acc + currencies[currency];
+      case "ep":
+        return acc + currencies[currency] * 0.5;
+      case "sp":
+        return acc + currencies[currency] / 10;
+      case "cp":
+        return acc + currencies[currency] / 100;
+      default:
+        return acc;
+    }
+  }, 0);
+};
 
 const Currencies = (props) => {
-    const {
-        cp,
-        ep,
-        gp,
-        pp,
-        sp,
-    }= props;
+  const classes = useSyles();
 
-    return (
-        <div className="container">
-            <div>Platinum: {pp}</div> 
-            <div>Gold: {gp}</div>
-            <div>Electrum: {ep}</div>
-            <div>Silver: {sp}</div>
-            <div>Copper: {cp}</div>
-        </div>
-    );
+  const handleCharacter = () => {};
+
+  const { avatar, name, cp, ep, gp, pp, sp } = props;
+
+  return (
+    <>
+      <TableCell>
+        <Chip
+          avatar={<Avatar alt={name} src={avatar} className={classes.avatar} />}
+          label={name}
+          onClick={handleCharacter}
+          variant="outlined"
+        />
+      </TableCell>
+      <TableCell>{pp}</TableCell>
+      <TableCell>{gp}</TableCell>
+      <TableCell>{ep}</TableCell>
+      <TableCell>{sp}</TableCell>
+      <TableCell>{cp}</TableCell>
+      <TableCell>
+        {toGold({ pp: pp, gp: gp, ep: ep, sp: sp, cp: cp })}
+      </TableCell>
+    </>
+  );
 };
 
 export default Currencies;

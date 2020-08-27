@@ -1,14 +1,15 @@
+import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
-import PropTypes from "prop-types";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-import React, { useState } from "react";
-import { CharacterStats } from "../CharacterStats";
-import { GroupStats } from "../GroupStats";
-import Box from "@material-ui/core/Box";
-
+import PropTypes from "prop-types";
+import React from "react";
 import SwipeableViews from "react-swipeable-views";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { CharacterStats, Currencies, Item, SpellBook, Spells } from "../";
+import { GroupCurrencies } from "../GroupCurrencies";
+import { GroupInventory } from "../GroupInventory";
+import { GroupStats } from "../GroupStats";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,8 +72,9 @@ const Characters = (props) => {
         aria-label="full width tabs example"
       >
         <Tab label="Stats" {...a11yProps(0)} />
-        <Tab label="Item Two" {...a11yProps(1)} />
-        <Tab label="Item Three" {...a11yProps(2)} />
+        <Tab label="Inventory" {...a11yProps(1)} />
+        <Tab label="Currencies" {...a11yProps(2)} />
+        <Tab label="Spells" {...a11yProps(3)} />
       </Tabs>
       <SwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -99,10 +101,127 @@ const Characters = (props) => {
           </GroupStats>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          Item Two
+          <GroupInventory>
+            {characters.map((character, key) => {
+              return character.data.inventory.map((item, key) => {
+                return (
+                  <>
+                    <Item
+                      avatar={character.data.avatarUrl}
+                      characterName={character.data.name}
+                      key={key}
+                      name={item.definition.name}
+                      weight={
+                        item.definition.weight === 0
+                          ? "--"
+                          : item.definition.weight
+                      }
+                      cost={item.definition.cost ? item.definition.cost : "--"}
+                      rarity={item.definition.rarity}
+                      quantity={
+                        item.definition.stackable === true
+                          ? item.quantity
+                          : "--"
+                      }
+                      armorClass={
+                        item.definition.armorClass
+                          ? item.definition.armorClass + " AC"
+                          : null
+                      }
+                      type={item.definition.filterType}
+                      damageDice={
+                        item.definition.damage
+                          ? item.definition.damage.diceString +
+                            " " +
+                            item.definition.damageType
+                          : null
+                      }
+                      properties={
+                        item.definition.properties
+                          ? item.definition.properties
+                          : null
+                      }
+                    ></Item>
+                  </>
+                );
+              });
+            })}
+          </GroupInventory>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
+          <GroupCurrencies characters={characters}>
+            {characters.map((character, key) => {
+              return (
+                <Currencies
+                  key={key}
+                  avatar={character.data.avatarUrl}
+                  name={character.data.name}
+                  pp={character.data.currencies.pp}
+                  gp={character.data.currencies.gp}
+                  ep={character.data.currencies.ep}
+                  sp={character.data.currencies.sp}
+                  cp={character.data.currencies.cp}
+                ></Currencies>
+              );
+            })}
+          </GroupCurrencies>
+        </TabPanel>
+        <TabPanel value={value} index={3} dir={theme.direction}>
+          {characters.map((character, key) => {
+            return (
+              <>
+                {character.data.classes.map((characterClass, key) => {
+                  return (
+                    <SpellBook
+                      cantripsKnown={
+                        characterClass.definition.spellRules
+                          .levelCantripsKnownMaxes[characterClass.level]
+                      }
+                      spellsKnown={
+                        characterClass.definition.spellRules
+                          .levelSpellKnownMaxes[characterClass.level]
+                      }
+                      spellSlots={
+                        characterClass.definition.spellRules.levelSpellSlots[
+                          characterClass.level
+                        ]
+                      }
+                    >
+                      {character.data.classSpells.map((classSpells, key) => {
+                        return classSpells.spells.map((spell, key) => {
+                          return (
+                            <>
+                              <Spells
+                                key={key}
+                                name={spell.definition.name}
+                                time={spell.activation.activationType}
+                                lvl={spell.definition.level}
+                                duration={
+                                  spell.definition.duration.durationUnit
+                                    ? spell.definition.duration
+                                        .durationInterval +
+                                      " " +
+                                      spell.definition.duration.durationUnit
+                                    : null
+                                }
+                                range={
+                                  spell.definition.range.rangeValue
+                                    ? spell.definition.range.rangeValue
+                                    : spell.definition.range.origin
+                                }
+                                components={spell.definition.components}
+                                DC={spell.definition.saveDcAbilityId}
+                              ></Spells>
+                            </>
+                          );
+                        });
+                      })}
+                    </SpellBook>
+                  );
+                })}
+              </>
+            );
+          })}
         </TabPanel>
       </SwipeableViews>
     </Paper>
