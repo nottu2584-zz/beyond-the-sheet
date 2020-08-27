@@ -21,7 +21,6 @@ const Abilities = (props) => {
     skills
   } = props;
 
-  console.log("skills", skills)
   return (
     <TableRow>
       <TableCell>

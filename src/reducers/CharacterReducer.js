@@ -54,7 +54,7 @@ const CharacterReducer = (state = initialState, action) => {
       const halfProficiency = Object.keys(
         action.payload.data.modifiers
       ).some((index) =>
-        action.payload.data.modifiers[index].map((modifier) =>
+        action.payload.data.modifiers[index].some((modifier) =>
           isHalfProficiency(modifier)
         )
       );
@@ -116,44 +116,48 @@ const CharacterReducer = (state = initialState, action) => {
         sleightOfHand,
         stealth,
         survival,
-      ] = characterSkills.map((skill) =>
-        Object.keys(action.payload.data.modifiers).map((index) =>
-          action.payload.data.modifiers[index]
-            .filter(
-              (modifier) =>
-                isSkillExpertise(modifier, skill) ||
+      ] = characterSkills.map(
+        (skill) => {
+          return {
+            expertise: Object.keys(
+              action.payload.data.modifiers
+            ).some((index) =>
+              action.payload.data.modifiers[index].some((modifier) =>
+                isSkillExpertise(modifier, skill)
+              )
+            ),
+            proficiency: Object.keys(
+              action.payload.data.modifiers
+            ).some((index) =>
+              action.payload.data.modifiers[index].some((modifier) =>
                 isSkillProficiency(modifier, skill)
-            )
-            .map((modifier) => {
-              return {
-                expertise: isSkillExpertise(modifier, skill),
-                proficiency: isSkillProficiency(modifier, skill),
-                halfProficiency: halfProficiency,
-              };
-            })
-        )
+              )
+            ),
+            halfProficiency: halfProficiency,
+          };
+        }
       );
 
-      // console.log("resultado", [
-      //   acrobatics,
-      //   animalHandling,
-      //   arcana,
-      //   athletics,
-      //   deception,
-      //   history,
-      //   insight,
-      //   intimidation,
-      //   investigation,
-      //   nature,
-      //   perception,
-      //   performance,
-      //   persuasion,
-      //   religion,
-      //   sleightOfHand,
-      //   stealth,
-      //   survival,
-      // ]);
-      
+      console.log("resultado", [
+        acrobatics,
+        animalHandling,
+        arcana,
+        athletics,
+        deception,
+        history,
+        insight,
+        intimidation,
+        investigation,
+        nature,
+        perception,
+        performance,
+        persuasion,
+        religion,
+        sleightOfHand,
+        stealth,
+        survival,
+      ]);
+
       return !current.includes(true)
         ? {
             ...state,
