@@ -160,31 +160,19 @@ const CharacterReducer = (state = initialState, action) => {
               ...state.characters,
               {
                 ...action.payload,
-                stats: {
-                  strength: {
-                    ...strength,
-                    modifier: stringifyModStats(strength),
-                  },
-                  dexterity: {
-                    ...dexterity,
-                    modifier: stringifyModStats(dexterity),
-                  },
-                  constitution: {
-                    ...constitution,
-                    modifier: stringifyModStats(constitution),
-                  },
-                  intelligence: {
-                    ...intelligence,
-                    modifier: stringifyModStats(intelligence),
-                  },
-                  wisdom: {
-                    ...wisdom,
-                    modifier: stringifyModStats(wisdom),
-                  },
-                  charisma: {
-                    ...charisma,
-                    modifier: stringifyModStats(charisma),
-                  },
+                armorClass: armorClass,
+                conditions: {
+                  ...conditions
+                },
+                experience: {
+                  value: experience,
+                  toLevelUp: 0
+                },
+                hitPoints: {
+                  ...hitPoints,
+                  current: 0,
+                  max: 0,
+                  temp: 0
                 },
                 skills: {
                   acrobatics: {
@@ -356,6 +344,32 @@ const CharacterReducer = (state = initialState, action) => {
                       survival.expertise,
                       survival.halfProficiency
                     ),
+                  },
+                },
+                stats: {
+                  strength: {
+                    ...strength,
+                    modifier: stringifyModStats(strength),
+                  },
+                  dexterity: {
+                    ...dexterity,
+                    modifier: stringifyModStats(dexterity),
+                  },
+                  constitution: {
+                    ...constitution,
+                    modifier: stringifyModStats(constitution),
+                  },
+                  intelligence: {
+                    ...intelligence,
+                    modifier: stringifyModStats(intelligence),
+                  },
+                  wisdom: {
+                    ...wisdom,
+                    modifier: stringifyModStats(wisdom),
+                  },
+                  charisma: {
+                    ...charisma,
+                    modifier: stringifyModStats(charisma),
                   },
                 },
               },
