@@ -50,48 +50,73 @@ const CharacterReducer = (state = initialState, action) => {
         ),
       };
 
-      // Half-proficiency flag
+      /**
+       * Checks for half proficiency on ability checks (Jack of All Trades, etc.)
+       */
       const halfProficiency = Object.keys(
         action.payload.data.modifiers
-      ).some((modifier) => isHalfProficiency(modifier));
+      ).some((index) =>
+        action.payload.data.modifiers[index].some((modifier) =>
+          isHalfProficiency(modifier)
+        )
+      );
 
-      // Stat array
-      const [
+      /**
+       * Sets character stats including modifiers
+       */
+      let [
         strength,
         dexterity,
         constitution,
         intelligence,
         wisdom,
         charisma,
-      ] = action.payload.data.stats.map((stat, key) => {
-        return action.payload.data.overrideStats[key].value
-          ? // Custom Override
-            action.payload.data.overrideStats[key].value
-          : // Base + Bonus + Mods
-            stat.value +
-              action.payload.data.bonusStats[key].value +
-              Object.keys(action.payload.data.modifiers)
-                .map((index) =>
-                  action.payload.data.modifiers[index]
-                    .filter(
-                      (modifier) =>
-                        isStatBonus(modifier, key) ||
-                        isStatOverride(modifier, key)
-                    )
-                    .reduce(
-                      (acc, modifier) =>
-                        isStatOverride(modifier, key)
-                          ? modifier.value -
-                            stat.value -
-                            action.payload.data.bonusStats[key].value
-                          : acc + modifier.value,
-                      0
-                    )
-                )
-                .reduce((acc, b) => acc + b, 0);
+      ] = characterStats.map((stat, key) => {
+        return {
+          value:
+            Object.keys(action.payload.data.modifiers)
+              .map((index) =>
+                action.payload.data.modifiers[index]
+                  .filter((modifier) => isStatBonus(modifier, stat))
+                  .reduce((acc, modifier) => acc + modifier.value, 0)
+              )
+              .reduce((acc, modifier) => acc + modifier, 0) +
+            action.payload.data.stats[key].value +
+            action.payload.data.bonusStats[key].value,
+        };
       });
 
-      // Skill array
+      /**
+       * Sets character stats overrides when necessary, keeping the biggest value
+       */
+      const statOverrides = characterStats.map((stat) => {
+        Object.keys(action.payload.data.modifiers)
+          .map((index) =>
+            action.payload.data.modifiers[index]
+              .filter((modifier) => isStatOverride(modifier, stat))
+              .reduce(
+                (previousModifier, currentModifier) =>
+                  Math.max(previousModifier.value, currentModifier.value),
+                0
+              )
+          )
+          .reduce(
+            (previousModifier, currentModifier) =>
+              Math.max(previousModifier, currentModifier),
+            0
+          );
+      });
+
+      strength = statOverrides[0] || strength;
+      dexterity = statOverrides[1] || dexterity;
+      constitution = statOverrides[2] || constitution;
+      intelligence = statOverrides[3] || intelligence;
+      wisdom = statOverrides[4] || wisdom;
+      charisma = statOverrides[5] || charisma;
+
+      /**
+       * Sets the character skill array
+       */
       const [
         acrobatics,
         animalHandling,
@@ -110,17 +135,22 @@ const CharacterReducer = (state = initialState, action) => {
         sleightOfHand,
         stealth,
         survival,
-      ] = characterSkills((key) => {
-        return Object.keys(action.payload.data.modifiers).map((modifier) => {
-          return {
-            proficiency: isSkillProficiency(modifier, key),
-            expertise: isSkillExpertise(modifier, key),
-            halfProficiency:
-              halfProficiency &&
-              !isSkillProficiency(modifier, key) &&
-              !isSkillExpertise(modifier, key),
-          };
-        });
+      ] = characterSkills.map((skill) => {
+        return {
+          expertise: Object.keys(action.payload.data.modifiers).some((index) =>
+            action.payload.data.modifiers[index].some((modifier) =>
+              isSkillExpertise(modifier, skill)
+            )
+          ),
+          proficiency: Object.keys(
+            action.payload.data.modifiers
+          ).some((index) =>
+            action.payload.data.modifiers[index].some((modifier) =>
+              isSkillProficiency(modifier, skill)
+            )
+          ),
+          halfProficiency: halfProficiency,
+        };
       });
 
       return !current.includes(true)
@@ -131,141 +161,202 @@ const CharacterReducer = (state = initialState, action) => {
               {
                 ...action.payload,
                 stats: {
-                  strength: strength,
-                  dexterity: dexterity,
-                  constitution: constitution,
-                  intelligence: intelligence,
-                  wisdom: wisdom,
-                  charisma: charisma,
-                },
-                statsModifiers: {
-                  strength: stringifyModStats(strength),
-                  dexterity: stringifyModStats(dexterity),
-                  constitution: stringifyModStats(constitution),
-                  intelligence: stringifyModStats(intelligence),
-                  wisdom: stringifyModStats(wisdom),
-                  charisma: stringifyModStats(charisma),
+                  strength: {
+                    ...strength,
+                    modifier: stringifyModStats(strength),
+                  },
+                  dexterity: {
+                    ...dexterity,
+                    modifier: stringifyModStats(dexterity),
+                  },
+                  constitution: {
+                    ...constitution,
+                    modifier: stringifyModStats(constitution),
+                  },
+                  intelligence: {
+                    ...intelligence,
+                    modifier: stringifyModStats(intelligence),
+                  },
+                  wisdom: {
+                    ...wisdom,
+                    modifier: stringifyModStats(wisdom),
+                  },
+                  charisma: {
+                    ...charisma,
+                    modifier: stringifyModStats(charisma),
+                  },
                 },
                 skills: {
-                  acrobatics: stringifyModSkills(
-                    dexterity,
-                    levels.total,
-                    acrobatics.proficiency,
-                    acrobatics.expertise,
-                    acrobatics.halfProficiency
-                  ),
-                  animalHandling: stringifyModSkills(
-                    wisdom,
-                    levels.total,
-                    animalHandling.proficiency,
-                    animalHandling.expertise,
-                    animalHandling.halfProficiency
-                  ),
-                  arcana: stringifyModSkills(
-                    intelligence,
-                    levels.total,
-                    arcana.proficiency,
-                    arcana.expertise,
-                    arcana.halfProficiency
-                  ),
-                  athletics: stringifyModSkills(
-                    dexterity,
-                    levels.total,
-                    athletics.proficiency,
-                    athletics.expertise,
-                    athletics.halfProficiency
-                  ),
-                  deception: stringifyModSkills(
-                    charisma,
-                    levels.total,
-                    deception.proficiency,
-                    deception.expertise,
-                    deception.halfProficiency
-                  ),
-                  history: stringifyModSkills(
-                    intelligence,
-                    levels.total,
-                    history.proficiency,
-                    history.expertise,
-                    history.halfProficiency
-                  ),
-                  insight: stringifyModSkills(
-                    wisdom,
-                    levels.total,
-                    insight.proficiency,
-                    insight.expertise,
-                    insight.halfProficiency
-                  ),
-                  intimidation: stringifyModSkills(
-                    charisma,
-                    levels.total,
-                    intimidation.proficiency,
-                    intimidation.expertise,
-                    intimidation.halfProficiency
-                  ),
-                  investigation: stringifyModSkills(
-                    wisdom,
-                    levels.total,
-                    investigation.proficiency,
-                    investigation.expertise,
-                    investigation.halfProficiency
-                  ),
-                  nature: stringifyModSkills(
-                    intelligence,
-                    levels.total,
-                    nature.proficiency,
-                    nature.expertise,
-                    nature.halfProficiency
-                  ),
-                  perception: stringifyModSkills(
-                    wisdom,
-                    levels.total,
-                    perception.proficiency,
-                    perception.expertise,
-                    perception.halfProficiency
-                  ),
-                  performance: stringifyModSkills(
-                    charisma,
-                    levels.total,
-                    performance.proficiency,
-                    performance.expertise,
-                    performance.halfProficiency
-                  ),
-                  persuasion: stringifyModSkills(
-                    charisma,
-                    levels.total,
-                    persuasion.proficiency,
-                    persuasion.expertise,
-                    persuasion.halfProficiency
-                  ),
-                  religion: stringifyModSkills(
-                    intelligence,
-                    levels.total,
-                    religion.proficiency,
-                    religion.expertise,
-                    religion.halfProficiency
-                  ),
-                  sleightOfHand: stringifyModSkills(
-                    dexterity,
-                    levels.total,
-                    sleightOfHand.proficiency,
-                    sleightOfHand.expertise,
-                    sleightOfHand.halfProficiency
-                  ),
-                  stealth: stringifyModSkills(
-                    dexterity,
-                    levels.total,
-                    stealth.proficiency,
-                    stealth.expertise,
-                    stealth.halfProficiency
-                  ),
-                  survival: stringifyModSkills(
-                    wisdom,
-                    levels.total,
-                    survival.proficiency,
-                    survival.expertise,
-                    survival.halfProficiency
-                  ),
+                  acrobatics: {
+                    ...acrobatics,
+                    value: stringifyModSkills(
+                      dexterity,
+                      levels.total,
+                      acrobatics.proficiency,
+                      acrobatics.expertise,
+                      acrobatics.halfProficiency
+                    ),
+                  },
+                  animalHandling: {
+                    ...animalHandling,
+                    value: stringifyModSkills(
+                      wisdom,
+                      levels.total,
+                      animalHandling.proficiency,
+                      animalHandling.expertise,
+                      animalHandling.halfProficiency
+                    ),
+                  },
+                  arcana: {
+                    ...arcana,
+                    value: stringifyModSkills(
+                      intelligence,
+                      levels.total,
+                      arcana.proficiency,
+                      arcana.expertise,
+                      arcana.halfProficiency
+                    ),
+                  },
+                  athletics: {
+                    ...athletics,
+                    value: stringifyModSkills(
+                      strength,
+                      levels.total,
+                      athletics.proficiency,
+                      athletics.expertise,
+                      athletics.halfProficiency
+                    ),
+                  },
+                  deception: {
+                    ...deception,
+                    value: stringifyModSkills(
+                      charisma,
+                      levels.total,
+                      deception.proficiency,
+                      deception.expertise,
+                      deception.halfProficiency
+                    ),
+                  },
+                  history: {
+                    ...history,
+                    value: stringifyModSkills(
+                      intelligence,
+                      levels.total,
+                      history.proficiency,
+                      history.expertise,
+                      history.halfProficiency
+                    ),
+                  },
+                  insight: {
+                    ...insight,
+                    value: stringifyModSkills(
+                      wisdom,
+                      levels.total,
+                      insight.proficiency,
+                      insight.expertise,
+                      insight.halfProficiency
+                    ),
+                  },
+                  intimidation: {
+                    ...intimidation,
+                    value: stringifyModSkills(
+                      charisma,
+                      levels.total,
+                      intimidation.proficiency,
+                      intimidation.expertise,
+                      intimidation.halfProficiency
+                    ),
+                  },
+                  investigation: {
+                    ...investigation,
+                    value: stringifyModSkills(
+                      intelligence,
+                      levels.total,
+                      investigation.proficiency,
+                      investigation.expertise,
+                      investigation.halfProficiency
+                    ),
+                  },
+                  nature: {
+                    ...nature,
+                    value: stringifyModSkills(
+                      intelligence,
+                      levels.total,
+                      nature.proficiency,
+                      nature.expertise,
+                      nature.halfProficiency
+                    ),
+                  },
+                  perception: {
+                    ...perception,
+                    value: stringifyModSkills(
+                      wisdom,
+                      levels.total,
+                      perception.proficiency,
+                      perception.expertise,
+                      perception.halfProficiency
+                    ),
+                  },
+                  performance: {
+                    ...performance,
+                    value: stringifyModSkills(
+                      charisma,
+                      levels.total,
+                      performance.proficiency,
+                      performance.expertise,
+                      performance.halfProficiency
+                    ),
+                  },
+                  persuasion: {
+                    ...persuasion,
+                    value: stringifyModSkills(
+                      charisma,
+                      levels.total,
+                      persuasion.proficiency,
+                      persuasion.expertise,
+                      persuasion.halfProficiency
+                    ),
+                  },
+                  religion: {
+                    ...religion,
+                    value: stringifyModSkills(
+                      intelligence,
+                      levels.total,
+                      religion.proficiency,
+                      religion.expertise,
+                      religion.halfProficiency
+                    ),
+                  },
+                  sleightOfHand: {
+                    ...sleightOfHand,
+                    value: stringifyModSkills(
+                      dexterity,
+                      levels.total,
+                      sleightOfHand.proficiency,
+                      sleightOfHand.expertise,
+                      sleightOfHand.halfProficiency
+                    ),
+                  },
+                  stealth: {
+                    ...stealth,
+                    value: stringifyModSkills(
+                      dexterity,
+                      levels.total,
+                      stealth.proficiency,
+                      stealth.expertise,
+                      stealth.halfProficiency
+                    ),
+                  },
+                  survival: {
+                    ...survival,
+                    value: stringifyModSkills(
+                      wisdom,
+                      levels.total,
+                      survival.proficiency,
+                      survival.expertise,
+                      survival.halfProficiency
+                    ),
+                  },
                 },
               },
             ],
@@ -280,22 +371,15 @@ const CharacterReducer = (state = initialState, action) => {
       return state;
   }
 };
+const isStatOverride = (modifier, stat) =>
+  isStat(modifier) &&
+  modifier.type === "set" &&
+  modifier.subType.replace("-score", "") === stat;
 
-const isStatOverride = (modifier, key) => {
-  return (
-    isStat(modifier) &&
-    modifier.type === "set" &&
-    modifier.subType.replace("-score", "") === characterStats[key]
-  );
-};
-
-const isStatBonus = (modifier, key) => {
-  return (
-    isStat(modifier) &&
-    modifier.type === "bonus" &&
-    modifier.subType.replace("-score", "") === characterStats[key]
-  );
-};
+const isStatBonus = (modifier, stat) =>
+  isStat(modifier) &&
+  modifier.type === "bonus" &&
+  modifier.subType.replace("-score", "") === stat;
 
 const isStat = (modifier) =>
   modifier.subType === "strength-score" ||
@@ -318,6 +402,7 @@ const isSkill = (modifier) =>
   modifier.subType === "nature" ||
   modifier.subType === "perception" ||
   modifier.subType === "persuasion" ||
+  modifier.subType === "performance" ||
   modifier.subType === "religion" ||
   modifier.subType === "sleight-of-hand" ||
   modifier.subType === "stealth" ||
@@ -328,10 +413,13 @@ const isSkillExpertise = (modifier, key) =>
   modifier.type === "expertise" &&
   modifier.subType === key;
 
-const isSkillProficiency = (modifier, key) =>
-  isSkill(modifier) &&
-  modifier.type === "proficiency" &&
-  modifier.subType === key;
+const isSkillProficiency = (modifier, key) => {
+  return (
+    isSkill(modifier) &&
+    modifier.type === "proficiency" &&
+    modifier.subType === key
+  );
+};
 
 const isHalfProficiency = (modifier) =>
   modifier.type === "half-proficiency" && modifier.subtype === "ability-checks";

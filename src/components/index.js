@@ -1,6 +1,6 @@
 export * from "./App";
 export * from "./ImportCharacter";
-export * from "./CharacterStats";
+export * from "./Abilities";
 export * from "./SpellBook";
 export * from "./Spells";
 export * from "./Item";
