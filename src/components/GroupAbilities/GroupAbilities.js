@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-const GroupStats = (props) => {
+const GroupAbilities = (props) => {
   const classes = useStyles();
 
   return (
@@ -20,11 +20,28 @@ const GroupStats = (props) => {
         <TableRow>
           <TableCell></TableCell>
           <TableCell>STR</TableCell>
+          <TableCell>Athletics</TableCell>
           <TableCell>DEX</TableCell>
+          <TableCell>Acrobatics</TableCell>
+          <TableCell>Sleight of hand</TableCell>
+          <TableCell>Stealth</TableCell>
           <TableCell>CON</TableCell>
           <TableCell>INT</TableCell>
+          <TableCell>Arcana</TableCell>
+          <TableCell>History</TableCell>
+          <TableCell>Investigation</TableCell>
+          <TableCell>Nature</TableCell>
+          <TableCell>Religion</TableCell>
           <TableCell>WIS</TableCell>
+          <TableCell>Animal Handling</TableCell>
+          <TableCell>Insight</TableCell>
+          <TableCell>Perception</TableCell>
+          <TableCell>Survival</TableCell>
           <TableCell>CHA</TableCell>
+          <TableCell>Deception</TableCell>
+          <TableCell>Intimidation</TableCell>
+          <TableCell>Performance</TableCell>
+          <TableCell>Persuasion</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>{props.children}</TableBody>
@@ -32,4 +49,4 @@ const GroupStats = (props) => {
   );
 };
 
-export default GroupStats;
+export default GroupAbilities;
