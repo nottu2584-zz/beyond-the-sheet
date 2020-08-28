@@ -9,7 +9,7 @@ import SwipeableViews from "react-swipeable-views";
 import { Abilities, Currencies, Item, SpellBook, Spells } from "../";
 import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
-import { GroupStats } from "../GroupStats";
+import { GroupAbilities } from "../GroupAbilities";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -82,7 +82,7 @@ const Characters = (props) => {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <GroupStats>
+          <GroupAbilities>
             {characters.map((character, key) => {
               return (
                 <Abilities
@@ -94,7 +94,7 @@ const Characters = (props) => {
                 ></Abilities>
               );
             })}
-          </GroupStats>
+          </GroupAbilities>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <GroupInventory>
