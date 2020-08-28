@@ -36,31 +36,6 @@ const CharacterReducer = (state = initialState, action) => {
         (character) => action.payload.data.id === character.data.id
       );
 
-      // Character levels
-      const levels = {
-        classes: action.payload.data.classes.map((characterClass, key) => {
-          return {
-            name: characterClass.definition.name,
-            level: characterClass.level,
-          };
-        }),
-        total: action.payload.data.classes.reduce(
-          (acc, characterClass) => acc + characterClass.level,
-          0
-        ),
-      };
-
-      /**
-       * Checks for half proficiency on ability checks (Jack of All Trades, etc.)
-       */
-      const halfProficiency = Object.keys(
-        action.payload.data.modifiers
-      ).some((index) =>
-        action.payload.data.modifiers[index].some((modifier) =>
-          isHalfProficiency(modifier)
-        )
-      );
-
       /**
        * Sets character stats including modifiers
        */
@@ -115,6 +90,30 @@ const CharacterReducer = (state = initialState, action) => {
       charisma = statOverrides[5] || charisma;
 
       /**
+       * Checks for half proficiency on ability checks (Jack of All Trades, etc.)
+       */
+      const halfProficiency = Object.keys(
+        action.payload.data.modifiers
+      ).some((index) =>
+        action.payload.data.modifiers[index].some((modifier) =>
+          isHalfProficiency(modifier)
+        )
+      );
+
+      const levels = {
+        classes: action.payload.data.classes.map((characterClass, key) => {
+          return {
+            name: characterClass.definition.name,
+            level: characterClass.level,
+          };
+        }),
+        total: action.payload.data.classes.reduce(
+          (acc, characterClass) => acc + characterClass.level,
+          0
+        ),
+      };
+
+      /**
        * Sets the character skill array
        */
       const [
@@ -153,6 +152,44 @@ const CharacterReducer = (state = initialState, action) => {
         };
       });
 
+      const maxHitPoints = action.payload.data.overrideHitPoints
+        ? action.payload.data.overrideHitPoints
+        : action.payload.data.baseHitPoints +
+          (action.payload.data.bonusHitPoints || 0) +
+          modStats(constitution.value) * levels.total;
+
+      const hitPoints = {
+        current: maxHitPoints - action.payload.data.removedHitPoints,
+        max: maxHitPoints,
+        temp: action.payload.data.temporaryHitPoints,
+      };
+
+      let armorClass = action.payload.data.inventory.reduce((acc, item) => {
+        if (item.definition.filterType === "Armor" && item.equipped === true) {
+          switch (item.definition.armorTypeId) {
+            case 1:
+              return acc + item.definition.armorClass + modStats(dexterity.value);
+            case 2:
+              return (
+                acc +
+                item.definition.armorClass +
+                (modStats(dexterity.value) <= 2 ? modStats(dexterity.value) : 2)
+              );
+            case 3:
+              return acc + item.definition.armorClass;
+            case 4:
+              return acc + item.definition.armorClass;
+            default:
+              return acc;
+          }
+        } else return acc;
+      },0);
+
+      armorClass = armorClass ? armorClass: 10 + modStats(dexterity.value);
+
+      const experience = null;
+      const conditions = [];
+
       return !current.includes(true)
         ? {
             ...state,
@@ -162,17 +199,17 @@ const CharacterReducer = (state = initialState, action) => {
                 ...action.payload,
                 armorClass: armorClass,
                 conditions: {
-                  ...conditions
+                  ...conditions,
                 },
                 experience: {
                   value: experience,
-                  toLevelUp: 0
+                  toLevelUp: 0,
                 },
                 hitPoints: {
                   ...hitPoints,
                   current: 0,
                   max: 0,
-                  temp: 0
+                  temp: 0,
                 },
                 skills: {
                   acrobatics: {
@@ -231,6 +268,7 @@ const CharacterReducer = (state = initialState, action) => {
                       intelligence,
                       levels.total,
                       history.proficiency,
+
                       history.expertise,
                       history.halfProficiency
                     ),
@@ -385,6 +423,7 @@ const CharacterReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 const isStatOverride = (modifier, stat) =>
   isStat(modifier) &&
   modifier.type === "set" &&

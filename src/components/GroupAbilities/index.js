@@ -1,1 +1,1 @@
-export { default as GroupAbilities } from "./Abilites";
+export { default as GroupAbilities } from "./GroupAbilities";
