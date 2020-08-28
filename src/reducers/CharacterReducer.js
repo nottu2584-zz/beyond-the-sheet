@@ -184,13 +184,11 @@ const CharacterReducer = (state = initialState, action) => {
           }
         } else return acc;
       },0);
-      
+
       armorClass = armorClass ? armorClass: 10 + modStats(dexterity.value);
 
       const experience = null;
       const conditions = [];
-
-      console.log("AC", armorClass);
 
       return !current.includes(true)
         ? {
