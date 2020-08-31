@@ -1,6 +1,6 @@
 import { initialState } from "../components/App";
 
-const characterStats = [
+const characterAbilities = [
   "strength",
   "dexterity",
   "constitution",
@@ -32,12 +32,14 @@ const characterSkills = [
 const CharacterReducer = (state = initialState, action) => {
   switch (action.type) {
     case "GET":
+      const inventory = action.payload.data.inventory;
+
       const current = state.characters.map(
         (character) => action.payload.data.id === character.data.id
       );
 
       /**
-       * Sets character stats including modifiers
+       * Sets character abilities including modifiers
        */
       let [
         strength,
@@ -46,13 +48,13 @@ const CharacterReducer = (state = initialState, action) => {
         intelligence,
         wisdom,
         charisma,
-      ] = characterStats.map((stat, key) => {
+      ] = characterAbilities.map((stat, key) => {
         return {
           value:
             Object.keys(action.payload.data.modifiers)
               .map((index) =>
                 action.payload.data.modifiers[index]
-                  .filter((modifier) => isStatBonus(modifier, stat))
+                  .filter((modifier) => isAbilityBonus(modifier, stat))
                   .reduce((acc, modifier) => acc + modifier.value, 0)
               )
               .reduce((acc, modifier) => acc + modifier, 0) +
@@ -62,13 +64,13 @@ const CharacterReducer = (state = initialState, action) => {
       });
 
       /**
-       * Sets character stats overrides when necessary, keeping the biggest value
+       * Sets character abilities overrides when necessary, keeping the biggest value
        */
-      const statOverrides = characterStats.map((stat) => {
-        Object.keys(action.payload.data.modifiers)
+      const statOverrides = characterAbilities.map((stat) => {
+        return Object.keys(action.payload.data.modifiers)
           .map((index) =>
             action.payload.data.modifiers[index]
-              .filter((modifier) => isStatOverride(modifier, stat))
+              .filter((modifier) => isAbilityOverride(modifier, stat))
               .reduce(
                 (previousModifier, currentModifier) =>
                   Math.max(previousModifier.value, currentModifier.value),
@@ -156,7 +158,7 @@ const CharacterReducer = (state = initialState, action) => {
         ? action.payload.data.overrideHitPoints
         : action.payload.data.baseHitPoints +
           (action.payload.data.bonusHitPoints || 0) +
-          modStats(constitution.value) * levels.total;
+          constitution.modifier * levels.total;
 
       const hitPoints = {
         current: maxHitPoints - action.payload.data.removedHitPoints,
@@ -164,28 +166,79 @@ const CharacterReducer = (state = initialState, action) => {
         temp: action.payload.data.temporaryHitPoints,
       };
 
-      let armorClass = action.payload.data.inventory.reduce((acc, item) => {
-        if (item.definition.filterType === "Armor" && item.equipped === true) {
+      /**
+       * Armor class override
+       */
+      const armorClassOverride = action.payload.data.characterValues
+        .filter((value) => value.typeId === 1)
+        .reduce((acc, value) => acc + value.value, 0);
+
+      /**
+       * Additional armor bonuses
+       */
+      const armorBonus = action.payload.data.characterValues
+        .filter((value) => value.typeId === 2 || value.typeId === 3)
+        .reduce((acc, value) => acc + value.value, 0);
+
+      /**
+       * Base armor override
+       */
+      const baseArmor = action.payload.data.characterValues
+        .filter((value) => value.typeId === 4)
+        .reduce((acc, value) => acc + value.value, 0);
+
+      const equippedArmor = Math.max(
+        ...[
+          maxArmor(inventory, isLightArmor) + modifier(dexterity.value),
+          maxArmor(inventory, isMediumArmor) + modifier(dexterity.value) <= 2
+            ? modifier(dexterity.value)
+            : 2,
+          maxArmor(inventory, isHeavyArmor),
+        ]
+      );
+
+      console.log("armor", equippedArmor);
+      console.log("isLightArmor", maxArmor(inventory, isLightArmor));
+      console.log("isMediumArmor", maxArmor(inventory, isMediumArmor));
+      console.log("isHeavyArmor", maxArmor(inventory, isHeavyArmor));
+
+      let armorClass = inventory
+        .filter(
+          (item) =>
+            item.definition.filterType === "Armor" && item.equipped === true
+        )
+        .reduce((acc, item) => {
           switch (item.definition.armorTypeId) {
             case 1:
-              return acc + item.definition.armorClass + modStats(dexterity.value);
+              // Light armor
+              return baseArmor
+                ? baseArmor
+                : acc + item.definition.armorClass + modifier(dexterity.value);
             case 2:
-              return (
-                acc +
-                item.definition.armorClass +
-                (modStats(dexterity.value) <= 2 ? modStats(dexterity.value) : 2)
-              );
+              // Medium armor
+              return baseArmor
+                ? baseArmor
+                : acc +
+                    item.definition.armorClass +
+                    (modifier(dexterity.value) <= 2 ? modifier(dexterity.value) : 2);
             case 3:
-              return acc + item.definition.armorClass;
+              // Heavy armor
+              return baseArmor ? baseArmor : acc + item.definition.armorClass;
             case 4:
+              // Shield
               return acc + item.definition.armorClass;
             default:
               return acc;
           }
-        } else return acc;
-      },0);
+        }, 0);
 
-      armorClass = armorClass ? armorClass: 10 + modStats(dexterity.value);
+      armorClass = armorClassOverride
+        ? armorClassOverride
+        : armorClass
+        ? armorClass + armorBonus
+        : 10 + modifier(dexterity.value) + armorBonus;
+
+      console.log("AC", armorClass);
 
       const experience = null;
       const conditions = [];
@@ -214,8 +267,8 @@ const CharacterReducer = (state = initialState, action) => {
                 skills: {
                   acrobatics: {
                     ...acrobatics,
-                    value: stringifyModSkills(
-                      dexterity,
+                    value: modSkills(
+                      dexterity.value,
                       levels.total,
                       acrobatics.proficiency,
                       acrobatics.expertise,
@@ -224,8 +277,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   animalHandling: {
                     ...animalHandling,
-                    value: stringifyModSkills(
-                      wisdom,
+                    value: modSkills(
+                      wisdom.value,
                       levels.total,
                       animalHandling.proficiency,
                       animalHandling.expertise,
@@ -234,8 +287,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   arcana: {
                     ...arcana,
-                    value: stringifyModSkills(
-                      intelligence,
+                    value: modSkills(
+                      intelligence.value,
                       levels.total,
                       arcana.proficiency,
                       arcana.expertise,
@@ -244,8 +297,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   athletics: {
                     ...athletics,
-                    value: stringifyModSkills(
-                      strength,
+                    value: modSkills(
+                      strength.value,
                       levels.total,
                       athletics.proficiency,
                       athletics.expertise,
@@ -254,8 +307,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   deception: {
                     ...deception,
-                    value: stringifyModSkills(
-                      charisma,
+                    value: modSkills(
+                      charisma.value,
                       levels.total,
                       deception.proficiency,
                       deception.expertise,
@@ -264,19 +317,18 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   history: {
                     ...history,
-                    value: stringifyModSkills(
-                      intelligence,
+                    value: modSkills(
+                      intelligence.value,
                       levels.total,
                       history.proficiency,
-
                       history.expertise,
                       history.halfProficiency
                     ),
                   },
                   insight: {
                     ...insight,
-                    value: stringifyModSkills(
-                      wisdom,
+                    value: modSkills(
+                      wisdom.value,
                       levels.total,
                       insight.proficiency,
                       insight.expertise,
@@ -285,8 +337,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   intimidation: {
                     ...intimidation,
-                    value: stringifyModSkills(
-                      charisma,
+                    value: modSkills(
+                      charisma.value,
                       levels.total,
                       intimidation.proficiency,
                       intimidation.expertise,
@@ -295,8 +347,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   investigation: {
                     ...investigation,
-                    value: stringifyModSkills(
-                      intelligence,
+                    value: modSkills(
+                      intelligence.value,
                       levels.total,
                       investigation.proficiency,
                       investigation.expertise,
@@ -305,8 +357,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   nature: {
                     ...nature,
-                    value: stringifyModSkills(
-                      intelligence,
+                    value: modSkills(
+                      intelligence.value,
                       levels.total,
                       nature.proficiency,
                       nature.expertise,
@@ -315,8 +367,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   perception: {
                     ...perception,
-                    value: stringifyModSkills(
-                      wisdom,
+                    value: modSkills(
+                      wisdom.value,
                       levels.total,
                       perception.proficiency,
                       perception.expertise,
@@ -325,8 +377,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   performance: {
                     ...performance,
-                    value: stringifyModSkills(
-                      charisma,
+                    value: modSkills(
+                      charisma.value,
                       levels.total,
                       performance.proficiency,
                       performance.expertise,
@@ -335,8 +387,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   persuasion: {
                     ...persuasion,
-                    value: stringifyModSkills(
-                      charisma,
+                    value: modSkills(
+                      charisma.value,
                       levels.total,
                       persuasion.proficiency,
                       persuasion.expertise,
@@ -345,8 +397,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   religion: {
                     ...religion,
-                    value: stringifyModSkills(
-                      intelligence,
+                    value: modSkills(
+                      intelligence.value,
                       levels.total,
                       religion.proficiency,
                       religion.expertise,
@@ -355,8 +407,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   sleightOfHand: {
                     ...sleightOfHand,
-                    value: stringifyModSkills(
-                      dexterity,
+                    value: modSkills(
+                      dexterity.value,
                       levels.total,
                       sleightOfHand.proficiency,
                       sleightOfHand.expertise,
@@ -365,8 +417,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   stealth: {
                     ...stealth,
-                    value: stringifyModSkills(
-                      dexterity,
+                    value: modSkills(
+                      dexterity.value,
                       levels.total,
                       stealth.proficiency,
                       stealth.expertise,
@@ -375,8 +427,8 @@ const CharacterReducer = (state = initialState, action) => {
                   },
                   survival: {
                     ...survival,
-                    value: stringifyModSkills(
-                      wisdom,
+                    value: modSkills(
+                      wisdom.value,
                       levels.total,
                       survival.proficiency,
                       survival.expertise,
@@ -384,30 +436,30 @@ const CharacterReducer = (state = initialState, action) => {
                     ),
                   },
                 },
-                stats: {
+                abilities: {
                   strength: {
                     ...strength,
-                    modifier: stringifyModStats(strength),
+                    modifier: modifier(strength.value),
                   },
                   dexterity: {
                     ...dexterity,
-                    modifier: stringifyModStats(dexterity),
+                    modifier: modifier(dexterity.value),
                   },
                   constitution: {
                     ...constitution,
-                    modifier: stringifyModStats(constitution),
+                    modifier: modifier(constitution.value),
                   },
                   intelligence: {
                     ...intelligence,
-                    modifier: stringifyModStats(intelligence),
+                    modifier: modifier(intelligence.value),
                   },
                   wisdom: {
                     ...wisdom,
-                    modifier: stringifyModStats(wisdom),
+                    modifier: modifier(wisdom.value),
                   },
                   charisma: {
                     ...charisma,
-                    modifier: stringifyModStats(charisma),
+                    modifier: modifier(charisma.value),
                   },
                 },
               },
@@ -424,17 +476,40 @@ const CharacterReducer = (state = initialState, action) => {
   }
 };
 
-const isStatOverride = (modifier, stat) =>
-  isStat(modifier) &&
+const isEquippedArmor = (armor) =>
+  armor.definition.filterType === "Armor" && armor.equipped === true;
+
+const isLightArmor = (armor) =>
+  isEquippedArmor(armor) && armor.definition.armorTypeId === 1;
+
+const isMediumArmor = (armor) =>
+  isEquippedArmor(armor) && armor.definition.armorTypeId === 2;
+
+const isHeavyArmor = (armor) =>
+  isEquippedArmor(armor) && armor.definition.armorTypeId === 3;
+
+const maxArmor = (armors, callback) => {
+  return Math.max(
+    ...armors
+      .filter((armor) => callback(armor))
+      .map((armor) => armor.definition.armorClass)
+  );
+};
+
+const isAbilityOverride = (modifier, stat) =>
+  isAbility(modifier) &&
   modifier.type === "set" &&
   modifier.subType.replace("-score", "") === stat;
 
-const isStatBonus = (modifier, stat) =>
-  isStat(modifier) &&
+const isAbilityBonus = (modifier, stat) =>
+  isAbility(modifier) &&
   modifier.type === "bonus" &&
   modifier.subType.replace("-score", "") === stat;
 
-const isStat = (modifier) =>
+const isAbilityChecksBonus = (modifier) =>
+  modifier.type === "bonus" && modifier.subType === "ability-checks";
+
+const isAbility = (modifier) =>
   modifier.subType === "strength-score" ||
   modifier.subType === "dexterity-score" ||
   modifier.subType === "constitution-score" ||
@@ -477,7 +552,7 @@ const isSkillProficiency = (modifier, key) => {
 const isHalfProficiency = (modifier) =>
   modifier.type === "half-proficiency" && modifier.subtype === "ability-checks";
 
-const modStats = (stat) => {
+const modifier = (stat) => {
   return Math.floor((stat - 10) / 2);
 };
 
@@ -491,11 +566,11 @@ const modSkills = (
   const compProf = Math.ceil(levels / 4) + 1;
   return proficiency
     ? expertise
-      ? modStats(skill) + 2 * compProf
-      : modStats(skill) + compProf
+      ? modifier(skill) + 2 * compProf
+      : modifier(skill) + compProf
     : halfProficiency
-    ? modStats(skill) + Math.floor(compProf / 2)
-    : modStats(skill);
+    ? modifier(skill) + Math.floor(compProf / 2)
+    : modifier(skill);
 };
 
 const stringifyMod = (modifier) => {
@@ -503,7 +578,7 @@ const stringifyMod = (modifier) => {
 };
 
 const stringifyModStats = (modifier) => {
-  return stringifyMod(modStats(modifier));
+  return stringifyMod(modifier(modifier));
 };
 
 const stringifyModSkills = (
