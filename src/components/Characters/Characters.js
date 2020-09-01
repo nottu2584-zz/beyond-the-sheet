@@ -71,7 +71,7 @@ const Characters = (props) => {
         variant="fullWidth"
         aria-label="full width tabs example"
       >
-        <Tab label="Stats" {...a11yProps(0)} />
+        <Tab label="Abilities" {...a11yProps(0)} />
         <Tab label="Inventory" {...a11yProps(1)} />
         <Tab label="Currencies" {...a11yProps(2)} />
         <Tab label="Spells" {...a11yProps(3)} />
@@ -89,7 +89,7 @@ const Characters = (props) => {
                   key={key}
                   avatar={character.data.avatarUrl}
                   name={character.data.name}
-                  stats={character.stats}
+                  abilities={character.abilities}
                   skills={character.skills} 
                 ></Abilities>
               );
