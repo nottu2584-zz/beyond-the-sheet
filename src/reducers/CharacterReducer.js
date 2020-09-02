@@ -210,7 +210,7 @@ const CharacterReducer = (state = initialState, action) => {
 
       console.log("AC", armorClass.value);
 
-      const currentExperience = 0;
+      const currentExperience = action.payload.data.currentXp;
       const conditions = [];
 
       return !current.includes(true)
@@ -225,8 +225,7 @@ const CharacterReducer = (state = initialState, action) => {
                   ...conditions,
                 },
                 experience: {
-                  value: experience,
-                  toLevelUp: 0,
+                  value: currentExperience,
                 },
                 hitPoints: {
                   ...hitPoints,
