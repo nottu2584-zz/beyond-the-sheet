@@ -10,8 +10,9 @@
     "@testing-library/user-event": "^7.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "react-swipeable-views": "^0.13.9"
+    "react-scripts": "^3.4.3",
+    "react-swipeable-views": "^0.13.9",
+    "yarn": "^1.22.5"
   },
   "scripts": {
     "start": "react-scripts start",
