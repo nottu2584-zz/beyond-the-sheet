@@ -22,6 +22,13 @@ const Status = (props) => {
     conditions,
   } = props;
 
+  let {
+      xp = 100,
+      level,
+      nextLevel,
+      percent,
+  } = experience;
+  
   const xpTable = [
     0,
     300,
@@ -45,8 +52,17 @@ const Status = (props) => {
     355000,
   ];
 
-  const xpLevel = (xp) => {}
-
+  const xpLevel = (experience) => {
+      for (xp of xpTable) {
+          if (experience >= xpTable[xp] && experience < xpTable[xp +1]) {
+            level = xp;
+            nextLevel = xp + 1;
+            percent = (experience/xpTable[xp+1]) * 100;
+          }
+      }
+  }
+  console.log("Experiencia", xpLevel(experience.xp));
+  
   return (
     <TableRow>
       <TableCell>
