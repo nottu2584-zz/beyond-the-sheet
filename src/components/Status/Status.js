@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 const Status = (props) => {
   const classes = useStyles();
 
-  const {
+  let {
     avatar,
     characterName,
     hitPoints,
@@ -22,13 +22,6 @@ const Status = (props) => {
     conditions,
   } = props;
 
-  let {
-      xp = 100,
-      level,
-      nextLevel,
-      percent,
-  } = experience;
-  
   const xpTable = [
     0,
     300,
@@ -52,17 +45,16 @@ const Status = (props) => {
     355000,
   ];
 
-  const xpLevel = (experience) => {
-      for (xp of xpTable) {
-          if (experience >= xpTable[xp] && experience < xpTable[xp +1]) {
-            level = xp;
-            nextLevel = xp + 1;
-            percent = (experience/xpTable[xp+1]) * 100;
-          }
-      }
-  }
-  console.log("Experiencia", xpLevel(experience.xp));
-  
+  experience = xpTable.map((xp) => {
+    if (experience >= xpTable[xp] && experience < xpTable[xp + 1]) {
+      return {
+        level: xp + 1,
+        nextLevel: xp + 2,
+        percent: (experience / xpTable[xp + 1]) * 100,
+      };
+    } else return "";
+  });
+
   return (
     <TableRow>
       <TableCell>
@@ -84,7 +76,6 @@ const Status = (props) => {
       <TableCell>{conditions}</TableCell>
     </TableRow>
   );
-
 };
 
 export default Status;
