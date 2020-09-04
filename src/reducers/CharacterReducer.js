@@ -210,7 +210,7 @@ const CharacterReducer = (state = initialState, action) => {
 
       console.log("AC", armorClass.value);
 
-      const currentExperience = 0;
+      const currentExperience, experience = 0;
       const conditions = [];
 
       return !current.includes(true)
@@ -463,11 +463,13 @@ const isShield = (armor) =>
   isEquippedArmor(armor) && armor.definition.armorTypeId === 4;
 
 const maxArmor = (armors, callback) => {
-  return Math.max(
-    ...armors
-      .filter((armor) => callback(armor))
-      .map((armor) => armor.definition.armorClass)
-  ) || 0;
+  return (
+    Math.max(
+      ...armors
+        .filter((armor) => callback(armor))
+        .map((armor) => armor.definition.armorClass)
+    ) || 0
+  );
 };
 
 const isBonus = (modifier) => modifier.type === "bonus";
@@ -478,14 +480,15 @@ const isAbilityCheck = (modifier) =>
   isAbility(modifier) && isAbilityChecks(modifier);
 
 const isAbilityChecks = (modifier) =>
-  ~modifier.subType.indexOf("ability-checks");
+  ~modifier.subType.includes("ability-checks");
 
 const isSavingThrow = (modifier) =>
   isAbility(modifier) && isAbilityChecks(modifier);
 
-const isSavingThrows = (modifier) => ~modifier.subType.indexOf("saving-throws");
+const isSavingThrows = (modifier) =>
+  ~modifier.subType.includes("saving-throws");
 
-const isInitiative = (modifier) => ~modifier.subType.indexOf("initiative");
+const isInitiative = (modifier) => ~modifier.subType.includes("initiative");
 
 const isGlobalAbilityBonus = (modifier) =>
   isBonus(modifier) && modifier.subType === "ability-checks";
@@ -493,36 +496,38 @@ const isGlobalAbilityBonus = (modifier) =>
 const isGlobalAbilityHalfProf = (modifier) =>
   isHalfProf(modifier) && modifier.subType === "ability-checks";
 
-const isHalfProf = (modifier) => ~modifier.type.indexOf("half-proficiency");
+const isHalfProf = (modifier) => ~modifier.type.includes("half-proficiency");
 
 const isAbilityHalfProf = (modifier, ability) => {
   return (
     isAbility(modifier) &&
     isHalfProf(modifier) &&
-    modifier.subType.indexOf(ability)
+    modifier.subType.includes(ability)
   );
 };
 
 const isSkillHalfProf = (modifier, skill) => {
   return (
-    isSkill(modifier) && isHalfProf(modifier) && modifier.subType.indexOf(skill)
+    isSkill(modifier) &&
+    isHalfProf(modifier) &&
+    modifier.subType.includes(skill)
   );
 };
 
 const isAbility = (modifier) => {
   return (
-    modifier.subType.indexOf("strength") ||
-    modifier.subType.indexOf("dexterity") ||
-    modifier.subType.indexOf("constitution") ||
-    modifier.subType.indexOf("intelligence") ||
-    modifier.subType.indexOf("wisdom") ||
-    modifier.subType.indexOf("charisma")
+    modifier.subType.includes("strength") ||
+    modifier.subType.includes("dexterity") ||
+    modifier.subType.includes("constitution") ||
+    modifier.subType.includes("intelligence") ||
+    modifier.subType.includes("wisdom") ||
+    modifier.subType.includes("charisma")
   );
 };
 
 const isAbilitySet = (modifier, ability) => {
   return (
-    isAbility(modifier) && isSet(modifier) && modifier.subType.indexOf(ability)
+    isAbility(modifier) && isSet(modifier) && modifier.subType.includes(ability)
   );
 };
 
@@ -530,29 +535,29 @@ const isAbilityBonus = (modifier, ability) => {
   return (
     isAbility(modifier) &&
     isBonus(modifier) &&
-    modifier.subType.indexOf(ability)
+    modifier.subType.includes(ability)
   );
 };
 
 const isSkill = (modifier) => {
   return (
-    modifier.subType.indexOf("acrobatics") ||
-    modifier.subType.indexOf("animal-handling") ||
-    modifier.subType.indexOf("arcana") ||
-    modifier.subType.indexOf("athletics") ||
-    modifier.subType.indexOf("deception") ||
-    modifier.subType.indexOf("history") ||
-    modifier.subType.indexOf("insight") ||
-    modifier.subType.indexOf("intimidation") ||
-    modifier.subType.indexOf("investigation") ||
-    modifier.subType.indexOf("nature") ||
-    modifier.subType.indexOf("perception") ||
-    modifier.subType.indexOf("persuasion") ||
-    modifier.subType.indexOf("performance") ||
-    modifier.subType.indexOf("religion") ||
-    modifier.subType.indexOf("sleight-of-hand") ||
-    modifier.subType.indexOf("stealth") ||
-    modifier.subType.indexOf("survival")
+    modifier.subType.includes("acrobatics") ||
+    modifier.subType.includes("animal-handling") ||
+    modifier.subType.includes("arcana") ||
+    modifier.subType.includes("athletics") ||
+    modifier.subType.includes("deception") ||
+    modifier.subType.includes("history") ||
+    modifier.subType.includes("insight") ||
+    modifier.subType.includes("intimidation") ||
+    modifier.subType.includes("investigation") ||
+    modifier.subType.includes("nature") ||
+    modifier.subType.includes("perception") ||
+    modifier.subType.includes("persuasion") ||
+    modifier.subType.includes("performance") ||
+    modifier.subType.includes("religion") ||
+    modifier.subType.includes("sleight-of-hand") ||
+    modifier.subType.includes("stealth") ||
+    modifier.subType.includes("survival")
   );
 };
 
@@ -560,7 +565,7 @@ const isSkillExpertise = (modifier, skill) => {
   return (
     isSkill(modifier) &&
     modifier.type === "expertise" &&
-    modifier.subType.indexOf(skill)
+    modifier.subType.includes(skill)
   );
 };
 
@@ -568,7 +573,7 @@ const isSkillProficiency = (modifier, skill) => {
   return (
     isSkill(modifier) &&
     modifier.type === "proficiency" &&
-    modifier.subType.indexOf(skill)
+    modifier.subType.includes(skill)
   );
 };
 
