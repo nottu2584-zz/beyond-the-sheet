@@ -208,8 +208,6 @@ const CharacterReducer = (state = initialState, action) => {
         ? equippedArmorClass + armorBonus
         : 10 + modifier(dexterity.value) + armorBonus + equippedShield;
 
-      console.log("AC", armorClass.value);
-
       const currentExperience = action.payload.data.currentXp;
       const conditions = [];
 

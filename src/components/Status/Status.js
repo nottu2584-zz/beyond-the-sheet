@@ -43,16 +43,14 @@ const Status = (props) => {
     265000,
     305000,
     355000,
-  ];
-
-  experience = xpTable.map((xp) => {
-    if (experience >= xpTable[xp] && experience < xpTable[xp + 1]) {
+  ].map((cap,key) => {
+    if (experience.value >= cap && experience.value < cap[key+1]) {
       return {
-        level: xp + 1,
-        nextLevel: xp + 2,
-        percent: (experience / xpTable[xp + 1]) * 100,
+        level: key + 1,
+        nextLevel: key + 2,
+        percent: experience.value / cap[key+1] * 100,
       };
-    } else return "";
+    } else return null;
   });
 
   return (
@@ -70,9 +68,9 @@ const Status = (props) => {
           variant="outlined"
         />
       </TableCell>
-      <TableCell>{hitPoints}</TableCell>
+      <TableCell>{hitPoints.current}{hitPoints.max}{hitPoints.temp}</TableCell>
       <TableCell>{armorClass}</TableCell>
-      <TableCell>{experience}</TableCell>
+      <TableCell>{experience.value}{xpTable.level}{xpTable.nextLevel}{xpTable.percent}</TableCell>
       <TableCell>{conditions}</TableCell>
     </TableRow>
   );

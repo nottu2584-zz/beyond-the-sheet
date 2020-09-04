@@ -10,6 +10,8 @@ import { Abilities, Currencies, Item, SpellBook, Spells } from "../";
 import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
 import { GroupAbilities } from "../GroupAbilities";
+import { GroupStatus } from "../GroupStatus";
+import { Status } from "../Status";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,9 +74,10 @@ const Characters = (props) => {
         aria-label="full width tabs example"
       >
         <Tab label="Abilities" {...a11yProps(0)} />
-        <Tab label="Inventory" {...a11yProps(1)} />
-        <Tab label="Currencies" {...a11yProps(2)} />
-        <Tab label="Spells" {...a11yProps(3)} />
+        <Tab label="Status" {...a11yProps(1)} />
+        <Tab label="Inventory" {...a11yProps(2)} />
+        <Tab label="Currencies" {...a11yProps(3)} />
+        <Tab label="Spells" {...a11yProps(4)} />
       </Tabs>
       <SwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -97,6 +100,23 @@ const Characters = (props) => {
           </GroupAbilities>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
+            <GroupStatus>
+              {characters.map((character, key) => {
+                return (
+                  <Status
+                    avatar={character.data.avatarUrl}
+                    characterName={character.data.name}
+                    key={key}
+                    hitPoins={character.hitPoints}
+                    armorClass={character.armorClass}
+                    experience={character.experience}
+                    conditions={character.conditions}
+                  ></Status>
+                );
+              })}
+            </GroupStatus>
+        </TabPanel>
+        <TabPanel value={value} index={2} dir={theme.direction}>
           <GroupInventory>
             {characters.map((character, key) => {
               return character.data.inventory.map((item, key) => {
@@ -144,7 +164,7 @@ const Characters = (props) => {
             })}
           </GroupInventory>
         </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
+        <TabPanel value={value} index={3} dir={theme.direction}>
           <GroupCurrencies characters={characters}>
             {characters.map((character, key) => {
               return (
@@ -162,7 +182,7 @@ const Characters = (props) => {
             })}
           </GroupCurrencies>
         </TabPanel>
-        <TabPanel value={value} index={3} dir={theme.direction}>
+        <TabPanel value={value} index={4} dir={theme.direction}>
           {characters.map((character, key) => {
             return (
               <>
