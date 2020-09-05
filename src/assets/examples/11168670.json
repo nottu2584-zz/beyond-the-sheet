@@ -32,7 +32,8 @@
       "subRaceId": null,
       "tags": ["EGtW Themes"],
       "themeColor": "#DF4134",
-      "themeColorId": 618
+      "themeColorId": 618,
+      "decorationKey": null
     },
     "name": "Oz de Mezro",
     "socialName": null,
@@ -1901,7 +1902,7 @@
           "stackable": true,
           "stealthCheck": null,
           "strengthRequirement": null,
-          "subType": "Tool",
+          "subType": null,
           "tags": ["Utility", "Deception"],
           "type": "Gear",
           "version": null,
@@ -3268,7 +3269,14 @@
         "valueTypeId": "222216831"
       }
     ],
-    "conditions": [],
+    "conditions": [
+      { "id": 8, "level": null },
+      { "id": 9, "level": null },
+      { "id": 11, "level": null },
+      { "id": 12, "level": null },
+      { "id": 13, "level": null },
+      { "id": 14, "level": null }
+    ],
     "deathSaves": { "failCount": 0, "isStabilized": false, "successCount": 0 },
     "adjustmentXp": null,
     "spellSlots": [
@@ -3362,7 +3370,8 @@
             "sources": [
               { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
               { "sourceId": 2, "pageNumber": 231, "sourceType": 1 }
-            ]
+            ],
+            "scaleType": null
           },
           "definitionId": 0,
           "displayAsAttack": false,
@@ -3451,7 +3460,8 @@
             "sources": [
               { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
               { "sourceId": 2, "pageNumber": 279, "sourceType": 1 }
-            ]
+            ],
+            "scaleType": null
           },
           "definitionId": 0,
           "displayAsAttack": false,
@@ -3555,7 +3565,8 @@
             "tags": ["Control"],
             "tempHpDice": [],
             "version": "1.0",
-            "sources": []
+            "sources": [],
+            "scaleType": null
           },
           "definitionId": 0,
           "displayAsAttack": false,
@@ -3646,7 +3657,8 @@
             "sources": [
               { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
               { "sourceId": 2, "pageNumber": 260, "sourceType": 1 }
-            ]
+            ],
+            "scaleType": "characterlevel"
           },
           "definitionId": 0,
           "displayAsAttack": null,
@@ -3735,7 +3747,8 @@
             "sources": [
               { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
               { "sourceId": 2, "pageNumber": 233, "sourceType": 1 }
-            ]
+            ],
+            "scaleType": null
           },
           "definitionId": 0,
           "displayAsAttack": null,
@@ -3850,7 +3863,8 @@
             "sources": [
               { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
               { "sourceId": 2, "pageNumber": 254, "sourceType": 1 }
-            ]
+            ],
+            "scaleType": "spellscale"
           },
           "definitionId": 0,
           "displayAsAttack": null,
@@ -4277,6 +4291,74 @@
           "displayOrder": null
         },
         {
+          "componentId": 85,
+          "componentTypeId": 12168134,
+          "defaultSubtypes": [],
+          "id": "2-1403",
+          "isInfinite": false,
+          "isOptional": false,
+          "label": "Choose a Skill",
+          "options": [
+            { "description": null, "id": 3801, "label": "Athletics" },
+            { "description": null, "id": 3802, "label": "Acrobatics" },
+            { "description": null, "id": 3803, "label": "Sleight of Hand" },
+            { "description": null, "id": 3804, "label": "Stealth" },
+            { "description": null, "id": 3805, "label": "Arcana" },
+            { "description": null, "id": 3806, "label": "History" },
+            { "description": null, "id": 3807, "label": "Investigation" },
+            { "description": null, "id": 3808, "label": "Nature" },
+            { "description": null, "id": 3809, "label": "Religion" },
+            { "description": null, "id": 3810, "label": "Animal Handling" },
+            { "description": null, "id": 3811, "label": "Insight" },
+            { "description": null, "id": 3812, "label": "Medicine" },
+            { "description": null, "id": 3813, "label": "Perception" },
+            { "description": null, "id": 3814, "label": "Survival" },
+            { "description": null, "id": 3815, "label": "Deception" },
+            { "description": null, "id": 3816, "label": "Intimidation" },
+            { "description": null, "id": 3817, "label": "Performance" },
+            { "description": null, "id": 3818, "label": "Persuasion" }
+          ],
+          "optionValue": 3815,
+          "parentChoiceId": null,
+          "subType": 2,
+          "type": 2,
+          "displayOrder": null
+        },
+        {
+          "componentId": 85,
+          "componentTypeId": 12168134,
+          "defaultSubtypes": [],
+          "id": "2-1404",
+          "isInfinite": false,
+          "isOptional": false,
+          "label": "Choose a Skill",
+          "options": [
+            { "description": null, "id": 3801, "label": "Athletics" },
+            { "description": null, "id": 3802, "label": "Acrobatics" },
+            { "description": null, "id": 3803, "label": "Sleight of Hand" },
+            { "description": null, "id": 3804, "label": "Stealth" },
+            { "description": null, "id": 3805, "label": "Arcana" },
+            { "description": null, "id": 3806, "label": "History" },
+            { "description": null, "id": 3807, "label": "Investigation" },
+            { "description": null, "id": 3808, "label": "Nature" },
+            { "description": null, "id": 3809, "label": "Religion" },
+            { "description": null, "id": 3810, "label": "Animal Handling" },
+            { "description": null, "id": 3811, "label": "Insight" },
+            { "description": null, "id": 3812, "label": "Medicine" },
+            { "description": null, "id": 3813, "label": "Perception" },
+            { "description": null, "id": 3814, "label": "Survival" },
+            { "description": null, "id": 3815, "label": "Deception" },
+            { "description": null, "id": 3816, "label": "Intimidation" },
+            { "description": null, "id": 3817, "label": "Performance" },
+            { "description": null, "id": 3818, "label": "Persuasion" }
+          ],
+          "optionValue": 3817,
+          "parentChoiceId": null,
+          "subType": 2,
+          "type": 2,
+          "displayOrder": null
+        },
+        {
           "componentId": 460,
           "componentTypeId": 12168134,
           "defaultSubtypes": [],
@@ -4453,74 +4535,6 @@
           "optionValue": 3786,
           "parentChoiceId": null,
           "subType": 1,
-          "type": 2,
-          "displayOrder": null
-        },
-        {
-          "componentId": 85,
-          "componentTypeId": 12168134,
-          "defaultSubtypes": [],
-          "id": "2-1403",
-          "isInfinite": false,
-          "isOptional": false,
-          "label": "Choose a Skill",
-          "options": [
-            { "description": null, "id": 3801, "label": "Athletics" },
-            { "description": null, "id": 3802, "label": "Acrobatics" },
-            { "description": null, "id": 3803, "label": "Sleight of Hand" },
-            { "description": null, "id": 3804, "label": "Stealth" },
-            { "description": null, "id": 3805, "label": "Arcana" },
-            { "description": null, "id": 3806, "label": "History" },
-            { "description": null, "id": 3807, "label": "Investigation" },
-            { "description": null, "id": 3808, "label": "Nature" },
-            { "description": null, "id": 3809, "label": "Religion" },
-            { "description": null, "id": 3810, "label": "Animal Handling" },
-            { "description": null, "id": 3811, "label": "Insight" },
-            { "description": null, "id": 3812, "label": "Medicine" },
-            { "description": null, "id": 3813, "label": "Perception" },
-            { "description": null, "id": 3814, "label": "Survival" },
-            { "description": null, "id": 3815, "label": "Deception" },
-            { "description": null, "id": 3816, "label": "Intimidation" },
-            { "description": null, "id": 3817, "label": "Performance" },
-            { "description": null, "id": 3818, "label": "Persuasion" }
-          ],
-          "optionValue": 3815,
-          "parentChoiceId": null,
-          "subType": 2,
-          "type": 2,
-          "displayOrder": null
-        },
-        {
-          "componentId": 85,
-          "componentTypeId": 12168134,
-          "defaultSubtypes": [],
-          "id": "2-1404",
-          "isInfinite": false,
-          "isOptional": false,
-          "label": "Choose a Skill",
-          "options": [
-            { "description": null, "id": 3801, "label": "Athletics" },
-            { "description": null, "id": 3802, "label": "Acrobatics" },
-            { "description": null, "id": 3803, "label": "Sleight of Hand" },
-            { "description": null, "id": 3804, "label": "Stealth" },
-            { "description": null, "id": 3805, "label": "Arcana" },
-            { "description": null, "id": 3806, "label": "History" },
-            { "description": null, "id": 3807, "label": "Investigation" },
-            { "description": null, "id": 3808, "label": "Nature" },
-            { "description": null, "id": 3809, "label": "Religion" },
-            { "description": null, "id": 3810, "label": "Animal Handling" },
-            { "description": null, "id": 3811, "label": "Insight" },
-            { "description": null, "id": 3812, "label": "Medicine" },
-            { "description": null, "id": 3813, "label": "Perception" },
-            { "description": null, "id": 3814, "label": "Survival" },
-            { "description": null, "id": 3815, "label": "Deception" },
-            { "description": null, "id": 3816, "label": "Intimidation" },
-            { "description": null, "id": 3817, "label": "Performance" },
-            { "description": null, "id": 3818, "label": "Persuasion" }
-          ],
-          "optionValue": 3817,
-          "parentChoiceId": null,
-          "subType": 2,
           "type": 2,
           "displayOrder": null
         }
@@ -6073,7 +6087,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 285, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "characterlevel"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6162,7 +6177,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 255, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "characterlevel"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6251,7 +6267,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 239, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6399,7 +6416,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 250, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "spellscale"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6544,7 +6562,10 @@
               "tags": ["Damage", "Control"],
               "tempHpDice": [],
               "version": null,
-              "sources": [{ "sourceId": 2, "pageNumber": 234, "sourceType": 1 }]
+              "sources": [
+                { "sourceId": 2, "pageNumber": 234, "sourceType": 1 }
+              ],
+              "scaleType": "spellscale"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6630,7 +6651,10 @@
               "tags": ["Utility"],
               "tempHpDice": [],
               "version": null,
-              "sources": [{ "sourceId": 2, "pageNumber": 255, "sourceType": 1 }]
+              "sources": [
+                { "sourceId": 2, "pageNumber": 255, "sourceType": 1 }
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6761,7 +6785,10 @@
               "tags": ["Damage", "Control", "Deception"],
               "tempHpDice": [],
               "version": null,
-              "sources": [{ "sourceId": 2, "pageNumber": 264, "sourceType": 1 }]
+              "sources": [
+                { "sourceId": 2, "pageNumber": 264, "sourceType": 1 }
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6850,7 +6877,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 252, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6989,7 +7017,10 @@
               "tags": ["Control", "Debuff", "Warding"],
               "tempHpDice": [],
               "version": null,
-              "sources": [{ "sourceId": 4, "pageNumber": 170, "sourceType": 1 }]
+              "sources": [
+                { "sourceId": 4, "pageNumber": 170, "sourceType": 1 }
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7107,7 +7138,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 218, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "spelllevel"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7196,7 +7228,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 274, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7293,7 +7326,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 246, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7382,7 +7416,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 259, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "characterlevel"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7486,7 +7521,8 @@
               "version": null,
               "sources": [
                 { "sourceId": 27, "pageNumber": 151, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "spellscale"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7619,7 +7655,8 @@
               "version": null,
               "sources": [
                 { "sourceId": 27, "pageNumber": 165, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,

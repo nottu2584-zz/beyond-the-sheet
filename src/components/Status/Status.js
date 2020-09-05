@@ -1,4 +1,4 @@
-import { AccordionActions } from "@material-ui/core";
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
@@ -43,18 +43,25 @@ const Status = (props) => {
     265000,
     305000,
     355000,
-  ].map((cap,key) => {
-    if (experience.value >= cap && experience.value < cap[key+1]) {
+  ];
+
+
+  const xp = xpTable.filter(
+      (cap, key, table) =>
+        experience.value >= cap && experience.value < table[key + 1]
+    )
+    .reduce((acc, value) => {
       return {
-        level: key + 1,
-        nextLevel: key + 2,
-        percent: experience.value / cap[key+1] * 100,
+        level: value,
+        nextLevel: xpTable[xpTable.indexOf(value)+1],
+        percent: ((experience.value - value) / (xpTable[xpTable.indexOf(value)+1] - value)) * 100,
       };
-    } else return null;
-  });
+    },null);
+
+  console.log(xp);
 
   return (
-    <TableRow>
+    <>
       <TableCell>
         <Chip
           avatar={
@@ -68,11 +75,21 @@ const Status = (props) => {
           variant="outlined"
         />
       </TableCell>
-      <TableCell>{hitPoints.current}{hitPoints.max}{hitPoints.temp}</TableCell>
+      <TableCell>
+        {hitPoints.current}
+        {hitPoints.max}
+        {hitPoints.temp}
+      </TableCell>
       <TableCell>{armorClass}</TableCell>
-      <TableCell>{experience.value}{xpTable.level}{xpTable.nextLevel}{xpTable.percent}</TableCell>
-      <TableCell>{conditions}</TableCell>
-    </TableRow>
+      <TableCell>
+        <LinearProgress value={Math.round(xp.percent)}  />
+      </TableCell>
+      <TableCell>
+        {conditions.length
+          ? conditions.map((condition) => <>{condition}</>)
+          : null}
+      </TableCell>
+    </>
   );
 };
 
