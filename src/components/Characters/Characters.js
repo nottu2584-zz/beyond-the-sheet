@@ -6,10 +6,10 @@ import Tabs from "@material-ui/core/Tabs";
 import PropTypes from "prop-types";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
-import { CharacterStats, Currencies, Item, SpellBook, Spells } from "../";
+import { Abilities, Currencies, Item, SpellBook, Spells } from "../";
 import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
-import { GroupStats } from "../GroupStats";
+import { GroupAbilities } from "../GroupAbilities";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,7 +71,7 @@ const Characters = (props) => {
         variant="fullWidth"
         aria-label="full width tabs example"
       >
-        <Tab label="Stats" {...a11yProps(0)} />
+        <Tab label="Abilities" {...a11yProps(0)} />
         <Tab label="Inventory" {...a11yProps(1)} />
         <Tab label="Currencies" {...a11yProps(2)} />
         <Tab label="Spells" {...a11yProps(3)} />
@@ -82,23 +82,19 @@ const Characters = (props) => {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <GroupStats>
+          <GroupAbilities>
             {characters.map((character, key) => {
               return (
-                <CharacterStats
+                <Abilities
                   key={key}
                   avatar={character.data.avatarUrl}
                   name={character.data.name}
-                  strength={character.stats.strength}
-                  dexterity={character.stats.dexterity}
-                  constitution={character.stats.constitution}
-                  intelligence={character.stats.intelligence}
-                  wisdom={character.stats.wisdom}
-                  charisma={character.stats.charisma}
-                ></CharacterStats>
+                  abilities={character.abilities}
+                  skills={character.skills} 
+                ></Abilities>
               );
             })}
-          </GroupStats>
+          </GroupAbilities>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <GroupInventory>
@@ -242,7 +238,7 @@ const Characters = (props) => {
 //           <GroupStats>
 //             {characters.map((character, key) => {
 //               return (
-//                 <CharacterStats
+//                 <Abilities
 //                   key={key}
 //                   avatar={character.data.avatarUrl}
 //                   name={character.data.name}
@@ -252,7 +248,7 @@ const Characters = (props) => {
 //                   intelligence={character.stats.intelligence}
 //                   wisdom={character.stats.wisdom}
 //                   charisma={character.stats.charisma}
-//                 ></CharacterStats>
+//                 ></Abilities>
 //               );
 //             })}
 //           </GroupStats>
