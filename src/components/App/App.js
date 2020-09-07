@@ -1,6 +1,6 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import React, { createContext, useReducer } from "react";
-import CharacterReducer from "../../reducers/CharacterReducer";
+import reducer from "../../reducers/reducer";
 import { Characters } from "../Characters";
 import { ImportCharacterForm } from "../ImportCharacter";
 import "./App.css";
@@ -19,7 +19,7 @@ export const initialState = {
 export const StoreContext = createContext(initialState);
 
 const App = () => {
-  const [state, dispatch] = useReducer(CharacterReducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <div className="App">
