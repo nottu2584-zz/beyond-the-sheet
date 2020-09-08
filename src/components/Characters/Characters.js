@@ -97,52 +97,7 @@ const Characters = (props) => {
           </GroupAbilities>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <GroupInventory>
-            {characters.map((character, key) => {
-              return character.data.inventory.map((item, key) => {
-                return (
-                  <>
-                    <Item
-                      avatar={character.data.avatarUrl}
-                      characterName={character.data.name}
-                      key={key}
-                      name={item.definition.name}
-                      weight={
-                        item.definition.weight === 0
-                          ? "--"
-                          : item.definition.weight
-                      }
-                      cost={item.definition.cost ? item.definition.cost : "--"}
-                      rarity={item.definition.rarity}
-                      quantity={
-                        item.definition.stackable === true
-                          ? item.quantity
-                          : "--"
-                      }
-                      armorClass={
-                        item.definition.armorClass
-                          ? item.definition.armorClass + " AC"
-                          : null
-                      }
-                      type={item.definition.filterType}
-                      damageDice={
-                        item.definition.damage
-                          ? item.definition.damage.diceString +
-                            " " +
-                            item.definition.damageType
-                          : null
-                      }
-                      properties={
-                        item.definition.properties
-                          ? item.definition.properties
-                          : null
-                      }
-                    ></Item>
-                  </>
-                );
-              });
-            })}
-          </GroupInventory>
+          <GroupInventory characters={characters}></GroupInventory>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
           <GroupCurrencies characters={characters}>

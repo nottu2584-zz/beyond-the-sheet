@@ -212,7 +212,7 @@ const reducer = (state = initialState, action) => {
 
       console.log("AC", armorClass.value);
 
-      const currentExperience, experience = 0;
+      const { currentExperience, experience} = 0;
       const conditions = [];
 
       return !current.includes(true)
