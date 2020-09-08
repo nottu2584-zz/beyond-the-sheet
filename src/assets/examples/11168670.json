@@ -3270,12 +3270,17 @@
       }
     ],
     "conditions": [
+      { "id": 1, "level": null },
+      { "id": 2, "level": null },
+      { "id": 4, "level": 3 },
+      { "id": 5, "level": null },
+      { "id": 7, "level": null },
       { "id": 8, "level": null },
       { "id": 9, "level": null },
-      { "id": 11, "level": null },
+      { "id": 10, "level": null },
       { "id": 12, "level": null },
-      { "id": 13, "level": null },
-      { "id": 14, "level": null }
+      { "id": 14, "level": null },
+      { "id": 15, "level": null }
     ],
     "deathSaves": { "failCount": 0, "isStabilized": false, "successCount": 0 },
     "adjustmentXp": null,

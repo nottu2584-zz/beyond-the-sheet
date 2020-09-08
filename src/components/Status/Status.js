@@ -1,9 +1,12 @@
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from "@material-ui/core/LinearProgress";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableHead from "@material-ui/core/TableHead";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,14 +16,9 @@ const useStyles = makeStyles((theme) => ({
 const Status = (props) => {
   const classes = useStyles();
 
-  let {
-    avatar,
-    characterName,
-    hitPoints,
-    armorClass,
-    experience,
-    conditions,
-  } = props;
+  const { avatar, characterName, hitPoints, armorClass, experience } = props;
+
+  let { conditions } = props;
 
   const xpTable = [
     0,
@@ -45,20 +43,39 @@ const Status = (props) => {
     355000,
   ];
 
-
-  const xp = xpTable.filter(
+  const xp = xpTable
+    .filter(
       (cap, key, table) =>
         experience.value >= cap && experience.value < table[key + 1]
     )
     .reduce((acc, value) => {
       return {
         level: value,
-        nextLevel: xpTable[xpTable.indexOf(value)+1],
-        percent: ((experience.value - value) / (xpTable[xpTable.indexOf(value)+1] - value)) * 100,
+        nextLevel: xpTable[xpTable.indexOf(value) + 1],
+        percent:
+          ((experience.value - value) /
+            (xpTable[xpTable.indexOf(value) + 1] - value)) *
+          100,
       };
-    },null);
+    }, null);
 
-  console.log(xp);
+  const conditionsArray = [
+    "Blinded",
+    "Charmed",
+    "Deafened",
+    "Exhaustion",
+    "Frightened",
+    "Grappled",
+    "Incapacitated",
+    "Invisible",
+    "Paralyzed",
+    "Petrified",
+    "Posioned",
+    "Prone",
+    "Restrained",
+    "Stunned",
+    "Unconscious",
+  ];
 
   return (
     <>
@@ -76,18 +93,33 @@ const Status = (props) => {
         />
       </TableCell>
       <TableCell>
-        {hitPoints.current}
-        {hitPoints.max}
-        {hitPoints.temp}
+        <TableHead>
+          <TableRow>
+            <TableCell>CURRENT</TableCell>
+            <TableCell>MAX</TableCell>
+            <TableCell>TEMP</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableCell>{hitPoints.current}</TableCell>
+          <TableCell>{hitPoints.max}</TableCell>
+          <TableCell>{hitPoints.temp}</TableCell>
+        </TableBody>
       </TableCell>
       <TableCell>{armorClass}</TableCell>
       <TableCell>
-        <LinearProgress value={Math.round(xp.percent)}  />
+        <LinearProgress value={Math.round(xp.percent)} />
       </TableCell>
       <TableCell>
-        {conditions.length
-          ? conditions.map((condition) => <>{condition}</>)
-          : null}
+        {conditions
+          .map((condition) => {
+            return condition.id === 4
+              ? `${conditionsArray[condition.id - 1]} (Level ${
+                  condition.level
+                })`
+              : conditionsArray[condition.id - 1];
+          })
+          .join(", ")}
       </TableCell>
     </>
   );

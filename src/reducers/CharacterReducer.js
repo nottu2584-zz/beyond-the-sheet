@@ -154,8 +154,11 @@ const CharacterReducer = (state = initialState, action) => {
         };
       });
 
-      const maxHitPoints = action.payload.data.overrideHitPoints || action.payload.data.baseHitPoints +
-          action.payload.data.bonusHitPoints + modifier(constitution.value) * levels.total;
+      const maxHitPoints =
+        action.payload.data.overrideHitPoints ||
+        action.payload.data.baseHitPoints +
+          action.payload.data.bonusHitPoints +
+          modifier(constitution.value) * levels.total;
 
       const hitPoints = {
         base: action.payload.data.baseHitPoints,
@@ -194,10 +197,8 @@ const CharacterReducer = (state = initialState, action) => {
       const equippedArmorClass =
         Math.max(
           ...[
-            maxArmor(inventory, isLightArmor) + modifier(dexterity.value),
-            maxArmor(inventory, isMediumArmor) + modifier(dexterity.value) <= 2
-              ? modifier(dexterity.value)
-              : 2,
+            maxArmor(inventory, isLightArmor, modifier(dexterity.value)) ,
+            maxArmor(inventory, isMediumArmor, modifier(dexterity.value) <= 2 ? modifier(dexterity.value) : 2),
             maxArmor(inventory, isHeavyArmor),
           ]
         ) + maxArmor(inventory, isShield);
@@ -212,9 +213,12 @@ const CharacterReducer = (state = initialState, action) => {
         ? equippedArmorClass + armorBonus
         : 10 + modifier(dexterity.value) + armorBonus + equippedShield;
 
-      console.log("MAX HP", maxHitPoints);
-
-      const conditions = [];
+      console.log("AC", armorClass);
+      console.log("Override", armorClassOverride);
+      console.log("Base Armor", baseArmorOverride);
+      console.log("EquippedArmor", equippedArmorClass);
+      console.log("Bonus", armorBonus);
+      console.log("Shield", equippedShield);
 
       return !current.includes(true)
         ? {
@@ -224,9 +228,7 @@ const CharacterReducer = (state = initialState, action) => {
               {
                 ...action.payload,
                 armorClass: armorClass,
-                conditions: {
-                  ...conditions,
-                },
+                conditions: action.payload.data.conditions,
                 experience: {
                   value: action.payload.data.currentXp,
                 },
@@ -461,14 +463,13 @@ const isHeavyArmor = (armor) =>
 const isShield = (armor) =>
   isEquippedArmor(armor) && armor.definition.armorTypeId === 4;
 
-const maxArmor = (armors, callback) => {
-  return (
-    Math.max(
+const maxArmor = (armors, callback, modifier = 0) => {
+  const result = Math.max(
       ...armors
         .filter((armor) => callback(armor))
         .map((armor) => armor.definition.armorClass)
-    ) || 0
-  );
+    );
+  return isFinite(result) ? result + modifier : 0;
 };
 
 const isBonus = (modifier) => modifier.type === "bonus";
