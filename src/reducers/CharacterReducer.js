@@ -34,6 +34,8 @@ const CharacterReducer = (state = initialState, action) => {
     case "GET":
       const inventory = action.payload.data.inventory;
 
+      const modifiers = action.payload.data.modifiers;
+
       const current = state.characters.map(
         (character) => action.payload.data.id === character.data.id
       );
@@ -51,9 +53,9 @@ const CharacterReducer = (state = initialState, action) => {
       ] = characterAbilities.map((abilities, key) => {
         return {
           value:
-            Object.keys(action.payload.data.modifiers)
+            Object.keys(modifiers)
               .map((index) =>
-                action.payload.data.modifiers[index]
+                modifiers[index]
                   .filter((modifier) => isAbilityBonus(modifier, abilities))
                   .reduce((acc, modifier) => acc + modifier.value, 0)
               )
@@ -67,9 +69,9 @@ const CharacterReducer = (state = initialState, action) => {
        * Sets character abilities overrides when necessary, keeping the biggest value
        */
       const statOverrides = characterAbilities.map((abilities) => {
-        return Object.keys(action.payload.data.modifiers)
+        return Object.keys(modifiers)
           .map((index) =>
-            action.payload.data.modifiers[index]
+            modifiers[index]
               .filter((modifier) => isAbilitySet(modifier, abilities))
               .reduce(
                 (previousModifier, currentModifier) =>
@@ -95,9 +97,9 @@ const CharacterReducer = (state = initialState, action) => {
        * Checks for half proficiency on ability checks (Jack of All Trades, etc.)
        */
       const halfProficiency = Object.keys(
-        action.payload.data.modifiers
+        modifiers
       ).some((index) =>
-        action.payload.data.modifiers[index].some((modifier) =>
+        modifiers[index].some((modifier) =>
           isGlobalAbilityHalfProf(modifier)
         )
       );
@@ -138,15 +140,15 @@ const CharacterReducer = (state = initialState, action) => {
         survival,
       ] = characterSkills.map((skill) => {
         return {
-          expertise: Object.keys(action.payload.data.modifiers).some((index) =>
-            action.payload.data.modifiers[index].some((modifier) =>
+          expertise: Object.keys(modifiers).some((index) =>
+            modifiers[index].some((modifier) =>
               isSkillExpertise(modifier, skill)
             )
           ),
           proficiency: Object.keys(
-            action.payload.data.modifiers
+            modifiers
           ).some((index) =>
-            action.payload.data.modifiers[index].some((modifier) =>
+            modifiers[index].some((modifier) =>
               isSkillProficiency(modifier, skill)
             )
           ),
@@ -188,7 +190,33 @@ const CharacterReducer = (state = initialState, action) => {
         .reduce((acc, value) => acc + value.value, 0);
 
       /**
-       * Base armor override
+       * Additional armor bonuses from items
+       */
+
+      const armorItemBonus = modifiers.item.reduce(
+        (acc, item) => {
+          return isBonus(item) && item.subType === "armor-class"
+            ? isAttuned(item.componentId, inventory)
+              ? acc + item.value
+              : acc
+            : acc;
+        },
+        0
+      );
+
+      const unarmoredItemBonus = modifiers.item.reduce(
+        (acc, item) => {
+          return isBonus(item) && item.subType === "unarmored-armor-class"
+            ? isAttuned(item.componentId, inventory)
+              ? acc + item.value
+              : acc
+            : acc;
+        },
+        0
+      );
+
+      /**
+       * Base armor overrides
        */
       const baseArmorOverride = action.payload.data.characterValues
         .filter((value) => value.typeId === 4)
@@ -197,8 +225,12 @@ const CharacterReducer = (state = initialState, action) => {
       const equippedArmorClass =
         Math.max(
           ...[
-            maxArmor(inventory, isLightArmor, modifier(dexterity.value)) ,
-            maxArmor(inventory, isMediumArmor, modifier(dexterity.value) <= 2 ? modifier(dexterity.value) : 2),
+            maxArmor(inventory, isLightArmor, modifier(dexterity.value)),
+            maxArmor(
+              inventory,
+              isMediumArmor,
+              modifier(dexterity.value) <= 2 ? modifier(dexterity.value) : 2
+            ),
             maxArmor(inventory, isHeavyArmor),
           ]
         ) + maxArmor(inventory, isShield);
@@ -208,17 +240,15 @@ const CharacterReducer = (state = initialState, action) => {
       const armorClass = armorClassOverride
         ? armorClassOverride
         : baseArmorOverride
-        ? baseArmorOverride + armorBonus + equippedShield
+        ? baseArmorOverride + armorBonus + equippedShield + armorItemBonus
         : equippedArmorClass
-        ? equippedArmorClass + armorBonus
-        : 10 + modifier(dexterity.value) + armorBonus + equippedShield;
-
-      console.log("AC", armorClass);
-      console.log("Override", armorClassOverride);
-      console.log("Base Armor", baseArmorOverride);
-      console.log("EquippedArmor", equippedArmorClass);
-      console.log("Bonus", armorBonus);
-      console.log("Shield", equippedShield);
+        ? equippedArmorClass + armorBonus + armorItemBonus
+        : 10 +
+          modifier(dexterity.value) +
+          armorBonus +
+          equippedShield +
+          armorItemBonus +
+          unarmoredItemBonus;
 
       return !current.includes(true)
         ? {
@@ -449,7 +479,14 @@ const CharacterReducer = (state = initialState, action) => {
 
 const isArmor = (armor) => armor.definition.filterType === "Armor";
 
-const isEquippedArmor = (armor) => isArmor(armor) && armor.equipped === true;
+const isAttuned = (itemId, items) =>
+  items.some(
+    (item) => itemId === item.definition.id && item.isAttuned === true
+  );
+
+const isEquippedItem = (item) => item.equipped === true;
+
+const isEquippedArmor = (armor) => isArmor(armor) && isEquippedItem(armor);
 
 const isLightArmor = (armor) =>
   isEquippedArmor(armor) && armor.definition.armorTypeId === 1;
@@ -465,10 +502,10 @@ const isShield = (armor) =>
 
 const maxArmor = (armors, callback, modifier = 0) => {
   const result = Math.max(
-      ...armors
-        .filter((armor) => callback(armor))
-        .map((armor) => armor.definition.armorClass)
-    );
+    ...armors
+      .filter((armor) => callback(armor))
+      .map((armor) => armor.definition.armorClass)
+  );
   return isFinite(result) ? result + modifier : 0;
 };
 
