@@ -216,17 +216,19 @@ const reducer = (state = initialState, action) => {
        * Additional armor bonuses from items
        */
 
-      const armoredItemBonus = armorItemBonus(
+      const armoredItemBonus = itemBonus(
         modifiers,
         inventory,
         "armor-class"
       );
 
-      const unarmoredItemBonus = armorItemBonus(
+      const unarmoredItemBonus = itemBonus(
         modifiers,
         inventory,
         "unarmored-armor-class"
       );
+        
+      const unarmoredArmor = itemSet(modifiers, inventory, "unarmored-armor-class");
 
       /**
        * Base armor overrides
@@ -238,9 +240,6 @@ const reducer = (state = initialState, action) => {
       const equippedArmorClass =
         Math.max(
           ...[
-            /**
-             * @todo Ropas
-             */
             maxArmor(inventory, isLightArmor, modifier(dexterity.value)),
             maxArmor(
               inventory,
@@ -249,19 +248,19 @@ const reducer = (state = initialState, action) => {
             ),
             maxArmor(inventory, isHeavyArmor),
           ]
-        ) + maxArmor(inventory, isShield);
+        );
 
       const equippedShield = maxArmor(inventory, isShield);
 
       const armorClass = armorClassOverride
         ? armorClassOverride
         : baseArmorOverride
-        ? baseArmorOverride + armorBonus + equippedShield + armoredItemBonus
+        ? baseArmorOverride + armorBonus + equippedShield + armoredItemBonus + unarmoredItemBonus
         : equippedArmorClass
-        ? equippedArmorClass + armorBonus + armoredItemBonus
+        ? equippedArmorClass + armorBonus + equippedShield + armoredItemBonus 
         : 10 +
           modifier(dexterity.value) +
-          armorBonus +
+          unarmoredArmor + armorBonus +
           equippedShield +
           armoredItemBonus +
           unarmoredItemBonus;
@@ -512,13 +511,24 @@ const reducer = (state = initialState, action) => {
 
 const isArmor = (armor) => armor.definition.filterType === "Armor";
 
-const armorItemBonus = (modifiers, inventory, type) =>
+const itemBonus = (modifiers, inventory, type) =>
   modifiers.item.reduce(
     (acc, item) =>
       isBonus(item) &&
       item.subType === type &&
       isEquippedOrAttuned(item, inventory)
-        ? acc + item.value
+        ? Math.max(acc, item.value)
+        : acc,
+    0
+  );
+
+const itemSet = (modifiers, inventory, type) =>
+  modifiers.item.reduce(
+    (acc, item) =>
+      isSet(item) &&
+      item.subType === type &&
+      isEquippedOrAttuned(item, inventory)
+        ? Math.max(acc, item.value)
         : acc,
     0
   );
