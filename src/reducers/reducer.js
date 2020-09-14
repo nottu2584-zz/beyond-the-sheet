@@ -50,14 +50,22 @@ const reducer = (state = initialState, action) => {
         intelligence,
         wisdom,
         charisma,
-      ] = characterAbilities.map((abilities, key) => {
+      ] = characterAbilities.map((ability, key) => {
         return {
           value:
             Object.keys(modifiers)
               .map((index) =>
                 modifiers[index]
-                  .filter((modifier) => isAbilityBonus(modifier, abilities))
-                  .reduce((acc, modifier) => acc + modifier.value, 0)
+                  .filter((modifier) => isAbilityBonus(modifier, ability))
+                  .reduce(
+                    (acc, modifier) =>
+                      index === "item"
+                        ? isEquippedOrAttuned(modifier, inventory)
+                          ? acc + modifier.value
+                          : acc
+                        : acc + modifier.value,
+                    0
+                  )
               )
               .reduce((acc, modifier) => acc + modifier, 0) +
             action.payload.data.stats[key].value +
@@ -68,30 +76,36 @@ const reducer = (state = initialState, action) => {
       /**
        * Sets character abilities overrides when necessary, keeping the biggest value
        */
-      const statOverrides = characterAbilities.map((abilities) => {
-        return Object.keys(modifiers)
-          .map((index) =>
-            modifiers[index]
-              .filter((modifier) => isAbilitySet(modifier, abilities))
-              .reduce(
-                (previousModifier, currentModifier) =>
-                  Math.max(previousModifier.value, currentModifier.value),
-                0
-              )
-          )
-          .reduce(
-            (previousModifier, currentModifier) =>
-              Math.max(previousModifier, currentModifier),
-            0
-          );
+      const statOverrides = characterAbilities.map((ability) => {
+        return {
+          value: Object.keys(modifiers)
+            .map((index) =>
+              modifiers[index]
+                .filter((modifier) => isAbilitySet(modifier, ability))
+                .reduce(
+                  (acc, modifier) =>
+                    index === "item"
+                      ? isEquippedOrAttuned(modifier, inventory)
+                        ? Math.max(acc, modifier.value)
+                        : acc
+                      : Math.max(acc, modifier.value),
+                  0
+                )
+            )
+            .reduce((acc, modifier) => Math.max(acc, modifier), 0),
+        };
       });
 
-      strength = statOverrides[0] || strength;
-      dexterity = statOverrides[1] || dexterity;
-      constitution = statOverrides[2] || constitution;
-      intelligence = statOverrides[3] || intelligence;
-      wisdom = statOverrides[4] || wisdom;
-      charisma = statOverrides[5] || charisma;
+      //[{value:1}, {value:2}, {value:3}]
+
+      strength.value = statOverrides[0].value || strength.value;
+      dexterity.value = statOverrides[1].value || dexterity.value;
+      constitution.value = statOverrides[2].value || constitution.value;
+      intelligence.value = statOverrides[3].value || intelligence.value;
+      wisdom.value = statOverrides[4].value || wisdom.value;
+      charisma.value = statOverrides[5].value || charisma.value;
+
+      console.log("DEX", dexterity.value);
 
       /**
        * Checks for half proficiency on ability checks (Jack of All Trades, etc.)
@@ -154,12 +168,8 @@ const reducer = (state = initialState, action) => {
                 (acc, modifier) =>
                   isBonus(modifier) && isAbilityChecks(modifier)
                     ? index === "item" &&
-                      isEquipped(modifier.componentId, inventory)
-                      ? !modifier.requiresAttunement
-                        ? acc + modifier.value
-                        : isAttuned(modifier.componentId, inventory)
-                        ? acc + modifier.value
-                        : acc
+                      isEquippedOrAttuned(modifier, inventory)
+                      ? acc + modifier.value
                       : acc
                     : acc,
                 0
@@ -169,9 +179,6 @@ const reducer = (state = initialState, action) => {
         };
       });
 
-      console.log("bonus", acrobatics.bonus);
-
-      console.log();
       const maxHitPoints =
         action.payload.data.overrideHitPoints ||
         action.payload.data.baseHitPoints +
@@ -209,9 +216,17 @@ const reducer = (state = initialState, action) => {
        * Additional armor bonuses from items
        */
 
-      const armoredItemBonus = armorItemBonus(modifiers, inventory, "armor-class");
+      const armoredItemBonus = armorItemBonus(
+        modifiers,
+        inventory,
+        "armor-class"
+      );
 
-      const unarmoredItemBonus = armorItemBonus(modifiers, inventory, "unarmored-armor-class");
+      const unarmoredItemBonus = armorItemBonus(
+        modifiers,
+        inventory,
+        "unarmored-armor-class"
+      );
 
       /**
        * Base armor overrides
@@ -497,18 +512,16 @@ const reducer = (state = initialState, action) => {
 
 const isArmor = (armor) => armor.definition.filterType === "Armor";
 
-const armorItemBonus = (modifiers, inventory, type) => 
-  modifiers.item.reduce((acc, item) => 
-    isBonus(item) &&
-    item.subType === type &&
-    isEquipped(item.componentId, inventory)
-    ? !item.requiresAttunement
-      ? acc + item.value
-      : isAttuned(item.componentId, inventory)
-      ? acc + item.value
-      : acc
-    : acc
-  , 0);
+const armorItemBonus = (modifiers, inventory, type) =>
+  modifiers.item.reduce(
+    (acc, item) =>
+      isBonus(item) &&
+      item.subType === type &&
+      isEquippedOrAttuned(item, inventory)
+        ? acc + item.value
+        : acc,
+    0
+  );
 
 const isEquipped = (itemId, items) =>
   items.some((item) => itemId === item.definition.id && item.equipped === true);
@@ -517,6 +530,13 @@ const isAttuned = (itemId, items) =>
   items.some(
     (item) => itemId === item.definition.id && item.isAttuned === true
   );
+
+const isEquippedOrAttuned = (item, inventory) =>
+  isEquipped(item.componentId, inventory)
+    ? item.requiresAttunement
+      ? isAttuned(item.componentId, inventory)
+      : true
+    : false;
 
 const isEquippedItem = (item) => item.equipped === true;
 
@@ -596,6 +616,13 @@ const isAbility = (modifier) => {
 };
 
 const isAbilitySet = (modifier, ability) => {
+  // if (modifier.subType === "strength-score") {
+  // console.log("Entrada", [modifier,ability] )
+  // console.log(
+  //   "Salida",
+  //   isAbility(modifier) && isSet(modifier) && modifier.subType.includes(ability)
+  //   );
+  // } else return "No está"
   return (
     isAbility(modifier) && isSet(modifier) && modifier.subType.includes(ability)
   );
