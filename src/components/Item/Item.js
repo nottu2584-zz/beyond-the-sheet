@@ -15,14 +15,13 @@ const Item = (props) => {
   const handleCharacter = () => {};
 
   const {
-    avatar,
-    characterName,
     name,
     weight,
     quantity,
     cost,
     rarity,
     armorClass,
+    owners,
     type,
     damageDice,
     description,
@@ -32,18 +31,6 @@ const Item = (props) => {
   return (
     <TableRow>
       <TableCell>
-        <Chip
-          avatar={
-            <Avatar
-              alt={characterName}
-              src={avatar}
-              className={classes.avatar}
-            />
-          }
-          label={characterName}
-          onClick={handleCharacter}
-          variant="outlined"
-        />
       </TableCell>
       <TableCell>{name}</TableCell>
       <TableCell>{weight}</TableCell>

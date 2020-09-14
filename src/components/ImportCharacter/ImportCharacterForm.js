@@ -43,7 +43,7 @@ const ImportCharacterForm = (props) => {
     e.preventDefault();
     // Get characters
     if (data && typeof data === "string")
-      dispatch({ type: "GET", payload: JSON.parse(data) });
+      dispatch({ type: "UPDATE", payload: JSON.parse(data) });
   };
 
   const handleChange = (e) => {
