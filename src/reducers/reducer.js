@@ -29,9 +29,11 @@ const characterSkills = [
   "survival",
 ];
 
-const CharacterReducer = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "GET":
+    case "UPDATE_ABILITIES":
+    case "UPDATE_SKILLS":
+    case "UPDATE":
       const inventory = action.payload.data.inventory;
       const modifiers = action.payload.data.modifiers;
       const current = state.characters.map(
@@ -666,4 +668,4 @@ const modifierSkills = (
     : modifier(skill);
 };
 
-export default CharacterReducer;
+export default reducer;

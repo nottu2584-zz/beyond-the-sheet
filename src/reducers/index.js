@@ -1,1 +1,1 @@
-export { default as CharacterReducer } from "./CharacterReducer";
+export { default as reducer } from "./reducer";

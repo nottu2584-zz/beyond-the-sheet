@@ -1,7 +1,6 @@
 import React from "react";
 
 const Inventory = (props) => {
-    
     return (
         <div className="container">
             {props.children}
