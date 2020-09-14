@@ -11,7 +11,7 @@ const characterAbilities = [
 
 const characterSkills = [
   "acrobatics",
-  "animalHandling",
+  "animal-handling",
   "arcana",
   "athletics",
   "deception",
@@ -24,7 +24,7 @@ const characterSkills = [
   "performance",
   "persuasion",
   "religion",
-  "sleightOfHand",
+  "sleight-of-hand",
   "stealth",
   "survival",
 ];
@@ -33,7 +33,7 @@ const CharacterReducer = (state = initialState, action) => {
   switch (action.type) {
     case "GET":
       const inventory = action.payload.data.inventory;
-
+      const modifiers = action.payload.data.modifiers;
       const current = state.characters.map(
         (character) => action.payload.data.id === character.data.id
       );
@@ -51,9 +51,9 @@ const CharacterReducer = (state = initialState, action) => {
       ] = characterAbilities.map((abilities, key) => {
         return {
           value:
-            Object.keys(action.payload.data.modifiers)
+            Object.keys(modifiers)
               .map((index) =>
-                action.payload.data.modifiers[index]
+                modifiers[index]
                   .filter((modifier) => isAbilityBonus(modifier, abilities))
                   .reduce((acc, modifier) => acc + modifier.value, 0)
               )
@@ -67,9 +67,9 @@ const CharacterReducer = (state = initialState, action) => {
        * Sets character abilities overrides when necessary, keeping the biggest value
        */
       const statOverrides = characterAbilities.map((abilities) => {
-        return Object.keys(action.payload.data.modifiers)
+        return Object.keys(modifiers)
           .map((index) =>
-            action.payload.data.modifiers[index]
+            modifiers[index]
               .filter((modifier) => isAbilitySet(modifier, abilities))
               .reduce(
                 (previousModifier, currentModifier) =>
@@ -94,12 +94,8 @@ const CharacterReducer = (state = initialState, action) => {
       /**
        * Checks for half proficiency on ability checks (Jack of All Trades, etc.)
        */
-      const halfProficiency = Object.keys(
-        action.payload.data.modifiers
-      ).some((index) =>
-        action.payload.data.modifiers[index].some((modifier) =>
-          isGlobalAbilityHalfProf(modifier)
-        )
+      const halfProficiency = Object.keys(modifiers).some((index) =>
+        modifiers[index].some((modifier) => isGlobalAbilityHalfProf(modifier))
       );
 
       const levels = {
@@ -138,29 +134,56 @@ const CharacterReducer = (state = initialState, action) => {
         survival,
       ] = characterSkills.map((skill) => {
         return {
-          expertise: Object.keys(action.payload.data.modifiers).some((index) =>
-            action.payload.data.modifiers[index].some((modifier) =>
+          expertise: Object.keys(modifiers).some((index) =>
+            modifiers[index].some((modifier) =>
               isSkillExpertise(modifier, skill)
             )
           ),
-          proficiency: Object.keys(
-            action.payload.data.modifiers
-          ).some((index) =>
-            action.payload.data.modifiers[index].some((modifier) =>
+          proficiency: Object.keys(modifiers).some((index) =>
+            modifiers[index].some((modifier) =>
               isSkillProficiency(modifier, skill)
             )
           ),
           halfProficiency: halfProficiency,
+          bonus: Object.keys(modifiers).reduce(
+            (acc, index) =>
+              acc +
+              modifiers[index].reduce(
+                (acc, modifier) =>
+                  isBonus(modifier) && isAbilityChecks(modifier)
+                    ? index === "item" &&
+                      isEquipped(modifier.componentId, inventory)
+                      ? !modifier.requiresAttunement
+                        ? acc + modifier.value
+                        : isAttuned(modifier.componentId, inventory)
+                        ? acc + modifier.value
+                        : acc
+                      : acc
+                    : acc,
+                0
+              ),
+            0
+          ),
         };
       });
 
-      const maxHitPoints = action.payload.data.overrideHitPoints
-        ? action.payload.data.overrideHitPoints
-        : action.payload.data.baseHitPoints +
-          (action.payload.data.bonusHitPoints || 0) +
-          constitution.modifier * levels.total;
+      console.log("bonus", acrobatics.bonus);
+
+      console.log();
+      const maxHitPoints =
+        action.payload.data.overrideHitPoints ||
+        action.payload.data.baseHitPoints +
+          action.payload.data.bonusHitPoints +
+          modifier(constitution.value) * levels.total;
 
       const hitPoints = {
+        base: action.payload.data.baseHitPoints,
+        // bonuses: [
+        //   {
+        //     description: "Tough",
+        //     value: 10,
+        //   }
+        // ],
         current: maxHitPoints - action.payload.data.removedHitPoints,
         max: maxHitPoints,
         temp: action.payload.data.temporaryHitPoints,
@@ -181,7 +204,15 @@ const CharacterReducer = (state = initialState, action) => {
         .reduce((acc, value) => acc + value.value, 0);
 
       /**
-       * Base armor override
+       * Additional armor bonuses from items
+       */
+
+      const armoredItemBonus = armorItemBonus(modifiers, inventory, "armor-class");
+
+      const unarmoredItemBonus = armorItemBonus(modifiers, inventory, "unarmored-armor-class");
+
+      /**
+       * Base armor overrides
        */
       const baseArmorOverride = action.payload.data.characterValues
         .filter((value) => value.typeId === 4)
@@ -190,10 +221,15 @@ const CharacterReducer = (state = initialState, action) => {
       const equippedArmorClass =
         Math.max(
           ...[
-            maxArmor(inventory, isLightArmor) + modifier(dexterity.value),
-            maxArmor(inventory, isMediumArmor) + modifier(dexterity.value) <= 2
-              ? modifier(dexterity.value)
-              : 2,
+            /**
+             * @todo Ropas
+             */
+            maxArmor(inventory, isLightArmor, modifier(dexterity.value)),
+            maxArmor(
+              inventory,
+              isMediumArmor,
+              modifier(dexterity.value) <= 2 ? modifier(dexterity.value) : 2
+            ),
             maxArmor(inventory, isHeavyArmor),
           ]
         ) + maxArmor(inventory, isShield);
@@ -203,15 +239,15 @@ const CharacterReducer = (state = initialState, action) => {
       const armorClass = armorClassOverride
         ? armorClassOverride
         : baseArmorOverride
-        ? baseArmorOverride + armorBonus + equippedShield
+        ? baseArmorOverride + armorBonus + equippedShield + armoredItemBonus
         : equippedArmorClass
-        ? equippedArmorClass + armorBonus
-        : 10 + modifier(dexterity.value) + armorBonus + equippedShield;
-
-      console.log("AC", armorClass.value);
-
-      const currentExperience, experience = 0;
-      const conditions = [];
+        ? equippedArmorClass + armorBonus + armoredItemBonus
+        : 10 +
+          modifier(dexterity.value) +
+          armorBonus +
+          equippedShield +
+          armoredItemBonus +
+          unarmoredItemBonus;
 
       return !current.includes(true)
         ? {
@@ -221,189 +257,200 @@ const CharacterReducer = (state = initialState, action) => {
               {
                 ...action.payload,
                 armorClass: armorClass,
-                conditions: {
-                  ...conditions,
-                },
+                conditions: action.payload.data.conditions,
                 experience: {
-                  value: experience,
-                  toLevelUp: 0,
+                  value: action.payload.data.currentXp,
                 },
                 hitPoints: {
                   ...hitPoints,
-                  current: 0,
-                  max: 0,
-                  temp: 0,
                 },
                 skills: {
                   acrobatics: {
                     ...acrobatics,
-                    value: modifierSkills(
-                      dexterity.value,
-                      levels.total,
-                      acrobatics.proficiency,
-                      acrobatics.expertise,
-                      acrobatics.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        dexterity.value,
+                        levels.total,
+                        acrobatics.proficiency,
+                        acrobatics.expertise,
+                        acrobatics.halfProficiency
+                      ) + acrobatics.bonus,
                   },
                   animalHandling: {
                     ...animalHandling,
-                    value: modifierSkills(
-                      wisdom.value,
-                      levels.total,
-                      animalHandling.proficiency,
-                      animalHandling.expertise,
-                      animalHandling.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        wisdom.value,
+                        levels.total,
+                        animalHandling.proficiency,
+                        animalHandling.expertise,
+                        animalHandling.halfProficiency
+                      ) + animalHandling.bonus,
                   },
                   arcana: {
                     ...arcana,
-                    value: modifierSkills(
-                      intelligence.value,
-                      levels.total,
-                      arcana.proficiency,
-                      arcana.expertise,
-                      arcana.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        intelligence.value,
+                        levels.total,
+                        arcana.proficiency,
+                        arcana.expertise,
+                        arcana.halfProficiency
+                      ) + arcana.bonus,
                   },
                   athletics: {
                     ...athletics,
-                    value: modifierSkills(
-                      strength.value,
-                      levels.total,
-                      athletics.proficiency,
-                      athletics.expertise,
-                      athletics.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        strength.value,
+                        levels.total,
+                        athletics.proficiency,
+                        athletics.expertise,
+                        athletics.halfProficiency
+                      ) + athletics.bonus,
                   },
                   deception: {
                     ...deception,
-                    value: modifierSkills(
-                      charisma.value,
-                      levels.total,
-                      deception.proficiency,
-                      deception.expertise,
-                      deception.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        charisma.value,
+                        levels.total,
+                        deception.proficiency,
+                        deception.expertise,
+                        deception.halfProficiency
+                      ) + deception.bonus,
                   },
                   history: {
                     ...history,
-                    value: modifierSkills(
-                      intelligence.value,
-                      levels.total,
-                      history.proficiency,
-                      history.expertise,
-                      history.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        intelligence.value,
+                        levels.total,
+                        history.proficiency,
+                        history.expertise,
+                        history.halfProficiency
+                      ) + history.bonus,
                   },
                   insight: {
                     ...insight,
-                    value: modifierSkills(
-                      wisdom.value,
-                      levels.total,
-                      insight.proficiency,
-                      insight.expertise,
-                      insight.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        wisdom.value,
+                        levels.total,
+                        insight.proficiency,
+                        insight.expertise,
+                        insight.halfProficiency
+                      ) + insight.bonus,
                   },
                   intimidation: {
                     ...intimidation,
-                    value: modifierSkills(
-                      charisma.value,
-                      levels.total,
-                      intimidation.proficiency,
-                      intimidation.expertise,
-                      intimidation.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        charisma.value,
+                        levels.total,
+                        intimidation.proficiency,
+                        intimidation.expertise,
+                        intimidation.halfProficiency
+                      ) + intimidation.bonus,
                   },
                   investigation: {
                     ...investigation,
-                    value: modifierSkills(
-                      intelligence.value,
-                      levels.total,
-                      investigation.proficiency,
-                      investigation.expertise,
-                      investigation.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        intelligence.value,
+                        levels.total,
+                        investigation.proficiency,
+                        investigation.expertise,
+                        investigation.halfProficiency
+                      ) + investigation.bonus,
                   },
                   nature: {
                     ...nature,
-                    value: modifierSkills(
-                      intelligence.value,
-                      levels.total,
-                      nature.proficiency,
-                      nature.expertise,
-                      nature.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        intelligence.value,
+                        levels.total,
+                        nature.proficiency,
+                        nature.expertise,
+                        nature.halfProficiency
+                      ) + nature.bonus,
                   },
                   perception: {
                     ...perception,
-                    value: modifierSkills(
-                      wisdom.value,
-                      levels.total,
-                      perception.proficiency,
-                      perception.expertise,
-                      perception.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        wisdom.value,
+                        levels.total,
+                        perception.proficiency,
+                        perception.expertise,
+                        perception.halfProficiency
+                      ) + perception.bonus,
                   },
                   performance: {
                     ...performance,
-                    value: modifierSkills(
-                      charisma.value,
-                      levels.total,
-                      performance.proficiency,
-                      performance.expertise,
-                      performance.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        charisma.value,
+                        levels.total,
+                        performance.proficiency,
+                        performance.expertise,
+                        performance.halfProficiency
+                      ) + performance.bonus,
                   },
                   persuasion: {
                     ...persuasion,
-                    value: modifierSkills(
-                      charisma.value,
-                      levels.total,
-                      persuasion.proficiency,
-                      persuasion.expertise,
-                      persuasion.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        charisma.value,
+                        levels.total,
+                        persuasion.proficiency,
+                        persuasion.expertise,
+                        persuasion.halfProficiency
+                      ) + religion.bonus,
                   },
                   religion: {
                     ...religion,
-                    value: modifierSkills(
-                      intelligence.value,
-                      levels.total,
-                      religion.proficiency,
-                      religion.expertise,
-                      religion.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        intelligence.value,
+                        levels.total,
+                        religion.proficiency,
+                        religion.expertise,
+                        religion.halfProficiency
+                      ) + religion.bonus,
                   },
                   sleightOfHand: {
                     ...sleightOfHand,
-                    value: modifierSkills(
-                      dexterity.value,
-                      levels.total,
-                      sleightOfHand.proficiency,
-                      sleightOfHand.expertise,
-                      sleightOfHand.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        dexterity.value,
+                        levels.total,
+                        sleightOfHand.proficiency,
+                        sleightOfHand.expertise,
+                        sleightOfHand.halfProficiency
+                      ) + sleightOfHand.bonus,
                   },
                   stealth: {
                     ...stealth,
-                    value: modifierSkills(
-                      dexterity.value,
-                      levels.total,
-                      stealth.proficiency,
-                      stealth.expertise,
-                      stealth.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        dexterity.value,
+                        levels.total,
+                        stealth.proficiency,
+                        stealth.expertise,
+                        stealth.halfProficiency
+                      ) + stealth.bonus,
                   },
                   survival: {
                     ...survival,
-                    value: modifierSkills(
-                      wisdom.value,
-                      levels.total,
-                      survival.proficiency,
-                      survival.expertise,
-                      survival.halfProficiency
-                    ),
+                    value:
+                      modifierSkills(
+                        wisdom.value,
+                        levels.total,
+                        survival.proficiency,
+                        survival.expertise,
+                        survival.halfProficiency
+                      ) + survival.bonus,
                   },
                 },
                 abilities: {
@@ -448,7 +495,30 @@ const CharacterReducer = (state = initialState, action) => {
 
 const isArmor = (armor) => armor.definition.filterType === "Armor";
 
-const isEquippedArmor = (armor) => isArmor(armor) && armor.equipped === true;
+const armorItemBonus = (modifiers, inventory, type) => 
+  modifiers.item.reduce((acc, item) => 
+    isBonus(item) &&
+    item.subType === type &&
+    isEquipped(item.componentId, inventory)
+    ? !item.requiresAttunement
+      ? acc + item.value
+      : isAttuned(item.componentId, inventory)
+      ? acc + item.value
+      : acc
+    : acc
+  , 0);
+
+const isEquipped = (itemId, items) =>
+  items.some((item) => itemId === item.definition.id && item.equipped === true);
+
+const isAttuned = (itemId, items) =>
+  items.some(
+    (item) => itemId === item.definition.id && item.isAttuned === true
+  );
+
+const isEquippedItem = (item) => item.equipped === true;
+
+const isEquippedArmor = (armor) => isArmor(armor) && isEquippedItem(armor);
 
 const isLightArmor = (armor) =>
   isEquippedArmor(armor) && armor.definition.armorTypeId === 1;
@@ -462,14 +532,13 @@ const isHeavyArmor = (armor) =>
 const isShield = (armor) =>
   isEquippedArmor(armor) && armor.definition.armorTypeId === 4;
 
-const maxArmor = (armors, callback) => {
-  return (
-    Math.max(
-      ...armors
-        .filter((armor) => callback(armor))
-        .map((armor) => armor.definition.armorClass)
-    ) || 0
+const maxArmor = (armors, callback, modifier = 0) => {
+  const result = Math.max(
+    ...armors
+      .filter((armor) => callback(armor))
+      .map((armor) => armor.definition.armorClass)
   );
+  return isFinite(result) ? result + modifier : 0;
 };
 
 const isBonus = (modifier) => modifier.type === "bonus";
@@ -480,13 +549,12 @@ const isAbilityCheck = (modifier) =>
   isAbility(modifier) && isAbilityChecks(modifier);
 
 const isAbilityChecks = (modifier) =>
-  ~modifier.subType.includes("ability-checks");
+  modifier.subType.includes("ability-checks");
 
 const isSavingThrow = (modifier) =>
   isAbility(modifier) && isAbilityChecks(modifier);
 
-const isSavingThrows = (modifier) =>
-  ~modifier.subType.includes("saving-throws");
+const isSavingThrows = (modifier) => modifier.subType.includes("saving-throws");
 
 const isInitiative = (modifier) => ~modifier.subType.includes("initiative");
 
