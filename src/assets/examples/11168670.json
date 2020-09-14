@@ -32,7 +32,8 @@
       "subRaceId": null,
       "tags": ["EGtW Themes"],
       "themeColor": "#DF4134",
-      "themeColorId": 618
+      "themeColorId": 618,
+      "decorationKey": null
     },
     "name": "Oz de Mezro",
     "socialName": null,
@@ -48,9 +49,9 @@
     "baseHitPoints": 48,
     "bonusHitPoints": null,
     "overrideHitPoints": null,
-    "removedHitPoints": 29,
+    "removedHitPoints": 0,
     "temporaryHitPoints": 0,
-    "currentXp": 63450,
+    "currentXp": 64100,
     "alignmentId": 5,
     "lifestyleId": 6,
     "stats": [
@@ -568,9 +569,99 @@
         "definitionTypeId": 0,
         "displayAsAttack": null,
         "entityTypeId": 1439493548,
-        "equipped": true,
+        "equipped": false,
         "id": 106324680,
         "isAttuned": false,
+        "limitedUse": null,
+        "quantity": 1
+      },
+      {
+        "chargesUsed": 0,
+        "definition": {
+          "armorClass": null,
+          "attackType": null,
+          "attunementDescription": "",
+          "avatarUrl": "https://www.dndbeyond.com/avatars/18/933/636381775650863473.jpeg?width=350&height=350&fit=bounds&quality=95&auto=webp",
+          "baseArmorName": null,
+          "baseItemId": null,
+          "baseTypeId": 2103445194,
+          "bundleSize": 1,
+          "canAttune": true,
+          "canEquip": true,
+          "categoryId": null,
+          "cost": null,
+          "damage": null,
+          "damageType": null,
+          "description": "<p>While wearing these bracers, you gain a +2 bonus to AC if you are wearing no armor and using no shield.</p>",
+          "entityTypeId": 112130694,
+          "filterType": "Wondrous item",
+          "fixedDamage": null,
+          "grantedModifiers": [
+            {
+              "availableToMulticlass": true,
+              "bonusTypes": [],
+              "dice": null,
+              "duration": null,
+              "entityId": null,
+              "entityTypeId": null,
+              "fixedValue": 2,
+              "friendlySubtypeName": "Unarmored Armor Class",
+              "friendlyTypeName": "Bonus",
+              "id": "51",
+              "isGranted": true,
+              "modifierSubTypeId": 801,
+              "modifierTypeId": 1,
+              "requiresAttunement": true,
+              "restriction": "",
+              "statId": null,
+              "subType": "unarmored-armor-class",
+              "type": "bonus",
+              "value": 2,
+              "componentId": 4594,
+              "componentTypeId": 112130694
+            }
+          ],
+          "id": 4594,
+          "isConsumable": false,
+          "isHomebrew": false,
+          "isMonkWeapon": false,
+          "isPack": false,
+          "largeAvatarUrl": "https://www.dndbeyond.com/avatars/7/146/636284716655660478.jpeg?width=1000&height=1000&fit=bounds&quality=95&auto=webp",
+          "longRange": null,
+          "magic": true,
+          "name": "Bracers of Defense",
+          "properties": null,
+          "range": null,
+          "rarity": "Rare",
+          "snippet": "",
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": false,
+          "stealthCheck": null,
+          "strengthRequirement": null,
+          "subType": null,
+          "tags": ["Warding", "Wristwear"],
+          "type": "Wondrous item",
+          "version": null,
+          "weaponBehaviors": [],
+          "weight": 0,
+          "levelInfusionGranted": 14,
+          "sources": [
+            { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
+            { "sourceId": 2, "pageNumber": 156, "sourceType": 1 }
+          ],
+          "armorTypeId": null,
+          "gearTypeId": 10,
+          "groupedId": null,
+          "canBeAddedToInventory": true
+        },
+        "definitionId": 0,
+        "definitionTypeId": 0,
+        "displayAsAttack": null,
+        "entityTypeId": 1439493548,
+        "equipped": true,
+        "id": 369002464,
+        "isAttuned": true,
         "limitedUse": null,
         "quantity": 1
       },
@@ -713,7 +804,7 @@
         "entityTypeId": 1439493548,
         "equipped": true,
         "id": 332436326,
-        "isAttuned": true,
+        "isAttuned": false,
         "limitedUse": {
           "maxUses": 3,
           "numberUsed": 1,
@@ -853,7 +944,7 @@
         "displayAsAttack": null,
         "entityTypeId": 1439493548,
         "equipped": true,
-        "id": 185060108,
+        "id": 368446300,
         "isAttuned": true,
         "limitedUse": null,
         "quantity": 1
@@ -969,7 +1060,7 @@
         "entityTypeId": 1439493548,
         "equipped": true,
         "id": 308971535,
-        "isAttuned": true,
+        "isAttuned": false,
         "limitedUse": null,
         "quantity": 1
       },
@@ -1039,6 +1130,93 @@
       {
         "chargesUsed": 0,
         "definition": {
+          "armorClass": null,
+          "attackType": null,
+          "attunementDescription": "",
+          "avatarUrl": "https://www.dndbeyond.com/avatars/11323/124/637290470523470272.png?width=350&height=350&fit=bounds&quality=95&auto=webp",
+          "baseArmorName": null,
+          "baseItemId": null,
+          "baseTypeId": 2103445194,
+          "bundleSize": 1,
+          "canAttune": false,
+          "canEquip": true,
+          "categoryId": null,
+          "cost": null,
+          "damage": null,
+          "damageType": null,
+          "description": "<p><strong>Kubazan</strong> (pronounced <em>KOO-bah-zahn</em>), the Froghemoth, is wild and spirited.</p>\r\n<p><strong>Flaw</strong><br />While inhabited by Kubazan, you gain the following flaw, which overrides any opposing flaw: \"I am fearless and not afraid to take great risks.\"</p>\r\n<p><strong>Power</strong><br />While Kubazan inhabits you, your Strength score becomes 23 unless it is already higher.</p>",
+          "entityTypeId": 112130694,
+          "filterType": "Wondrous item",
+          "fixedDamage": null,
+          "grantedModifiers": [
+            {
+              "availableToMulticlass": true,
+              "bonusTypes": [],
+              "dice": null,
+              "duration": null,
+              "entityId": 1,
+              "entityTypeId": 1472902489,
+              "fixedValue": 23,
+              "friendlySubtypeName": "Strength Score",
+              "friendlyTypeName": "Set",
+              "id": "16052820",
+              "isGranted": true,
+              "modifierSubTypeId": 175,
+              "modifierTypeId": 9,
+              "requiresAttunement": false,
+              "restriction": "",
+              "statId": null,
+              "subType": "strength-score",
+              "type": "set",
+              "value": 23,
+              "componentId": 1863243,
+              "componentTypeId": 112130694
+            }
+          ],
+          "id": 1863243,
+          "isConsumable": false,
+          "isHomebrew": true,
+          "isMonkWeapon": false,
+          "isPack": false,
+          "largeAvatarUrl": "https://www.dndbeyond.com/avatars/11323/125/637290470526175355.png?width=1000&height=1000&fit=bounds&quality=95&auto=webp",
+          "longRange": null,
+          "magic": true,
+          "name": "Kubazan's Spirit",
+          "properties": null,
+          "range": null,
+          "rarity": "Very Rare",
+          "snippet": "",
+          "sourceId": null,
+          "sourcePageNumber": null,
+          "stackable": false,
+          "stealthCheck": null,
+          "strengthRequirement": null,
+          "subType": null,
+          "tags": ["Communication", "Buff", "Social", "Debuff"],
+          "type": "Wondrous item",
+          "version": "1.0",
+          "weaponBehaviors": [],
+          "weight": 0,
+          "levelInfusionGranted": null,
+          "sources": [],
+          "armorTypeId": null,
+          "gearTypeId": 10,
+          "groupedId": null,
+          "canBeAddedToInventory": true
+        },
+        "definitionId": 0,
+        "definitionTypeId": 0,
+        "displayAsAttack": null,
+        "entityTypeId": 1439493548,
+        "equipped": false,
+        "id": 369080182,
+        "isAttuned": false,
+        "limitedUse": null,
+        "quantity": 1
+      },
+      {
+        "chargesUsed": 0,
+        "definition": {
           "armorClass": 13,
           "attackType": null,
           "attunementDescription": null,
@@ -1093,7 +1271,7 @@
         "definitionTypeId": 0,
         "displayAsAttack": null,
         "entityTypeId": 1439493548,
-        "equipped": true,
+        "equipped": false,
         "id": 120045891,
         "isAttuned": false,
         "limitedUse": null,
@@ -1901,7 +2079,7 @@
           "stackable": true,
           "stealthCheck": null,
           "strengthRequirement": null,
-          "subType": "Tool",
+          "subType": null,
           "tags": ["Utility", "Deception"],
           "type": "Gear",
           "version": null,
@@ -3272,11 +3450,11 @@
     "deathSaves": { "failCount": 0, "isStabilized": false, "successCount": 0 },
     "adjustmentXp": null,
     "spellSlots": [
-      { "available": 0, "level": 1, "used": 3 },
+      { "available": 0, "level": 1, "used": 0 },
       { "available": 0, "level": 2, "used": 0 },
-      { "available": 0, "level": 3, "used": 1 },
-      { "available": 0, "level": 4, "used": 2 },
-      { "available": 0, "level": 5, "used": 1 },
+      { "available": 0, "level": 3, "used": 0 },
+      { "available": 0, "level": 4, "used": 0 },
+      { "available": 0, "level": 5, "used": 0 },
       { "available": 0, "level": 6, "used": 0 },
       { "available": 0, "level": 7, "used": 0 },
       { "available": 0, "level": 8, "used": 0 },
@@ -3362,7 +3540,8 @@
             "sources": [
               { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
               { "sourceId": 2, "pageNumber": 231, "sourceType": 1 }
-            ]
+            ],
+            "scaleType": null
           },
           "definitionId": 0,
           "displayAsAttack": false,
@@ -3451,7 +3630,8 @@
             "sources": [
               { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
               { "sourceId": 2, "pageNumber": 279, "sourceType": 1 }
-            ]
+            ],
+            "scaleType": null
           },
           "definitionId": 0,
           "displayAsAttack": false,
@@ -3555,7 +3735,8 @@
             "tags": ["Control"],
             "tempHpDice": [],
             "version": "1.0",
-            "sources": []
+            "sources": [],
+            "scaleType": null
           },
           "definitionId": 0,
           "displayAsAttack": false,
@@ -3646,7 +3827,8 @@
             "sources": [
               { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
               { "sourceId": 2, "pageNumber": 260, "sourceType": 1 }
-            ]
+            ],
+            "scaleType": "characterlevel"
           },
           "definitionId": 0,
           "displayAsAttack": null,
@@ -3735,7 +3917,8 @@
             "sources": [
               { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
               { "sourceId": 2, "pageNumber": 233, "sourceType": 1 }
-            ]
+            ],
+            "scaleType": null
           },
           "definitionId": 0,
           "displayAsAttack": null,
@@ -3850,7 +4033,8 @@
             "sources": [
               { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
               { "sourceId": 2, "pageNumber": 254, "sourceType": 1 }
-            ]
+            ],
+            "scaleType": "spellscale"
           },
           "definitionId": 0,
           "displayAsAttack": null,
@@ -3893,11 +4077,11 @@
           "definition": {
             "activation": null,
             "creatureRules": [],
-            "description": "<p>When you engage in two-weapon fighting, you can add your ability modifier to the damage of the second attack.</p>",
+            "description": "<p>When you are wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage rolls with that weapon.</p>",
             "entityTypeId": 258900837,
-            "id": 220,
-            "name": "Two-Weapon Fighting",
-            "snippet": "When two-weapon fighting, you can add your ability modifier to the damage of the second attack.",
+            "id": 219,
+            "name": "Dueling",
+            "snippet": "When wielding a melee weapon in one hand and no other weapons, you gain a +2 bonus to damage.",
             "sourceId": 27,
             "sourcePageNumber": null,
             "spellListIds": []
@@ -4136,7 +4320,7 @@
           "componentId": 654,
           "componentTypeId": 12168134,
           "defaultSubtypes": [],
-          "id": "3-0-74769232",
+          "id": "3-0-86271013",
           "isInfinite": false,
           "isOptional": false,
           "label": null,
@@ -4152,7 +4336,7 @@
               "label": "Two-Weapon Fighting"
             }
           ],
-          "optionValue": 220,
+          "optionValue": 219,
           "parentChoiceId": null,
           "subType": null,
           "type": 3,
@@ -4274,6 +4458,74 @@
           "parentChoiceId": null,
           "subType": null,
           "type": 7,
+          "displayOrder": null
+        },
+        {
+          "componentId": 85,
+          "componentTypeId": 12168134,
+          "defaultSubtypes": [],
+          "id": "2-1403",
+          "isInfinite": false,
+          "isOptional": false,
+          "label": "Choose a Skill",
+          "options": [
+            { "description": null, "id": 3801, "label": "Athletics" },
+            { "description": null, "id": 3802, "label": "Acrobatics" },
+            { "description": null, "id": 3803, "label": "Sleight of Hand" },
+            { "description": null, "id": 3804, "label": "Stealth" },
+            { "description": null, "id": 3805, "label": "Arcana" },
+            { "description": null, "id": 3806, "label": "History" },
+            { "description": null, "id": 3807, "label": "Investigation" },
+            { "description": null, "id": 3808, "label": "Nature" },
+            { "description": null, "id": 3809, "label": "Religion" },
+            { "description": null, "id": 3810, "label": "Animal Handling" },
+            { "description": null, "id": 3811, "label": "Insight" },
+            { "description": null, "id": 3812, "label": "Medicine" },
+            { "description": null, "id": 3813, "label": "Perception" },
+            { "description": null, "id": 3814, "label": "Survival" },
+            { "description": null, "id": 3815, "label": "Deception" },
+            { "description": null, "id": 3816, "label": "Intimidation" },
+            { "description": null, "id": 3817, "label": "Performance" },
+            { "description": null, "id": 3818, "label": "Persuasion" }
+          ],
+          "optionValue": 3815,
+          "parentChoiceId": null,
+          "subType": 2,
+          "type": 2,
+          "displayOrder": null
+        },
+        {
+          "componentId": 85,
+          "componentTypeId": 12168134,
+          "defaultSubtypes": [],
+          "id": "2-1404",
+          "isInfinite": false,
+          "isOptional": false,
+          "label": "Choose a Skill",
+          "options": [
+            { "description": null, "id": 3801, "label": "Athletics" },
+            { "description": null, "id": 3802, "label": "Acrobatics" },
+            { "description": null, "id": 3803, "label": "Sleight of Hand" },
+            { "description": null, "id": 3804, "label": "Stealth" },
+            { "description": null, "id": 3805, "label": "Arcana" },
+            { "description": null, "id": 3806, "label": "History" },
+            { "description": null, "id": 3807, "label": "Investigation" },
+            { "description": null, "id": 3808, "label": "Nature" },
+            { "description": null, "id": 3809, "label": "Religion" },
+            { "description": null, "id": 3810, "label": "Animal Handling" },
+            { "description": null, "id": 3811, "label": "Insight" },
+            { "description": null, "id": 3812, "label": "Medicine" },
+            { "description": null, "id": 3813, "label": "Perception" },
+            { "description": null, "id": 3814, "label": "Survival" },
+            { "description": null, "id": 3815, "label": "Deception" },
+            { "description": null, "id": 3816, "label": "Intimidation" },
+            { "description": null, "id": 3817, "label": "Performance" },
+            { "description": null, "id": 3818, "label": "Persuasion" }
+          ],
+          "optionValue": 3817,
+          "parentChoiceId": null,
+          "subType": 2,
+          "type": 2,
           "displayOrder": null
         },
         {
@@ -4455,74 +4707,6 @@
           "subType": 1,
           "type": 2,
           "displayOrder": null
-        },
-        {
-          "componentId": 85,
-          "componentTypeId": 12168134,
-          "defaultSubtypes": [],
-          "id": "2-1403",
-          "isInfinite": false,
-          "isOptional": false,
-          "label": "Choose a Skill",
-          "options": [
-            { "description": null, "id": 3801, "label": "Athletics" },
-            { "description": null, "id": 3802, "label": "Acrobatics" },
-            { "description": null, "id": 3803, "label": "Sleight of Hand" },
-            { "description": null, "id": 3804, "label": "Stealth" },
-            { "description": null, "id": 3805, "label": "Arcana" },
-            { "description": null, "id": 3806, "label": "History" },
-            { "description": null, "id": 3807, "label": "Investigation" },
-            { "description": null, "id": 3808, "label": "Nature" },
-            { "description": null, "id": 3809, "label": "Religion" },
-            { "description": null, "id": 3810, "label": "Animal Handling" },
-            { "description": null, "id": 3811, "label": "Insight" },
-            { "description": null, "id": 3812, "label": "Medicine" },
-            { "description": null, "id": 3813, "label": "Perception" },
-            { "description": null, "id": 3814, "label": "Survival" },
-            { "description": null, "id": 3815, "label": "Deception" },
-            { "description": null, "id": 3816, "label": "Intimidation" },
-            { "description": null, "id": 3817, "label": "Performance" },
-            { "description": null, "id": 3818, "label": "Persuasion" }
-          ],
-          "optionValue": 3815,
-          "parentChoiceId": null,
-          "subType": 2,
-          "type": 2,
-          "displayOrder": null
-        },
-        {
-          "componentId": 85,
-          "componentTypeId": 12168134,
-          "defaultSubtypes": [],
-          "id": "2-1404",
-          "isInfinite": false,
-          "isOptional": false,
-          "label": "Choose a Skill",
-          "options": [
-            { "description": null, "id": 3801, "label": "Athletics" },
-            { "description": null, "id": 3802, "label": "Acrobatics" },
-            { "description": null, "id": 3803, "label": "Sleight of Hand" },
-            { "description": null, "id": 3804, "label": "Stealth" },
-            { "description": null, "id": 3805, "label": "Arcana" },
-            { "description": null, "id": 3806, "label": "History" },
-            { "description": null, "id": 3807, "label": "Investigation" },
-            { "description": null, "id": 3808, "label": "Nature" },
-            { "description": null, "id": 3809, "label": "Religion" },
-            { "description": null, "id": 3810, "label": "Animal Handling" },
-            { "description": null, "id": 3811, "label": "Insight" },
-            { "description": null, "id": 3812, "label": "Medicine" },
-            { "description": null, "id": 3813, "label": "Perception" },
-            { "description": null, "id": 3814, "label": "Survival" },
-            { "description": null, "id": 3815, "label": "Deception" },
-            { "description": null, "id": 3816, "label": "Intimidation" },
-            { "description": null, "id": 3817, "label": "Performance" },
-            { "description": null, "id": 3818, "label": "Persuasion" }
-          ],
-          "optionValue": 3817,
-          "parentChoiceId": null,
-          "subType": 2,
-          "type": 2,
-          "displayOrder": null
         }
       ],
       "feat": [],
@@ -4555,7 +4739,7 @@
             "maxUses": 0,
             "minNumberConsumed": 1,
             "name": null,
-            "numberUsed": 1,
+            "numberUsed": 0,
             "resetType": 1,
             "statModifierUsesId": 6,
             "operator": 1,
@@ -5477,20 +5661,20 @@
           "duration": null,
           "entityId": null,
           "entityTypeId": null,
-          "fixedValue": null,
-          "friendlySubtypeName": "Dual Wield Modifier Restrictions",
-          "friendlyTypeName": "Ignore",
-          "id": "844757",
+          "fixedValue": 2,
+          "friendlySubtypeName": "One-Handed Melee Attacks",
+          "friendlyTypeName": "Damage",
+          "id": "844756",
           "isGranted": true,
-          "modifierSubTypeId": 1041,
-          "modifierTypeId": 31,
+          "modifierSubTypeId": 810,
+          "modifierTypeId": 2,
           "requiresAttunement": false,
           "restriction": "",
           "statId": null,
-          "subType": "dual-wield-modifier-restrictions",
-          "type": "ignore",
-          "value": null,
-          "componentId": 220,
+          "subType": "one-handed-melee-attacks",
+          "type": "damage",
+          "value": 2,
+          "componentId": 219,
           "componentTypeId": 258900837
         }
       ],
@@ -5542,6 +5726,29 @@
           "type": "advantage",
           "value": null,
           "componentId": 4587,
+          "componentTypeId": 112130694
+        },
+        {
+          "availableToMulticlass": true,
+          "bonusTypes": [],
+          "dice": null,
+          "duration": null,
+          "entityId": null,
+          "entityTypeId": null,
+          "fixedValue": 2,
+          "friendlySubtypeName": "Unarmored Armor Class",
+          "friendlyTypeName": "Bonus",
+          "id": "51",
+          "isGranted": true,
+          "modifierSubTypeId": 801,
+          "modifierTypeId": 1,
+          "requiresAttunement": true,
+          "restriction": "",
+          "statId": null,
+          "subType": "unarmored-armor-class",
+          "type": "bonus",
+          "value": 2,
+          "componentId": 4594,
           "componentTypeId": 112130694
         },
         {
@@ -5640,6 +5847,29 @@
           "type": "damage",
           "value": null,
           "componentId": 4897,
+          "componentTypeId": 112130694
+        },
+        {
+          "availableToMulticlass": true,
+          "bonusTypes": [],
+          "dice": null,
+          "duration": null,
+          "entityId": 1,
+          "entityTypeId": 1472902489,
+          "fixedValue": 23,
+          "friendlySubtypeName": "Strength Score",
+          "friendlyTypeName": "Set",
+          "id": "16052820",
+          "isGranted": true,
+          "modifierSubTypeId": 175,
+          "modifierTypeId": 9,
+          "requiresAttunement": false,
+          "restriction": "",
+          "statId": null,
+          "subType": "strength-score",
+          "type": "set",
+          "value": 23,
+          "componentId": 1863243,
           "componentTypeId": 112130694
         }
       ],
@@ -6073,7 +6303,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 285, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "characterlevel"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6162,7 +6393,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 255, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "characterlevel"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6251,7 +6483,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 239, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6399,7 +6632,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 250, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "spellscale"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6544,7 +6778,10 @@
               "tags": ["Damage", "Control"],
               "tempHpDice": [],
               "version": null,
-              "sources": [{ "sourceId": 2, "pageNumber": 234, "sourceType": 1 }]
+              "sources": [
+                { "sourceId": 2, "pageNumber": 234, "sourceType": 1 }
+              ],
+              "scaleType": "spellscale"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6630,7 +6867,10 @@
               "tags": ["Utility"],
               "tempHpDice": [],
               "version": null,
-              "sources": [{ "sourceId": 2, "pageNumber": 255, "sourceType": 1 }]
+              "sources": [
+                { "sourceId": 2, "pageNumber": 255, "sourceType": 1 }
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6761,7 +7001,10 @@
               "tags": ["Damage", "Control", "Deception"],
               "tempHpDice": [],
               "version": null,
-              "sources": [{ "sourceId": 2, "pageNumber": 264, "sourceType": 1 }]
+              "sources": [
+                { "sourceId": 2, "pageNumber": 264, "sourceType": 1 }
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6850,7 +7093,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 252, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -6989,7 +7233,10 @@
               "tags": ["Control", "Debuff", "Warding"],
               "tempHpDice": [],
               "version": null,
-              "sources": [{ "sourceId": 4, "pageNumber": 170, "sourceType": 1 }]
+              "sources": [
+                { "sourceId": 4, "pageNumber": 170, "sourceType": 1 }
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7107,7 +7354,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 218, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "spelllevel"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7196,7 +7444,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 274, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7293,7 +7542,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 246, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7382,7 +7632,8 @@
               "sources": [
                 { "sourceId": 1, "pageNumber": null, "sourceType": 2 },
                 { "sourceId": 2, "pageNumber": 259, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "characterlevel"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7486,7 +7737,8 @@
               "version": null,
               "sources": [
                 { "sourceId": 27, "pageNumber": 151, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": "spellscale"
             },
             "definitionId": 0,
             "displayAsAttack": null,
@@ -7619,7 +7871,8 @@
               "version": null,
               "sources": [
                 { "sourceId": 27, "pageNumber": 165, "sourceType": 1 }
-              ]
+              ],
+              "scaleType": null
             },
             "definitionId": 0,
             "displayAsAttack": null,

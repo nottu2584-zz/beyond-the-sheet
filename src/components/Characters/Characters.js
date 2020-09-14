@@ -10,6 +10,8 @@ import { Abilities, Currencies, Item, SpellBook, Spells } from "../";
 import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
 import { GroupAbilities } from "../GroupAbilities";
+import { GroupStatus } from "../GroupStatus";
+import { Status } from "../Status";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,9 +74,10 @@ const Characters = (props) => {
         aria-label="full width tabs example"
       >
         <Tab label="Abilities" {...a11yProps(0)} />
-        <Tab label="Inventory" {...a11yProps(1)} />
-        <Tab label="Currencies" {...a11yProps(2)} />
-        <Tab label="Spells" {...a11yProps(3)} />
+        <Tab label="Status" {...a11yProps(1)} />
+        <Tab label="Inventory" {...a11yProps(2)} />
+        <Tab label="Currencies" {...a11yProps(3)} />
+        <Tab label="Spells" {...a11yProps(4)} />
       </Tabs>
       <SwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
@@ -90,61 +93,33 @@ const Characters = (props) => {
                   avatar={character.data.avatarUrl}
                   name={character.data.name}
                   abilities={character.abilities}
-                  skills={character.skills} 
+                  skills={character.skills}
                 ></Abilities>
               );
             })}
           </GroupAbilities>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <GroupInventory>
+          <GroupStatus>
             {characters.map((character, key) => {
-              return character.data.inventory.map((item, key) => {
-                return (
-                  <>
-                    <Item
-                      avatar={character.data.avatarUrl}
-                      characterName={character.data.name}
-                      key={key}
-                      name={item.definition.name}
-                      weight={
-                        item.definition.weight === 0
-                          ? "--"
-                          : item.definition.weight
-                      }
-                      cost={item.definition.cost ? item.definition.cost : "--"}
-                      rarity={item.definition.rarity}
-                      quantity={
-                        item.definition.stackable === true
-                          ? item.quantity
-                          : "--"
-                      }
-                      armorClass={
-                        item.definition.armorClass
-                          ? item.definition.armorClass + " AC"
-                          : null
-                      }
-                      type={item.definition.filterType}
-                      damageDice={
-                        item.definition.damage
-                          ? item.definition.damage.diceString +
-                            " " +
-                            item.definition.damageType
-                          : null
-                      }
-                      properties={
-                        item.definition.properties
-                          ? item.definition.properties
-                          : null
-                      }
-                    ></Item>
-                  </>
-                );
-              });
+              return (
+                <Status
+                  avatar={character.data.avatarUrl}
+                  characterName={character.data.name}
+                  key={key}
+                  hitPoints={character.hitPoints}
+                  armorClass={character.armorClass}
+                  experience={character.experience}
+                  conditions={character.conditions}
+                ></Status>
+              );
             })}
-          </GroupInventory>
+          </GroupStatus>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
+          <GroupInventory characters={characters}></GroupInventory>
+        </TabPanel>
+        <TabPanel value={value} index={3} dir={theme.direction}>
           <GroupCurrencies characters={characters}>
             {characters.map((character, key) => {
               return (
@@ -162,61 +137,56 @@ const Characters = (props) => {
             })}
           </GroupCurrencies>
         </TabPanel>
-        <TabPanel value={value} index={3} dir={theme.direction}>
+        <TabPanel value={value} index={4} dir={theme.direction}>
           {characters.map((character, key) => {
-            return (
-              <>
-                {character.data.classes.map((characterClass, key) => {
-                  return (
-                    <SpellBook
-                      cantripsKnown={
-                        characterClass.definition.spellRules
-                          .levelCantripsKnownMaxes[characterClass.level]
-                      }
-                      spellsKnown={
-                        characterClass.definition.spellRules
-                          .levelSpellKnownMaxes[characterClass.level]
-                      }
-                      spellSlots={
-                        characterClass.definition.spellRules.levelSpellSlots[
-                          characterClass.level
-                        ]
-                      }
-                    >
-                      {character.data.classSpells.map((classSpells, key) => {
-                        return classSpells.spells.map((spell, key) => {
-                          return (
-                            <>
-                              <Spells
-                                key={key}
-                                name={spell.definition.name}
-                                time={spell.activation.activationType}
-                                lvl={spell.definition.level}
-                                duration={
+            return character.data.classes.map((characterClass, key) => {
+              return (
+                <SpellBook
+                  key={key}
+                  cantripsKnown={
+                    characterClass.definition.spellRules
+                      .levelCantripsKnownMaxes[characterClass.level]
+                  }
+                  spellsKnown={
+                    characterClass.definition.spellRules.levelSpellKnownMaxes[
+                      characterClass.level
+                    ]
+                  }
+                  spellSlots={
+                    characterClass.definition.spellRules.levelSpellSlots[
+                      characterClass.level
+                    ]
+                  }
+                >
+                  {character.data.classSpells.map((classSpells, key) => {
+                    return classSpells.spells.map((spell, key) => {
+                      return (
+                          <Spells
+                            key={key}
+                            name={spell.definition.name}
+                            time={spell.activation.activationType}
+                            lvl={spell.definition.level}
+                            duration={
+                              spell.definition.duration.durationUnit
+                                ? spell.definition.duration.durationInterval +
+                                  " " +
                                   spell.definition.duration.durationUnit
-                                    ? spell.definition.duration
-                                        .durationInterval +
-                                      " " +
-                                      spell.definition.duration.durationUnit
-                                    : null
-                                }
-                                range={
-                                  spell.definition.range.rangeValue
-                                    ? spell.definition.range.rangeValue
-                                    : spell.definition.range.origin
-                                }
-                                components={spell.definition.components}
-                                DC={spell.definition.saveDcAbilityId}
-                              ></Spells>
-                            </>
-                          );
-                        });
-                      })}
-                    </SpellBook>
-                  );
-                })}
-              </>
-            );
+                                : null
+                            }
+                            range={
+                              spell.definition.range.rangeValue
+                                ? spell.definition.range.rangeValue
+                                : spell.definition.range.origin
+                            }
+                            components={spell.definition.components}
+                            DC={spell.definition.saveDcAbilityId}
+                          ></Spells>
+                      );
+                    });
+                  })}
+                </SpellBook>
+              );
+            });
           })}
         </TabPanel>
       </SwipeableViews>

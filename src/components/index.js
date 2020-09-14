@@ -7,3 +7,5 @@ export * from "./Item";
 export * from "./Inventory";
 export * from "./Currencies";
 export * from "./PersonalBelongings";
+export * from "./GroupStatus";
+export * from "./Status";
