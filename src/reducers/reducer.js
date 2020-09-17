@@ -179,11 +179,31 @@ const reducer = (state = initialState, action) => {
         };
       });
 
+      const hitPointsModifier = Object.keys(modifiers).reduce(
+        (acc, index) =>
+          acc +
+          modifiers[index].reduce(
+            (acc, modifier) =>
+              modifier.subType.includes("hit-points") && isBonus(modifier)
+                ? modifier.subType.includes("per-level")
+                  ? acc + modifier.value * levels.total
+                  : acc + modifier.value
+                : acc,
+            0
+          ),
+        0
+      );
+
+      console.log("HP", hitPointsModifier);
+      
       const maxHitPoints =
         action.payload.data.overrideHitPoints ||
         action.payload.data.baseHitPoints +
           action.payload.data.bonusHitPoints +
+          hitPointsModifier +
           modifier(constitution.value) * levels.total;
+
+      console.log("HP 2", maxHitPoints);
 
       const hitPoints = {
         base: action.payload.data.baseHitPoints,
@@ -216,19 +236,19 @@ const reducer = (state = initialState, action) => {
        * Additional armor bonuses from items
        */
 
-      const armoredItemBonus = itemBonus(
-        modifiers,
-        inventory,
-        "armor-class"
-      );
+      const armoredItemBonus = itemBonus(modifiers, inventory, "armor-class");
 
       const unarmoredItemBonus = itemBonus(
         modifiers,
         inventory,
         "unarmored-armor-class"
       );
-        
-      const unarmoredArmor = itemSet(modifiers, inventory, "unarmored-armor-class");
+
+      const unarmoredArmor = itemSet(
+        modifiers,
+        inventory,
+        "unarmored-armor-class"
+      );
 
       /**
        * Base armor overrides
@@ -237,30 +257,42 @@ const reducer = (state = initialState, action) => {
         .filter((value) => value.typeId === 4)
         .reduce((acc, value) => acc + value.value, 0);
 
-      const equippedArmorClass =
-        Math.max(
-          ...[
-            maxArmor(inventory, isLightArmor, modifier(dexterity.value)),
-            maxArmor(
-              inventory,
-              isMediumArmor,
-              modifier(dexterity.value) <= 2 ? modifier(dexterity.value) : 2
-            ),
-            maxArmor(inventory, isHeavyArmor),
-          ]
-        );
+      const equippedArmorClass = Math.max(
+        ...[
+          maxArmor(inventory, isLightArmor, modifier(dexterity.value)),
+          maxArmor(
+            inventory,
+            isMediumArmor,
+            isMediumArmorMaster(modifiers)
+              ? modifier(dexterity.value) <= 3
+                ? modifier(dexterity.value)
+                : 3
+              : modifier(dexterity.value) <= 2
+              ? modifier(dexterity.value)
+              : 2
+          ),
+          maxArmor(inventory, isHeavyArmor),
+        ]
+      );
+
+      console.log("FEAT", isMediumArmorMaster(modifiers));
 
       const equippedShield = maxArmor(inventory, isShield);
 
       const armorClass = armorClassOverride
         ? armorClassOverride
         : baseArmorOverride
-        ? baseArmorOverride + armorBonus + equippedShield + armoredItemBonus + unarmoredItemBonus
+        ? baseArmorOverride +
+          armorBonus +
+          equippedShield +
+          armoredItemBonus +
+          unarmoredItemBonus
         : equippedArmorClass
-        ? equippedArmorClass + armorBonus + equippedShield + armoredItemBonus 
+        ? equippedArmorClass + armorBonus + equippedShield + armoredItemBonus
         : 10 +
           modifier(dexterity.value) +
-          unarmoredArmor + armorBonus +
+          unarmoredArmor +
+          armorBonus +
           equippedShield +
           armoredItemBonus +
           unarmoredItemBonus;
@@ -597,6 +629,11 @@ const isGlobalAbilityHalfProf = (modifier) =>
   isHalfProf(modifier) && modifier.subType === "ability-checks";
 
 const isHalfProf = (modifier) => ~modifier.type.includes("half-proficiency");
+
+const isMediumArmorMaster = (modifiers) =>
+  modifiers.feat.some(
+    (modifier) => modifier.subType === "ac-max-dex-armored-modifier"
+  );
 
 const isAbilityHalfProf = (modifier, ability) => {
   return (
