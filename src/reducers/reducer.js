@@ -9,6 +9,15 @@ const characterAbilities = [
   "charisma",
 ];
 
+const characterSavingThrows = [
+  "strength-saving-throws",
+  "dexterity-saving-throws",
+  "constitution-saving-throws",
+  "intelligence-saving-throws",
+  "wisdom-saving-throws",
+  "charisma-saving-throws",
+];
+
 const characterSkills = [
   "acrobatics",
   "animal-handling",
@@ -128,6 +137,42 @@ const reducer = (state = initialState, action) => {
       };
 
       /**
+       * Sets the character saving throws array
+       */
+
+      const [
+        strengthSavingThrow,
+        dexteritySavingThrow,
+        constitutionSavingThrow,
+        intelligenceSavingThrow,
+        wisdomSavingThrow,
+        charismaSavingThrow,
+      ] = characterSavingThrows.map((savingThrow) => {
+        return {
+          proficiency: Object.keys(modifiers).some((index) =>
+            modifiers[index].some((modifier) =>
+              isSavingThrowProficiency(modifier, savingThrow)
+            )
+          ),
+          bonus: Object.keys(modifiers).reduce(
+            (acc, index) =>
+              acc +
+              modifiers[index].reduce(
+                (acc, modifier) =>
+                  isBonus(modifier) && isSavingThrows(modifier)
+                    ? index === "item" &&
+                      isEquippedOrAttuned(modifier, inventory)
+                      ? acc + modifier.value
+                      : acc
+                    : acc,
+                0
+              ),
+            0
+          ),
+        };
+      });
+
+      /**
        * Sets the character skill array
        */
       const [
@@ -195,7 +240,7 @@ const reducer = (state = initialState, action) => {
       );
 
       console.log("HP", hitPointsModifier);
-      
+
       const maxHitPoints =
         action.payload.data.overrideHitPoints ||
         action.payload.data.baseHitPoints +
@@ -721,6 +766,12 @@ const isSkillProficiency = (modifier, skill) => {
   );
 };
 
+const isSavingThrowProficiency = (modifier, savingThrow) => {
+  isAbility(modifier) &&
+    modifier.type === "proficiency" &&
+    modifier.subType.includes(savingThrow);
+};
+
 const modifier = (stat) => {
   return Math.floor((stat - 10) / 2);
 };
@@ -740,6 +791,11 @@ const modifierSkills = (
     : halfProficiency
     ? modifier(skill) + Math.floor(compProf / 2)
     : modifier(skill);
+};
+
+const modifierSavingThrows = (skill, levels, proficiency = false) => {
+  const compProf = Math.ceil(levels / 4) + 1;
+  return proficiency ? modifier(skill) + compProf : modifier(skill);
 };
 
 export default reducer;
