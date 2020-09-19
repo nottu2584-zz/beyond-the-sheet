@@ -11,7 +11,6 @@ import { Abilities, Currencies, SpellBook, Spells } from "../";
 import { GroupAbilities } from "../GroupAbilities";
 import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
-import { GroupAbilities } from "../GroupAbilities";
 import { GroupStatus } from "../GroupStatus";
 import { Status } from "../Status";
 
