@@ -15,7 +15,6 @@ import { Status } from "../Status";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
