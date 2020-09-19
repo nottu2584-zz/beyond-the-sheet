@@ -19,25 +19,32 @@ const GroupAbilities = (props) => {
       <TableHead>
         <TableRow>
           <TableCell></TableCell>
+          <TableCell>Initative</TableCell>
           <TableCell>STR</TableCell>
+          <TableCell>Saving Trhow</TableCell>
           <TableCell>Athletics</TableCell>
           <TableCell>DEX</TableCell>
+          <TableCell>Saving Trhow</TableCell>
           <TableCell>Acrobatics</TableCell>
           <TableCell>Sleight of hand</TableCell>
           <TableCell>Stealth</TableCell>
           <TableCell>CON</TableCell>
+          <TableCell>Saving Trhow</TableCell>
           <TableCell>INT</TableCell>
+          <TableCell>Saving Trhow</TableCell>
           <TableCell>Arcana</TableCell>
           <TableCell>History</TableCell>
           <TableCell>Investigation</TableCell>
           <TableCell>Nature</TableCell>
           <TableCell>Religion</TableCell>
           <TableCell>WIS</TableCell>
+          <TableCell>Saving Trhow</TableCell>
           <TableCell>Animal Handling</TableCell>
           <TableCell>Insight</TableCell>
           <TableCell>Perception</TableCell>
           <TableCell>Survival</TableCell>
           <TableCell>CHA</TableCell>
+          <TableCell>Saving Trhow</TableCell>
           <TableCell>Deception</TableCell>
           <TableCell>Intimidation</TableCell>
           <TableCell>Performance</TableCell>

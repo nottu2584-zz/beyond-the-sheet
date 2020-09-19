@@ -92,6 +92,8 @@ const Characters = (props) => {
                   avatar={character.data.avatarUrl}
                   name={character.data.name}
                   abilities={character.abilities}
+                  initiative={character.initiative}
+                  savingThrows={character.savingThrows}
                   skills={character.skills}
                 ></Abilities>
               );
