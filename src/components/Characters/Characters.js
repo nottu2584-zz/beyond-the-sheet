@@ -1,4 +1,5 @@
 import Box from "@material-ui/core/Box";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
@@ -6,7 +7,8 @@ import Tabs from "@material-ui/core/Tabs";
 import PropTypes from "prop-types";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
-import { Abilities, Currencies, Item, SpellBook, Spells } from "../";
+import { Abilities, Currencies, SpellBook, Spells } from "../";
+import { GroupAbilities } from "../GroupAbilities";
 import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
 import { GroupAbilities } from "../GroupAbilities";
@@ -78,6 +80,7 @@ const Characters = (props) => {
         <Tab label="Currencies" {...a11yProps(3)} />
         <Tab label="Spells" {...a11yProps(4)} />
       </Tabs>
+      <LinearProgress />
       <SwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={value}
@@ -192,39 +195,5 @@ const Characters = (props) => {
     </Paper>
   );
 };
-
-// const Characters = (props) => {
-//   const classes = useStyles();
-//   const [value, setValue] = useState(0);
-
-//   const { characters } = props;
-
-//   return (
-//     <Paper elevation={3}>
-//       <Tabs indicatorColor="primary" textColor="primary">
-//         <Tab label="Stats" />
-//         <TabPanel value={value} index={0}>
-//           <GroupStats>
-//             {characters.map((character, key) => {
-//               return (
-//                 <Abilities
-//                   key={key}
-//                   avatar={character.data.avatarUrl}
-//                   name={character.data.name}
-//                   strength={character.stats.strength}
-//                   dexterity={character.stats.dexterity}
-//                   constitution={character.stats.constitution}
-//                   intelligence={character.stats.intelligence}
-//                   wisdom={character.stats.wisdom}
-//                   charisma={character.stats.charisma}
-//                 ></Abilities>
-//               );
-//             })}
-//           </GroupStats>
-//         </TabPanel>
-//       </Tabs>
-//     </Paper>
-//   );
-// };
 
 export default Characters;
