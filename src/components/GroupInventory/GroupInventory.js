@@ -4,7 +4,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Item } from "../Item";
 
 const useStyles = makeStyles({
@@ -22,65 +22,78 @@ const StyledTableRow = withStyles((theme) => ({
 const GroupInventory = (props) => {
   const classes = useStyles();
   const { characters } = props;
+  const [inventory, setInventory] = useState([]);
 
-  const inventory = []
-    .concat(
-      ...characters.map((character, key) => {
-        return character.data.inventory.map((item, key) => {
-          return {
-            id: item.definition.id,
-            armorClass: item.definition.armorClass
-              ? item.definition.armorClass + " AC"
-              : null,
-            avatarUrl: item.definition.avatarUrl || null,
-            cost: item.definition.cost || "--",
-            damageDice: item.definition.damage
-              ? item.definition.damage.diceString +
-                " " +
-                item.definition.damageType
-              : null,
-            name: item.definition.name,
-            owners: [
-              {
-                id: character.data.id,
-                avatarUrl: character.data.avatarUrl,
-                name: character.data.name,
-              },
-            ],
-            properties: item.definition.properties
-              ? item.definition.properties
-              : null,
-            quantity: item.definition.stackable === true ? item.quantity : "--",
-            rarity: item.definition.rarity,
-            type: item.definition.filterType,
-            weight: item.definition.weight || "--",
-          };
-        });
+  useEffect(() => {
+    setInventory(
+      Object.values({
+        ...[]
+          .concat(
+            ...characters.map((character, key) => {
+              return character.data.inventory.map((item, key) => {
+                return {
+                  id: item.definition.id,
+                  armorClass: item.definition.armorClass
+                    ? item.definition.armorClass + " AC"
+                    : null,
+                  avatarUrl: item.definition.avatarUrl || null,
+                  cost: item.definition.cost || "--",
+                  damageDice: item.definition.damage
+                    ? item.definition.damage.diceString +
+                      " " +
+                      item.definition.damageType
+                    : null,
+                  name: item.definition.name,
+                  owners: [
+                    {
+                      id: character.data.id,
+                      avatarUrl: character.data.avatarUrl,
+                      name: character.data.name,
+                      quantity:
+                        item.definition.stackable === true
+                          ? item.quantity
+                          : "--",
+                    },
+                  ],
+                  properties: item.definition.properties
+                    ? item.definition.properties
+                    : null,
+                  quantity:
+                    item.definition.stackable === true ? item.quantity : "--",
+                  rarity: item.definition.rarity,
+                  stackable: item.definition.stackable,
+                  type: item.definition.filterType,
+                  weight: item.definition.weight || "--",
+                };
+              });
+            })
+          )
+          .reduce((acc, item) => {
+            if (acc[item.id]) {
+              acc[item.id].owners.push(...item.owners);
+              acc[item.id].quantity += item.owners.reduce(
+                (a, b) => a + b.quantity,
+                0
+              );
+            } else acc[item.id] = { ...item };
+            return acc;
+          }, []),
       })
-    )
-    .reduce((obj, item) => {
-      obj[item.id]
-        ? obj[item.id].owners.push(...item.owners)
-        : (obj[item.id] = { ...item });
-      return obj;
-    }, []);
-
-  useEffect(() => {});
-
-  console.log("inventory", inventory);
+    );
+  }, []);
 
   return (
     <Table className={classes.table}>
       <TableHead>
         <TableRow>
           <TableCell></TableCell>
-          <TableCell>NAME</TableCell>
-          <TableCell>WEIGHT</TableCell>
-          <TableCell>QUANTITY</TableCell>
-          <TableCell>COST</TableCell>
-          <TableCell>RARITY</TableCell>
-          <TableCell>TYPE</TableCell>
-          <TableCell>PROPERTIES</TableCell>
+          <TableCell>Name</TableCell>
+          <TableCell>Weight</TableCell>
+          <TableCell>Quantity</TableCell>
+          <TableCell>Cost</TableCell>
+          <TableCell>Rarity</TableCell>
+          <TableCell>Type</TableCell>
+          <TableCell>Properties</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

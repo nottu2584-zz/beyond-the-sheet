@@ -14,6 +14,7 @@ const darkTheme = createMuiTheme({
 export const initialState = {
   data: {},
   characters: [],
+  loading: true
 };
 
 export const StoreContext = createContext(initialState);
@@ -27,7 +28,7 @@ const App = () => {
         <StoreContext.Provider value={{ state, dispatch }}>
           <content className="App-content useContext">
             <ImportCharacterForm></ImportCharacterForm>
-            <Characters characters={state.characters}></Characters>
+            <Characters characters={state.characters} loading={state.loading}></Characters>
           </content>
         </StoreContext.Provider>
       </ThemeProvider>

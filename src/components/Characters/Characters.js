@@ -1,4 +1,5 @@
 import Box from "@material-ui/core/Box";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
@@ -6,10 +7,10 @@ import Tabs from "@material-ui/core/Tabs";
 import PropTypes from "prop-types";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
-import { Abilities, Currencies, Item, SpellBook, Spells } from "../";
+import { Abilities, Currencies, SpellBook, Spells } from "../";
+import { GroupAbilities } from "../GroupAbilities";
 import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
-import { GroupAbilities } from "../GroupAbilities";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -76,6 +77,7 @@ const Characters = (props) => {
         <Tab label="Currencies" {...a11yProps(2)} />
         <Tab label="Spells" {...a11yProps(3)} />
       </Tabs>
+      <LinearProgress />
       <SwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={value}
@@ -90,7 +92,7 @@ const Characters = (props) => {
                   avatar={character.data.avatarUrl}
                   name={character.data.name}
                   abilities={character.abilities}
-                  skills={character.skills} 
+                  skills={character.skills}
                 ></Abilities>
               );
             })}
