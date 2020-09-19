@@ -9,3 +9,4 @@ export * from "./Currencies";
 export * from "./PersonalBelongings";
 export * from "./GroupStatus";
 export * from "./Status";
+export * from "./CharacterCard";
