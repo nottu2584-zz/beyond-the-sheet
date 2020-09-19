@@ -114,14 +114,9 @@ const reducer = (state = initialState, action) => {
       wisdom.value = statOverrides[4].value || wisdom.value;
       charisma.value = statOverrides[5].value || charisma.value;
 
-      console.log("DEX", dexterity.value);
-
       /**
        * Checks for half proficiency on ability checks (Jack of All Trades, etc.)
        */
-      const halfProficiency = Object.keys(modifiers).some((index) =>
-        modifiers[index].some((modifier) => isGlobalAbilityHalfProf(modifier))
-      );
 
       const levels = {
         classes: action.payload.data.classes.map((characterClass, key) => {
@@ -160,10 +155,11 @@ const reducer = (state = initialState, action) => {
               modifiers[index].reduce(
                 (acc, modifier) =>
                   isBonus(modifier) && isSavingThrows(modifier)
-                    ? index === "item" &&
-                      isEquippedOrAttuned(modifier, inventory)
-                      ? acc + modifier.value
-                      : acc
+                    ? index === "item"
+                      ? isEquippedOrAttuned(modifier, inventory)
+                        ? acc + modifier.value
+                        : acc
+                      : acc + modifier.value
                     : acc,
                 0
               ),
@@ -171,6 +167,31 @@ const reducer = (state = initialState, action) => {
           ),
         };
       });
+
+      const initiative = {
+        halfProficiency: Object.keys(modifiers).some((index) =>
+          modifiers[index].some(
+            (modifier) =>
+              isHalfProf(modifier) && modifier.subType === "initiative"
+          )
+        ),
+        bonus: Object.keys(modifiers).reduce(
+          (acc, index) =>
+            acc +
+            modifiers[index].reduce(
+              (acc, modifier) =>
+                isBonus(modifier) && isAbilityChecks(modifier)
+                  ? index === "item"
+                    ? isEquippedOrAttuned(modifier, inventory)
+                      ? acc + modifier.value
+                      : acc
+                    : acc + modifier.value
+                  : acc,
+              0
+            ),
+          0
+        ),
+      };
 
       /**
        * Sets the character skill array
@@ -205,17 +226,23 @@ const reducer = (state = initialState, action) => {
               isSkillProficiency(modifier, skill)
             )
           ),
-          halfProficiency: halfProficiency,
+          halfProficiency: Object.keys(modifiers).some((index) =>
+            modifiers[index].some(
+              (modifier) =>
+                isHalfProf(modifier) && modifier.subType === "ability-checks"
+            )
+          ),
           bonus: Object.keys(modifiers).reduce(
             (acc, index) =>
               acc +
               modifiers[index].reduce(
                 (acc, modifier) =>
                   isBonus(modifier) && isAbilityChecks(modifier)
-                    ? index === "item" &&
-                      isEquippedOrAttuned(modifier, inventory)
-                      ? acc + modifier.value
-                      : acc
+                    ? index === "item"
+                      ? isEquippedOrAttuned(modifier, inventory)
+                        ? acc + modifier.value
+                        : acc
+                      : acc + modifier.value
                     : acc,
                 0
               ),
@@ -239,16 +266,12 @@ const reducer = (state = initialState, action) => {
         0
       );
 
-      console.log("HP", hitPointsModifier);
-
       const maxHitPoints =
         action.payload.data.overrideHitPoints ||
         action.payload.data.baseHitPoints +
           action.payload.data.bonusHitPoints +
           hitPointsModifier +
           modifier(constitution.value) * levels.total;
-
-      console.log("HP 2", maxHitPoints);
 
       const hitPoints = {
         base: action.payload.data.baseHitPoints,
@@ -320,8 +343,6 @@ const reducer = (state = initialState, action) => {
         ]
       );
 
-      console.log("FEAT", isMediumArmorMaster(modifiers));
-
       const equippedShield = maxArmor(inventory, isShield);
 
       const armorClass = armorClassOverride
@@ -349,6 +370,32 @@ const reducer = (state = initialState, action) => {
               ...state.characters,
               {
                 ...action.payload,
+                abilities: {
+                  strength: {
+                    ...strength,
+                    modifier: modifier(strength.value),
+                  },
+                  dexterity: {
+                    ...dexterity,
+                    modifier: modifier(dexterity.value),
+                  },
+                  constitution: {
+                    ...constitution,
+                    modifier: modifier(constitution.value),
+                  },
+                  intelligence: {
+                    ...intelligence,
+                    modifier: modifier(intelligence.value),
+                  },
+                  wisdom: {
+                    ...wisdom,
+                    modifier: modifier(wisdom.value),
+                  },
+                  charisma: {
+                    ...charisma,
+                    modifier: modifier(charisma.value),
+                  },
+                },
                 armorClass: armorClass,
                 conditions: action.payload.data.conditions,
                 experience: {
@@ -356,6 +403,73 @@ const reducer = (state = initialState, action) => {
                 },
                 hitPoints: {
                   ...hitPoints,
+                },
+                initiative: {
+                  ...initiative,
+                  value:
+                    modifierSkills(
+                      dexterity.value,
+                      levels.total,
+                      false,
+                      false,
+                      initiative.halfProficiency
+                    ) + initiative.bonus,
+                },
+                savingThrows: {
+                  strength: {
+                    ...strengthSavingThrow,
+                    value:
+                      modifierSavingThrows(
+                        strength.value,
+                        levels.total,
+                        strengthSavingThrow.proficiency
+                      ) + strengthSavingThrow.bonus,
+                  },
+                  dexterity: {
+                    ...dexteritySavingThrow,
+                    value:
+                      modifierSavingThrows(
+                        dexterity.value,
+                        levels.total,
+                        dexteritySavingThrow.proficiency
+                      ) + dexteritySavingThrow.bonus,
+                  },
+                  constitution: {
+                    ...constitutionSavingThrow,
+                    value:
+                      modifierSavingThrows(
+                        constitution.value,
+                        levels.total,
+                        constitutionSavingThrow.proficiency
+                      ) + constitutionSavingThrow.bonus,
+                  },
+                  intelligence: {
+                    ...intelligenceSavingThrow,
+                    value:
+                      modifierSavingThrows(
+                        intelligence.value,
+                        levels.total,
+                        intelligenceSavingThrow.proficiency
+                      ) + intelligenceSavingThrow.bonus,
+                  },
+                  wisdom: {
+                    ...wisdomSavingThrow,
+                    value:
+                      modifierSavingThrows(
+                        wisdom.value,
+                        levels.total,
+                        wisdomSavingThrow.proficiency
+                      ) + wisdomSavingThrow.bonus,
+                  },
+                  charisma: {
+                    ...charismaSavingThrow,
+                    value:
+                      modifierSavingThrows(
+                        charisma.value,
+                        levels.total,
+                        charismaSavingThrow.proficiency
+                      ) + charismaSavingThrow.bonus,
+                  },
                 },
                 skills: {
                   acrobatics: {
@@ -546,32 +660,6 @@ const reducer = (state = initialState, action) => {
                       ) + survival.bonus,
                   },
                 },
-                abilities: {
-                  strength: {
-                    ...strength,
-                    modifier: modifier(strength.value),
-                  },
-                  dexterity: {
-                    ...dexterity,
-                    modifier: modifier(dexterity.value),
-                  },
-                  constitution: {
-                    ...constitution,
-                    modifier: modifier(constitution.value),
-                  },
-                  intelligence: {
-                    ...intelligence,
-                    modifier: modifier(intelligence.value),
-                  },
-                  wisdom: {
-                    ...wisdom,
-                    modifier: modifier(wisdom.value),
-                  },
-                  charisma: {
-                    ...charisma,
-                    modifier: modifier(charisma.value),
-                  },
-                },
               },
             ],
           }
@@ -670,9 +758,6 @@ const isInitiative = (modifier) => ~modifier.subType.includes("initiative");
 const isGlobalAbilityBonus = (modifier) =>
   isBonus(modifier) && modifier.subType === "ability-checks";
 
-const isGlobalAbilityHalfProf = (modifier) =>
-  isHalfProf(modifier) && modifier.subType === "ability-checks";
-
 const isHalfProf = (modifier) => ~modifier.type.includes("half-proficiency");
 
 const isMediumArmorMaster = (modifiers) =>
@@ -708,13 +793,6 @@ const isAbility = (modifier) => {
 };
 
 const isAbilitySet = (modifier, ability) => {
-  // if (modifier.subType === "strength-score") {
-  // console.log("Entrada", [modifier,ability] )
-  // console.log(
-  //   "Salida",
-  //   isAbility(modifier) && isSet(modifier) && modifier.subType.includes(ability)
-  //   );
-  // } else return "No está"
   return (
     isAbility(modifier) && isSet(modifier) && modifier.subType.includes(ability)
   );
@@ -766,36 +844,32 @@ const isSkillProficiency = (modifier, skill) => {
   );
 };
 
-const isSavingThrowProficiency = (modifier, savingThrow) => {
-  isAbility(modifier) &&
-    modifier.type === "proficiency" &&
-    modifier.subType.includes(savingThrow);
+const isSavingThrowProficiency = (modifier, savingThrow) =>
+  modifier.type === "proficiency" && modifier.subType === savingThrow;
+
+const modifier = (ability) => {
+  return Math.floor((ability - 10) / 2);
 };
 
-const modifier = (stat) => {
-  return Math.floor((stat - 10) / 2);
-};
+const proficiency = (level) => Math.ceil(level / 4) + 1;
 
 const modifierSkills = (
-  skill,
+  ability,
   levels,
-  proficiency = false,
-  expertise = false,
+  hasProficiency = false,
+  hasExpertise = false,
   halfProficiency = false
 ) => {
-  const compProf = Math.ceil(levels / 4) + 1;
-  return proficiency
-    ? expertise
-      ? modifier(skill) + 2 * compProf
-      : modifier(skill) + compProf
+  return hasProficiency
+    ? hasExpertise
+      ? modifier(ability) + 2 * proficiency(levels)
+      : modifier(ability) + proficiency(levels)
     : halfProficiency
-    ? modifier(skill) + Math.floor(compProf / 2)
-    : modifier(skill);
+    ? modifier(ability) + Math.floor(proficiency(levels) / 2)
+    : modifier(ability);
 };
 
-const modifierSavingThrows = (skill, levels, proficiency = false) => {
-  const compProf = Math.ceil(levels / 4) + 1;
-  return proficiency ? modifier(skill) + compProf : modifier(skill);
-};
+const modifierSavingThrows = (ability, levels, hasProficiency = false) =>
+  hasProficiency ? modifier(ability) + proficiency(levels) : modifier(ability);
 
 export default reducer;
