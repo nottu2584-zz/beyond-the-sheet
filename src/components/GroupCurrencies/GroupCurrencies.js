@@ -40,7 +40,7 @@ const GroupCurrencies = (props) => {
   }, 0);
 
   const cp = props.children.reduce((acc, child) => {
-    return acc + child.props.sp;
+    return acc + child.props.cp;
   }, 0);
 
   return (
@@ -71,7 +71,7 @@ const GroupCurrencies = (props) => {
             <TableCell>{sp}</TableCell>
             <TableCell>{cp}</TableCell>
             <TableCell>
-              {toGold({ pp: pp, gp: gp, ep: ep, sp: sp, cp: cp })}
+              {Math.round(toGold({ pp: pp, gp: gp, ep: ep, sp: sp, cp: cp }))}
             </TableCell>
           </TableRow>
         </TableBody>

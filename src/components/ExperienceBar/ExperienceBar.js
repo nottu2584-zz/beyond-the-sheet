@@ -1,6 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles({
   root: {
@@ -12,27 +15,39 @@ const ExperienceBar = (props) => {
   const classes = useStyles();
   const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          return 0;
-        }
-        const diff = Math.random() * 10;
-        return Math.min(oldProgress + diff, 100);
-      });
-    }, 500);
+  const { currentXp, nextLevelXp, percent, level } = props;
 
-    return () => {
-      clearInterval(timer);
-    };
+  function LinearProgressWithLabel(propsProgress) {
+    return (
+      <Box display="flex" alignItems="center">
+        <Box minWidth={35}>
+          <Typography variant="caption" color="textSecondary">
+            Lvl {level}
+          </Typography>
+        </Box>
+        <Box width="100%" mr={1}>
+          <LinearProgress variant="determinate" {...propsProgress} />
+        </Box>
+        <Box minWidth={35}>
+          <Typography variant="caption" color="textSecondary">
+            Lvl {level + 1}
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
+  useEffect(() => {
+    setProgress(progress);
   }, []);
 
   return (
     <div className={classes.root}>
-      <LinearProgress variant="determinate" value={progress} />
+      <LinearProgressWithLabel value={percent} />
+      <Typography variant="body2" gutterBottom>
+        {currentXp}/{nextLevelXp} XP
+      </Typography>
     </div>
   );
-}
+};
 
-export default ExperienceBar
+export default ExperienceBar;

@@ -51,7 +51,7 @@ const Currencies = (props) => {
       <TableCell>{sp}</TableCell>
       <TableCell>{cp}</TableCell>
       <TableCell>
-        {toGold({ pp: pp, gp: gp, ep: ep, sp: sp, cp: cp })}
+        {Math.round(toGold({ pp: pp, gp: gp, ep: ep, sp: sp, cp: cp }))}
       </TableCell>
     </>
   );

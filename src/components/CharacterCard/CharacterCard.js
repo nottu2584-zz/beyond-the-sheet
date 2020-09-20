@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
+import { ExperienceBar } from "../ExperienceBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,10 +77,15 @@ const CharacterCard = (props) => {
               {gender} {race} {charClass} {levels}
             </Typography>
             <Typography variant="body1" component="p">
-                HP:{currentHp}/{hpMax} AC:{ac}
+              HP: {currentHp}/{hpMax} AC: {ac}
             </Typography>
             <Typography variant="body2" component="p">
-                XP:{experience} Conditions: {conditions}
+              <ExperienceBar
+                currentXp={experience.currentXp}
+                nextLevelXp={experience.nextLevelXp}
+                percent={experience.percent}
+                level={levels}
+              ></ExperienceBar>
             </Typography>
           </CardContent>
         </div>
