@@ -1,7 +1,9 @@
+import Paper from "@material-ui/core/Paper";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import React, { useEffect, useState } from "react";
@@ -53,6 +55,7 @@ const GroupInventory = (props) => {
                         item.definition.stackable === true
                           ? item.quantity
                           : "--",
+                      weight: item.definition.weight || "--",
                     },
                   ],
                   properties: item.definition.properties
@@ -75,51 +78,56 @@ const GroupInventory = (props) => {
                 (a, b) => a + b.quantity,
                 0
               );
+              acc[item.id].weight +=
+                item.owners.reduce((a, b) => a + b.quantity, 0) *
+                acc[item.id].weight;
             } else acc[item.id] = { ...item };
             return acc;
           }, []),
-      })
+      }).sort((a, b) =>
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+      )
     );
-  }, []);
+  }, [characters]);
 
   return (
-    <Table className={classes.table}>
-      <TableHead>
-        <TableRow>
-          <TableCell></TableCell>
-          <TableCell>Name</TableCell>
-          <TableCell>Weight</TableCell>
-          <TableCell>Quantity</TableCell>
-          <TableCell>Cost</TableCell>
-          <TableCell>Rarity</TableCell>
-          <TableCell>Type</TableCell>
-          <TableCell>Properties</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {inventory.map((item, key) => {
-          return (
-            <Item
-              key={key}
-              armorClass={item.armorClass ? item.armorClass + " AC" : null}
-              damageDice={
-                item.damage
-                  ? item.damage.diceString + " " + item.damageType
-                  : null
-              }
-              cost={item.cost ? item.cost : "--"}
-              name={item.name}
-              owners={item.owners}
-              properties={item.properties}
-              quantity={item.stackable === true ? item.quantity : "--"}
-              rarity={item.rarity}
-              type={item.filterType}
-              weight={item.weight === 0 ? "--" : item.weight}
-            ></Item>
-          );
-        })}
-      </TableBody>
-    </Table>
+    <TableContainer component={Paper}>
+      <Table aria-label="collapsible table" className={classes.table}>
+        <TableHead>
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Weight</TableCell>
+            <TableCell>Quantity</TableCell>
+            <TableCell>Cost</TableCell>
+            <TableCell>Notes</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {inventory.map((item, key) => {
+            return (
+              <Item
+                key={key}
+                armorClass={item.armorClass ? item.armorClass + " AC" : null}
+                damageDice={
+                  item.damage
+                    ? item.damage.diceString + " " + item.damageType
+                    : null
+                }
+                cost={item.cost}
+                name={item.name}
+                owners={item.owners}
+                properties={item.properties}
+                quantity={item.stackable}
+                rarity={item.rarity}
+                type={item.filterType}
+                weight={item.weight}
+              ></Item>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
