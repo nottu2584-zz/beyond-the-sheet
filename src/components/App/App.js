@@ -31,16 +31,16 @@ const App = () => {
             <ImportCharacterForm></ImportCharacterForm>
             <Characters characters={state.characters} loading={state.loading}></Characters>
             <CharacterCard
-              avatar="https://i.pinimg.com/originals/48/62/d6/4862d6cf097183b89d6b04c83fe681fb.jpg"
-              name="Oz de Mezro"
-              race="Tiefling"
-              currentHp="50"
-              hpMax="75"
-              ac="15"
-              conditions="Charmed"
-              charClass="Bard"
-              levels="10"
-              experience="64000"
+              avatar="https://d2j8kvlhepn2ch.cloudfront.net/wp-content/uploads/gatito-pequeno-pies-166153.jpg"
+              name="Gatito"
+              race="Europeo"
+              currentHp="3"
+              hpMax="15"
+              ac="11"
+              conditions="--"
+              charClass="Rogue"
+              levels={1}
+              experience={{ currentXp: 150, nextLevelXp: 300, percent: 50}}
               gender="Male"
             ></CharacterCard>
           </content>

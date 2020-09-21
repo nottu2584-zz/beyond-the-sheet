@@ -8,6 +8,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
 import React from "react";
+import { ExperienceBar } from "../ExperienceBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -50,8 +51,8 @@ const Status = (props) => {
     )
     .reduce((acc, value) => {
       return {
-        level: value,
-        nextLevel: xpTable[xpTable.indexOf(value) + 1],
+        currentXp: value,
+        nextLevelXp: xpTable[xpTable.indexOf(value) + 1],
         percent:
           ((experience.value - value) /
             (xpTable[xpTable.indexOf(value) + 1] - value)) *
@@ -108,7 +109,11 @@ const Status = (props) => {
       </TableCell>
       <TableCell>{armorClass}</TableCell>
       <TableCell>
-        <LinearProgress value={Math.round(xp.percent)} />
+        <ExperienceBar
+          currentXp={xp.level}
+          nextLevelXp={xp.nextLevel}
+          percent={xp.percent}
+        ></ExperienceBar>
       </TableCell>
       <TableCell>
         {conditions
