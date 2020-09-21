@@ -9,6 +9,8 @@ import TableHead from "@material-ui/core/TableHead";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import React from "react";
+import Grid from "@material-ui/core/Grid";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { CharacterCard } from "../CharacterCard";
 
 const useStyles = makeStyles((theme) => ({
