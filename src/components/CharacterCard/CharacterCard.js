@@ -81,9 +81,7 @@ const CharacterCard = (props) => {
             </Typography>
             <Typography variant="body2" component="p">
               <ExperienceBar
-                currentXp={experience.currentXp}
-                nextLevelXp={experience.nextLevelXp}
-                percent={experience.percent}
+                percent={experience}
                 level={levels}
               ></ExperienceBar>
             </Typography>

@@ -44,7 +44,6 @@ const ExperienceBar = (props) => {
     <div className={classes.root}>
       <LinearProgressWithLabel value={percent} />
       <Typography variant="body2" gutterBottom>
-        {currentXp}/{nextLevelXp} XP
       </Typography>
     </div>
   );
