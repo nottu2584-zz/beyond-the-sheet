@@ -1,16 +1,9 @@
+import { ClickAwayListener } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableHead from "@material-ui/core/TableHead";
-import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
-import React from "react";
-import Grid from "@material-ui/core/Grid";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import React, { useState } from "react";
 import { CharacterCard } from "../CharacterCard";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +12,23 @@ const useStyles = makeStyles((theme) => ({
 
 const CharacterTooltip = (props) => {
   const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
+  const [disableHover, setHover] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+    setHover(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setHover(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   const {
     avatar,
@@ -37,6 +47,11 @@ const CharacterTooltip = (props) => {
 
   return (
     <Tooltip
+      open={open}
+      disableHoverListener={disableHover}
+      onClose={handleClose}
+      onOpen={handleOpen}
+      onClick={handleClick}
       title={
         <CharacterCard
           avatar={avatar}

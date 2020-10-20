@@ -89,24 +89,6 @@ const CharacterCard = (props) => {
         </div>
       </Card>
     );
-
-//   return (
-//     <>
-//       <div>
-//         <img src={avatar} alt="Character Avatar"></img>
-//       </div>
-//       <div>{name}</div>
-//       <div>{charClass}</div>
-//       <div>Lvl: {levels}</div>
-//       <div>{race}</div>
-//       <div>
-//         Hp: {currentHp}/{hpMax}
-//       </div>
-//       <div>Ac: {ac}</div>
-//       <div>Xp: {experience}</div>
-//       <div>Conditions: {conditions}</div>
-//     </>
-//   );
 };
 
 export default CharacterCard;

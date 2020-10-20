@@ -35,7 +35,7 @@ const App = () => {
               loading={state.loading}
             ></Characters>
             <CharacterTooltip
-              avatar="https://d2j8kvlhepn2ch.cloudfront.net/wp-content/uploads/gatito-pequeno-pies-166153.jpg"
+              avatar="https://www.purina-latam.com/sites/g/files/auxxlc391/files/styles/facebook_share/public/Purina%C2%AE%20La%20llegada%20del%20gatito%20a%20casa.jpg?itok=6QG07anP"
               characterName="Gatito"
               name="Gatito"
               race="Europeo"
