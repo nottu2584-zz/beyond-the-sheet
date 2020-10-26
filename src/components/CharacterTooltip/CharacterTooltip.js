@@ -15,21 +15,7 @@ const CharacterTooltip = (props) => {
 
   const [open, setOpen] = useState(false);
   const [disableHover, setHover] = useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-    setHover(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setHover(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
+  
   const {
     avatar,
     characterName,
@@ -44,6 +30,20 @@ const CharacterTooltip = (props) => {
     name,
     race,
   } = props;
+
+  const handleClick = () => {
+    setOpen(true);
+    setHover(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setHover(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   return (
     <Tooltip
