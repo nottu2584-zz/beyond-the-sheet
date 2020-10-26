@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     flex: "1 0 auto",
   },
   cover: {
-    width: 151,
+    height: 150,
+    width: 150,
   },
   controls: {
     display: "flex",
@@ -61,34 +62,60 @@ const CharacterCard = (props) => {
     race,
   } = props;
 
-    return (
-      <Card className={classes.root}>
-        <CardMedia
-          className={classes.cover}
-          image={avatar}
-          title="Character Avatar"
-        />
-        <div className={classes.details}>
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              {name}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              {gender} {race} {charClass} {levels}
-            </Typography>
-            <Typography variant="body1" component="p">
-              HP: {currentHp}/{hpMax} AC: {ac}
-            </Typography>
-            <Typography variant="body2" component="p">
-              <ExperienceBar
-                percent={experience}
-                level={levels}
-              ></ExperienceBar>
-            </Typography>
-          </CardContent>
-        </div>
-      </Card>
-    );
+  const conditionsArray = [
+    "Blinded",
+    "Charmed",
+    "Deafened",
+    "Exhaustion",
+    "Frightened",
+    "Grappled",
+    "Incapacitated",
+    "Invisible",
+    "Paralyzed",
+    "Petrified",
+    "Posioned",
+    "Prone",
+    "Restrained",
+    "Stunned",
+    "Unconscious",
+  ];
+
+  return (
+    <Card className={classes.root}>
+      <CardMedia
+        className={classes.cover}
+        image={avatar}
+        title="Character Avatar"
+      />
+      <div className={classes.details}>
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            {name}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            {gender} {race} {charClass} {levels}
+          </Typography>
+          <Typography variant="body1" component="p">
+            HP:{currentHp} / {hpMax} AC:{ac}
+          </Typography>
+          <Typography>
+            {conditions
+              .map((condition) => {
+                return condition.id === 4
+                  ? `${conditionsArray[condition.id - 1]} (Level ${
+                      condition.level
+                    })`
+                  : conditionsArray[condition.id - 1];
+              })
+              .join(", ")}
+          </Typography>
+          <Typography variant="body2" component="p">
+            <ExperienceBar percent={experience} level={levels}></ExperienceBar>
+          </Typography>
+        </CardContent>
+      </div>
+    </Card>
+  );
 };
 
 export default CharacterCard;

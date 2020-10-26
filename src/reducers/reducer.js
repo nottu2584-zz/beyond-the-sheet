@@ -415,6 +415,7 @@ const reducer = (state = initialState, action) => {
                       initiative.halfProficiency
                     ) + initiative.bonus,
                 },
+                levels: levels,
                 savingThrows: {
                   strength: {
                     ...strengthSavingThrow,

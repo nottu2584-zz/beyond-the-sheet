@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import React from "react";
+import { CharacterTooltip } from "../CharacterTooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -17,21 +18,35 @@ const Abilities = (props) => {
   const {
     avatar,
     name,
+    race,
+    hitPoints,
+    armorClass,
+    conditions,
+    levels,
+    gender,
     abilities,
     initiative,
     savingThrows,
-    skills
+    skills,
   } = props;
 
   return (
     <TableRow>
       <TableCell>
-        <Chip
-          avatar={<Avatar alt={name} src={avatar} className={classes.avatar} />}
-          label={name}
-          onClick={handleCharacter}
-          variant="outlined"
-        />
+        <CharacterTooltip
+          avatar={avatar}
+          characterName={name}
+          name={name}
+          race={race}
+          currentHp={hitPoints.current}
+          hpMax={hitPoints.max}
+          ac={armorClass}
+          conditions={conditions}
+          charClass={levels.classes.level}
+          levels={levels.classes.name}
+          experience={50}
+          gender={gender}
+        ></CharacterTooltip>
       </TableCell>
       <TableCell>{initiative.value}</TableCell>
       <TableCell>{abilities.strength.value}</TableCell>

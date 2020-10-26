@@ -20,11 +20,10 @@ const CharacterTooltip = (props) => {
     avatar,
     characterName,
     ac,
-    charClass,
     conditions,
-    currentHp,
     experience,
     gender,
+    currentHp,
     hpMax,
     levels,
     name,
@@ -58,7 +57,10 @@ const CharacterTooltip = (props) => {
           name={name}
           race={race}
           ac={ac}
-          charClass={charClass}
+          currentHp={currentHp}
+          hpMax={hpMax}
+          conditions={conditions}
+          charClass={levels}
           levels={levels}
           experience={experience}
           gender={gender}

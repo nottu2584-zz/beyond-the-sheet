@@ -93,6 +93,11 @@ const Characters = (props) => {
                   key={key}
                   avatar={character.data.avatarUrl}
                   name={character.data.name}
+                  race={character.data.race.baseRaceName}
+                  hitPoints={character.hitPoints}
+                  armorClass={character.armorClass}
+                  conditions={character.conditions}
+                  levels={character.levels}
                   abilities={character.abilities}
                   initiative={character.initiative}
                   savingThrows={character.savingThrows}
