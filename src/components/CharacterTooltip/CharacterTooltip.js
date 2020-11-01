@@ -1,13 +1,13 @@
-import { ClickAwayListener } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
 import React, { useState } from "react";
-import { CharacterCard } from "../CharacterCard";
+import { Status } from "../Status";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+  },
 }));
 
 const CharacterTooltip = (props) => {
@@ -19,14 +19,12 @@ const CharacterTooltip = (props) => {
   const {
     avatar,
     characterName,
-    ac,
+    armorClass,
     conditions,
     experience,
     gender,
-    currentHp,
-    hpMax,
+    hitPoints,
     levels,
-    name,
     race,
   } = props;
 
@@ -43,7 +41,7 @@ const CharacterTooltip = (props) => {
   const handleOpen = () => {
     setOpen(true);
   };
-
+  console.log("AvatarTooltip", avatar);
   return (
     <Tooltip
       open={open}
@@ -52,19 +50,18 @@ const CharacterTooltip = (props) => {
       onOpen={handleOpen}
       onClick={handleClick}
       title={
-        <CharacterCard
+        <Status
+          card
           avatar={avatar}
-          name={name}
-          race={race}
-          ac={ac}
-          currentHp={currentHp}
-          hpMax={hpMax}
-          conditions={conditions}
-          charClass={levels}
-          levels={levels}
+          characterName={characterName}
+          hitPoints={hitPoints}
+          armorClass={armorClass}
           experience={experience}
+          levels={levels}
           gender={gender}
-        ></CharacterCard>
+          race={race}
+          conditions={conditions}
+        ></Status>
       }
     >
       <Chip

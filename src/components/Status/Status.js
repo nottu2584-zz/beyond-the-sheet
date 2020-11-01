@@ -1,23 +1,36 @@
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Avatar from "@material-ui/core/Avatar";
-import Chip from "@material-ui/core/Chip";
-import { makeStyles } from "@material-ui/core/styles";
-import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableHead from "@material-ui/core/TableHead";
 import React from "react";
-import { ExperienceBar } from "../ExperienceBar";
+import { StatusCard, StatusTable } from ".";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-}));
+export const CONDITIONS = [
+  "Blinded",
+  "Charmed",
+  "Deafened",
+  "Exhaustion",
+  "Frightened",
+  "Grappled",
+  "Incapacitated",
+  "Invisible",
+  "Paralyzed",
+  "Petrified",
+  "Posioned",
+  "Prone",
+  "Restrained",
+  "Stunned",
+  "Unconscious",
+];
 
 const Status = (props) => {
-  const classes = useStyles();
-
-  const { avatar, characterName, hitPoints, armorClass, experience } = props;
+  const {
+    avatar,
+    characterName,
+    hitPoints,
+    armorClass,
+    experience,
+    levels,
+    gender,
+    race,
+    card,
+  } = props;
 
   let { conditions } = props;
 
@@ -59,74 +72,31 @@ const Status = (props) => {
           100,
       };
     }, null);
-
-  const conditionsArray = [
-    "Blinded",
-    "Charmed",
-    "Deafened",
-    "Exhaustion",
-    "Frightened",
-    "Grappled",
-    "Incapacitated",
-    "Invisible",
-    "Paralyzed",
-    "Petrified",
-    "Posioned",
-    "Prone",
-    "Restrained",
-    "Stunned",
-    "Unconscious",
-  ];
-
-  return (
-    <>
-      <TableCell>
-        <Chip
-          avatar={
-            <Avatar
-              alt={characterName}
-              src={avatar}
-              className={classes.avatar}
-            />
-          }
-          label={characterName}
-          variant="outlined"
-        />
-      </TableCell>
-      <TableCell>
-        <TableHead>
-          <TableRow>
-            <TableCell>CURRENT</TableCell>
-            <TableCell>MAX</TableCell>
-            <TableCell>TEMP</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableCell>{hitPoints.current}</TableCell>
-          <TableCell>{hitPoints.max}</TableCell>
-          <TableCell>{hitPoints.temp}</TableCell>
-        </TableBody>
-      </TableCell>
-      <TableCell>{armorClass}</TableCell>
-      <TableCell>
-        <ExperienceBar
-          currentXp={xp.level}
-          nextLevelXp={xp.nextLevel}
-          percent={xp.percent}
-        ></ExperienceBar>
-      </TableCell>
-      <TableCell>
-        {conditions
-          .map((condition) => {
-            return condition.id === 4
-              ? `${conditionsArray[condition.id - 1]} (Level ${
-                  condition.level
-                })`
-              : conditionsArray[condition.id - 1];
-          })
-          .join(", ")}
-      </TableCell>
-    </>
+  console.log("AvatarStatus", avatar);
+  return card ? (
+    <StatusCard
+      avatar={avatar}
+      characterName={characterName}
+      conditions={conditions}
+      hitPoints={hitPoints}
+      armorClass={armorClass}
+      experience={xp}
+      levels={levels}
+      gender={gender}
+      race={race}
+    ></StatusCard>
+  ) : (
+    <StatusTable
+      avatar={avatar}
+      characterName={characterName}
+      conditions={conditions}
+      hitPoints={hitPoints}
+      armorClass={armorClass}
+      experience={xp}
+      levels={levels}
+      gender={gender}
+      race={race}
+    ></StatusTable>
   );
 };
 

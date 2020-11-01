@@ -92,12 +92,14 @@ const Characters = (props) => {
                 <Abilities
                   key={key}
                   avatar={character.data.avatarUrl}
-                  name={character.data.name}
+                  characterName={character.data.name}
                   race={character.data.race.baseRaceName}
                   hitPoints={character.hitPoints}
                   armorClass={character.armorClass}
                   conditions={character.conditions}
+                  experience={character.experience}
                   levels={character.levels}
+                  gender={character.data.gender}
                   abilities={character.abilities}
                   initiative={character.initiative}
                   savingThrows={character.savingThrows}

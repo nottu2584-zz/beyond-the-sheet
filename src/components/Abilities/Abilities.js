@@ -17,35 +17,33 @@ const Abilities = (props) => {
 
   const {
     avatar,
-    name,
+    characterName,
     race,
     hitPoints,
     armorClass,
     conditions,
     levels,
+    experience,
     gender,
     abilities,
     initiative,
     savingThrows,
     skills,
   } = props;
-
   return (
     <TableRow>
       <TableCell>
+    {console.log("AvatarAbilities", avatar)}
         <CharacterTooltip
           avatar={avatar}
-          characterName={name}
-          name={name}
-          race={race}
-          currentHp={hitPoints.current}
-          hpMax={hitPoints.max}
-          ac={armorClass}
-          conditions={conditions}
-          charClass={levels.classes.level}
-          levels={levels.classes.name}
-          experience={50}
+          characterName={characterName}
+          hitPoints={hitPoints}
+          armorClass={armorClass}
+          experience={experience}
+          levels={levels}
           gender={gender}
+          race={race}
+          conditions={conditions}
         ></CharacterTooltip>
       </TableCell>
       <TableCell>{initiative.value}</TableCell>
