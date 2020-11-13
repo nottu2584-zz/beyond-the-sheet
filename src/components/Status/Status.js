@@ -72,7 +72,6 @@ const Status = (props) => {
           100,
       };
     }, null);
-  console.log("AvatarStatus", avatar);
   return card ? (
     <StatusCard
       avatar={avatar}

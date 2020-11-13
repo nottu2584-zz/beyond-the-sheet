@@ -9,7 +9,7 @@ import { CONDITIONS } from "../Status";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
   },
   details: {
     display: "flex",
@@ -19,7 +19,14 @@ const useStyles = makeStyles((theme) => ({
     flex: "1 0 auto",
   },
   avatar: {
-    width: 150
+    width: 150,
+  },
+  characterMisc: {
+    span: {
+      marginRight: 3
+    },
+    race: {},
+    gender: {}
   }
 }));
 
@@ -40,7 +47,7 @@ const StatusCard = (props) => {
   let { conditions } = props;
 
   return (
-    <Card className={classes.root}>}
+    <Card className={classes.root}>
       <CardMedia
         className={classes.avatar}
         image={avatar}
@@ -54,11 +61,11 @@ const StatusCard = (props) => {
           <Typography
             variant="subtitle1"
             color="textSecondary"
-            className="characterMisc"
+            className={classes.characterMisc}
           >
-            <span className="gender">{gender}</span>
-            <span className="race">{race}</span>
-            <span className="levels">
+            <span className={classes.characterMisc.gender}>{gender}</span>
+            <span className={classes.characterMisc.race}>{race}</span>
+            <span className={classes.characterMisc.levels}>
               {levels.classes
                 .map((charClass) => `${charClass.name} ${charClass.level}`)
                 .join("/")}

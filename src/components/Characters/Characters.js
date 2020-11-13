@@ -118,6 +118,9 @@ const Characters = (props) => {
                   characterName={character.data.name}
                   key={key}
                   hitPoints={character.hitPoints}
+                  race={character.data.race.baseRaceName}
+                  levels={character.levels}
+                  gender={character.data.gender}
                   armorClass={character.armorClass}
                   experience={character.experience}
                   conditions={character.conditions}
@@ -171,26 +174,26 @@ const Characters = (props) => {
                   {character.data.classSpells.map((classSpells, key) => {
                     return classSpells.spells.map((spell, key) => {
                       return (
-                          <Spells
-                            key={key}
-                            name={spell.definition.name}
-                            time={spell.activation.activationType}
-                            lvl={spell.definition.level}
-                            duration={
-                              spell.definition.duration.durationUnit
-                                ? spell.definition.duration.durationInterval +
-                                  " " +
-                                  spell.definition.duration.durationUnit
-                                : null
-                            }
-                            range={
-                              spell.definition.range.rangeValue
-                                ? spell.definition.range.rangeValue
-                                : spell.definition.range.origin
-                            }
-                            components={spell.definition.components}
-                            DC={spell.definition.saveDcAbilityId}
-                          ></Spells>
+                        <Spells
+                          key={key}
+                          name={spell.definition.name}
+                          time={spell.activation.activationType}
+                          lvl={spell.definition.level}
+                          duration={
+                            spell.definition.duration.durationUnit
+                              ? spell.definition.duration.durationInterval +
+                                " " +
+                                spell.definition.duration.durationUnit
+                              : null
+                          }
+                          range={
+                            spell.definition.range.rangeValue
+                              ? spell.definition.range.rangeValue
+                              : spell.definition.range.origin
+                          }
+                          components={spell.definition.components}
+                          DC={spell.definition.saveDcAbilityId}
+                        ></Spells>
                       );
                     });
                   })}

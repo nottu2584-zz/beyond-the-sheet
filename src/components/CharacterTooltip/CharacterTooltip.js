@@ -26,6 +26,7 @@ const CharacterTooltip = (props) => {
     hitPoints,
     levels,
     race,
+    hover
   } = props;
 
   const handleClick = () => {
@@ -41,16 +42,16 @@ const CharacterTooltip = (props) => {
   const handleOpen = () => {
     setOpen(true);
   };
-  console.log("AvatarTooltip", avatar);
+
   return (
     <Tooltip
-      open={open}
-      disableHoverListener={disableHover}
-      onClose={handleClose}
-      onOpen={handleOpen}
-      onClick={handleClick}
-      title={
-        <Status
+    open={open}
+    disableHoverListener={disableHover}
+    onOpen={hover ? handleOpen : null}
+    // onClose={handleClose}
+    onClick={handleClick}
+    title={
+      <Status
           card
           avatar={avatar}
           characterName={characterName}

@@ -8,6 +8,7 @@ import TableRow from "@material-ui/core/TableRow";
 import React from "react";
 import { ExperienceBar } from "../ExperienceBar";
 import { CONDITIONS } from "../Status";
+import { CharacterTooltip } from "../CharacterTooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -16,10 +17,17 @@ const useStyles = makeStyles((theme) => ({
 const StatusTable = (props) => {
   const classes = useStyles();
 
-  const { avatar, characterName, hitPoints, armorClass, experience } = props;
+    const {
+    avatar,
+    characterName,
+    hitPoints,
+    armorClass,
+    experience,
+    levels,
+  } = props;
 
   let { conditions } = props;
-
+  
   return (
     <>
       <TableCell>
@@ -52,8 +60,9 @@ const StatusTable = (props) => {
       <TableCell>{armorClass}</TableCell>
       <TableCell>
         <ExperienceBar
-          currentXp={experience.level}
-          nextLevelXp={experience.nextLevel}
+          currentXp={experience.currentXp}
+          nextLevelXp={experience.nextLevelXp}
+          level={levels.total}
           percent={experience.percent}
         ></ExperienceBar>
       </TableCell>

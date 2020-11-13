@@ -33,8 +33,8 @@ const Abilities = (props) => {
   return (
     <TableRow>
       <TableCell>
-    {console.log("AvatarAbilities", avatar)}
         <CharacterTooltip
+          hover
           avatar={avatar}
           characterName={characterName}
           hitPoints={hitPoints}
