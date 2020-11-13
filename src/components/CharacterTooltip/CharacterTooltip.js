@@ -48,7 +48,7 @@ const CharacterTooltip = (props) => {
     open={open}
     disableHoverListener={disableHover}
     onOpen={hover ? handleOpen : null}
-    // onClose={handleClose}
+    onClose={handleClose}
     onClick={handleClick}
     title={
       <Status
