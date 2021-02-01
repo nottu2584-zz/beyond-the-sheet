@@ -178,6 +178,7 @@ const Characters = (props) => {
                         characterClass.level
                       ]
                     }
+                    characterName={character.data.name}
                   >
                     {character.data.classSpells.map((classSpells, key) => {
                       return classSpells.spells.map((spell, key) => {

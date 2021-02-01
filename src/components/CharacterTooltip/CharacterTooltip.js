@@ -7,7 +7,6 @@ import { Status } from "../Status";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-
   },
 }));
 
