@@ -3,6 +3,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { Autorenew } from "@material-ui/icons";
 import React from "react";
 import { ExperienceBar } from "../ExperienceBar";
 import { CONDITIONS } from "../Status";
@@ -19,15 +20,18 @@ const useStyles = makeStyles((theme) => ({
     flex: "1 0 auto",
   },
   avatar: {
-    width: 150,
+    height: 64,
+    width: 64,
+    maxHeight: '100%',
+    maxWidth: '100%',
   },
   characterMisc: {
     span: {
-      marginRight: 3
+      marginRight: 3,
     },
     race: {},
-    gender: {}
-  }
+    gender: {},
+  },
 }));
 
 const StatusCard = (props) => {
