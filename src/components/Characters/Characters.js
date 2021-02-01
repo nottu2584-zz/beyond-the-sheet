@@ -213,15 +213,13 @@ const Characters = (props) => {
         </SwipeableViews>
       </Paper>
 
-      <StatusCard>
-        avatar=
-        {
+      <StatusCard
+        avatar={
           "https://www.dndbeyond.com/avatars/6984/464/637026335031473780.png?width=150&height=150&fit=crop&quality=95&auto=webp"
         }
         characterName={"Oz de Mezro"}
-        conditions={"conditions"}
-        hitPoints=
-        {{
+        conditions={["exaustion", "rapapa"]}
+        hitPoints={{
           base: 10,
           // bonuses: [
           //   {
@@ -235,8 +233,7 @@ const Characters = (props) => {
         }}
         armorClass={15}
         experience={1222}
-        levels=
-        {{
+        levels={{
           classes: [
             {
               name: "Bard",
@@ -247,7 +244,7 @@ const Characters = (props) => {
         }}
         gender={"Machote"}
         race={"Dimoni"}
-      </StatusCard>
+      ></StatusCard>
     </>
   );
 };

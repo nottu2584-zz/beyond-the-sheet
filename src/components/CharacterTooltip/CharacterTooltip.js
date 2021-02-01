@@ -7,6 +7,7 @@ import { Status } from "../Status";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+
   },
 }));
 
@@ -44,7 +45,7 @@ const CharacterTooltip = (props) => {
   };
 
   return (
-    <Tooltip
+    <Tooltip 
     open={open}
     disableHoverListener={disableHover}
     onOpen={hover ? handleOpen : null}

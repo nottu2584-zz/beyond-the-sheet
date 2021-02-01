@@ -11,6 +11,8 @@ import { CONDITIONS } from "../Status";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    width: 450,
+    height: 250,
   },
   details: {
     display: "flex",
@@ -20,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
     flex: "1 0 auto",
   },
   avatar: {
-    height: 64,
-    width: 64,
-    maxHeight: '100%',
-    maxWidth: '100%',
+    height: 150,
+    width: 150,
+    maxHeight: "100%",
+    maxWidth: "100%",
   },
   characterMisc: {
     span: {
