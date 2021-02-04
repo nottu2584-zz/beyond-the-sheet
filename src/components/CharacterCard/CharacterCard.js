@@ -10,7 +10,7 @@ import { CONDITIONS, Status } from "../Status";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    minWidth: "300px"
+    maxWidth: "300px",
   },
   details: {
     display: "flex",
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cover: {
     height: 150,
-    width: 150,
+    width: 300,
   },
   controls: {
     display: "flex",
