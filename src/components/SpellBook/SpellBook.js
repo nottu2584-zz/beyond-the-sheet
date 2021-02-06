@@ -12,6 +12,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import React from "react";
+import { SpellCard } from "../SpellCard";
 
 const useStyles = makeStyles({
   table: {},
@@ -33,6 +34,15 @@ const SpellBook = (props) => {
     spellsKnown,
     spellSlots,
     avatar,
+    spellName,
+    school,
+    level,
+    time,
+    range,
+    hitDC,
+    duration,
+    components,
+    link,
   } = props;
 
   console.log("Spells Slot", spellSlots);
@@ -41,57 +51,12 @@ const SpellBook = (props) => {
     <TableContainer>
       <Table className={classes.table}>
         <TableRow>
-          <TableCell>
-            <Chip
-              avatar={
-                <Avatar
-                  alt={characterName}
-                  src={avatar}
-                  className={classes.avatar}
-                />
-              }
-              label={characterName}
-              variant="outlined"
-            />
-          </TableCell>
-          <TableCell>Cantrips Known: {cantripsKnown}</TableCell>
-          <TableCell>Spells Known: {spellsKnown}</TableCell>
+        
         </TableRow>
-        <TableRow>
-          <TableCell></TableCell>
-          {spellSlots.map((index, acc) =>
-            index !== 0 ? (
-              <TableCell>
-                {slots(acc + 1)}
-                {index}
-              </TableCell>
-            ) : null
-          )}
-        </TableRow>
-        <TableRow>
-          <TableCell></TableCell>
-          <TableCell>Name</TableCell>
-          <TableCell>Level</TableCell>
-          <TableCell>Time</TableCell>
-          <TableCell>Range</TableCell>
-          <TableCell>hitDC</TableCell>
-          <TableCell>Duration</TableCell>
-          <TableCell>Components</TableCell>
-        </TableRow>
-        {props.children.map((child) => child)}
+       {props.children.map((child) => child)}
       </Table>
     </TableContainer>
   );
-};
-
-const slots = (level) => {
-  return level === 1
-    ? `${level}ST LEVEL: `
-    : level === 2
-    ? `${level}ND LEVEL: `
-    : level === 3
-    ? `${level}RD LEVEL: `
-    : `${level}TH LEVEL: `;
 };
 
 export default SpellBook;

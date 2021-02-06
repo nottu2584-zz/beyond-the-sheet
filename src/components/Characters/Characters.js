@@ -204,6 +204,7 @@ const Characters = (props) => {
                             }
                             components={spell.definition.components}
                             DC={spell.definition.saveDcAbilityId}
+                            school={spell.definition.school}
                           ></Spells>
                         );
                       });
@@ -222,6 +223,14 @@ const Characters = (props) => {
           "https://www.dndbeyond.com/avatars/6984/464/637026335031473780.png?width=150&height=150&fit=crop&quality=95&auto=webp"
         }
         characterName={"Oz de Mezro"}
+        school={"Necromancy"}
+        level={"2"}
+        time={"1A"}
+        range={"60ft"}
+        hitDC={"WIS"}
+        duration={"1 Hour"}
+        components={"VM"}
+        link={"https://www.dndbeyond.com/spells/fireball"}
       ></SpellCard>
 
       {/* <StatusCard
