@@ -13,6 +13,7 @@ import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
 import { GroupStatus } from "../GroupStatus";
 import { Status, StatusCard } from "../Status";
+import { SpellCard } from "../SpellCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -215,7 +216,15 @@ const Characters = (props) => {
         </SwipeableViews>
       </Paper>
 
-      <StatusCard
+      <SpellCard
+        spellName={"Fire Ball"}
+        avatar={
+          "https://www.dndbeyond.com/avatars/6984/464/637026335031473780.png?width=150&height=150&fit=crop&quality=95&auto=webp"
+        }
+        characterName={"Oz de Mezro"}
+      ></SpellCard>
+
+      {/* <StatusCard
         avatar={
           "https://www.dndbeyond.com/avatars/6984/464/637026335031473780.png?width=150&height=150&fit=crop&quality=95&auto=webp"
         }
@@ -246,7 +255,7 @@ const Characters = (props) => {
         }}
         gender={"Machote"}
         race={"Dimoni"}
-      ></StatusCard>
+      ></StatusCard> */}
     </>
   );
 };
