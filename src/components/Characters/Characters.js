@@ -13,6 +13,7 @@ import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
 import { GroupStatus } from "../GroupStatus";
 import { Status, StatusCard } from "../Status";
+import { SpellCard } from "../SpellCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -179,6 +180,7 @@ const Characters = (props) => {
                       ]
                     }
                     characterName={character.data.name}
+                    avatar={character.data.avatarUrl}
                   >
                     {character.data.classSpells.map((classSpells, key) => {
                       return classSpells.spells.map((spell, key) => {
@@ -202,6 +204,7 @@ const Characters = (props) => {
                             }
                             components={spell.definition.components}
                             DC={spell.definition.saveDcAbilityId}
+                            school={spell.definition.school}
                           ></Spells>
                         );
                       });
@@ -214,7 +217,23 @@ const Characters = (props) => {
         </SwipeableViews>
       </Paper>
 
-      <StatusCard
+      <SpellCard
+        spellName={"Fire Ball"}
+        avatar={
+          "https://www.dndbeyond.com/avatars/6984/464/637026335031473780.png?width=150&height=150&fit=crop&quality=95&auto=webp"
+        }
+        characterName={"Oz de Mezro"}
+        school={"Necromancy"}
+        level={"2"}
+        time={"1A"}
+        range={"60ft"}
+        hitDC={"WIS"}
+        duration={"1 Hour"}
+        components={"VM"}
+        link={"https://www.dndbeyond.com/spells/fireball"}
+      ></SpellCard>
+
+      {/* <StatusCard
         avatar={
           "https://www.dndbeyond.com/avatars/6984/464/637026335031473780.png?width=150&height=150&fit=crop&quality=95&auto=webp"
         }
@@ -245,7 +264,7 @@ const Characters = (props) => {
         }}
         gender={"Machote"}
         race={"Dimoni"}
-      ></StatusCard>
+      ></StatusCard> */}
     </>
   );
 };

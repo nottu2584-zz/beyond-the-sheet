@@ -12,3 +12,4 @@ export * from "./Status";
 export * from "./CharacterCard";
 export * from "./ExperienceBar";
 export * from "./CharacterTooltip";
+export * from "./SpellCard";
