@@ -179,6 +179,7 @@ const Characters = (props) => {
                       ]
                     }
                     characterName={character.data.name}
+                    avatar={character.data.avatarUrl}
                   >
                     {character.data.classSpells.map((classSpells, key) => {
                       return classSpells.spells.map((spell, key) => {
