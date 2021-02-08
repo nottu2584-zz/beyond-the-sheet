@@ -28,32 +28,25 @@ const StyledTableRow = withStyles((theme) => ({
 
 const SpellBook = (props) => {
   const classes = useStyles();
-  const {
-    cantripsKnown,
-    characterName,
-    spellsKnown,
-    spellSlots,
-    avatar,
-    spellName,
-    school,
-    level,
-    time,
-    range,
-    hitDC,
-    duration,
-    components,
-    link,
-  } = props;
+  const { characters } = props;
 
-  console.log("Spells Slot", spellSlots);
+  const SpellKeeper = (characters) => {}
 
   return (
     <TableContainer>
       <Table className={classes.table}>
         <TableRow>
-        
+          <TableCell>CANTRIPS</TableCell>
+          <TableCell>1ST</TableCell>
+          <TableCell>2ND</TableCell>
+          <TableCell>3RD</TableCell>
+          <TableCell>4TH</TableCell>
+          <TableCell>5TH</TableCell>
+          <TableCell>6TH</TableCell>
+          <TableCell>7TH</TableCell>
+          <TableCell>8TH</TableCell>
+          <TableCell>9TH</TableCell>
         </TableRow>
-       {props.children.map((child) => child)}
       </Table>
     </TableContainer>
   );

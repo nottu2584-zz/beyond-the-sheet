@@ -13,7 +13,7 @@ import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
 import { GroupStatus } from "../GroupStatus";
 import { Status, StatusCard } from "../Status";
-import { SpellCard } from "../SpellCard";
+import { SpellBookCard } from "../SpellBookCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -160,78 +160,10 @@ const Characters = (props) => {
             </GroupCurrencies>
           </TabPanel>
           <TabPanel value={value} index={4} dir={theme.direction}>
-            {characters.map((character, key) => {
-              return character.data.classes.map((characterClass, key) => {
-                return (
-                  <SpellBook
-                    key={key}
-                    cantripsKnown={
-                      characterClass.definition.spellRules
-                        .levelCantripsKnownMaxes[characterClass.level]
-                    }
-                    spellsKnown={
-                      characterClass.definition.spellRules.levelSpellKnownMaxes[
-                        characterClass.level
-                      ]
-                    }
-                    spellSlots={
-                      characterClass.definition.spellRules.levelSpellSlots[
-                        characterClass.level
-                      ]
-                    }
-                    characterName={character.data.name}
-                    avatar={character.data.avatarUrl}
-                  >
-                    {character.data.classSpells.map((classSpells, key) => {
-                      return classSpells.spells.map((spell, key) => {
-                        return (
-                          <Spells
-                            key={key}
-                            name={spell.definition.name}
-                            time={spell.activation.activationType}
-                            lvl={spell.definition.level}
-                            duration={
-                              spell.definition.duration.durationUnit
-                                ? spell.definition.duration.durationInterval +
-                                  " " +
-                                  spell.definition.duration.durationUnit
-                                : null
-                            }
-                            range={
-                              spell.definition.range.rangeValue
-                                ? spell.definition.range.rangeValue
-                                : spell.definition.range.origin
-                            }
-                            components={spell.definition.components}
-                            DC={spell.definition.saveDcAbilityId}
-                            school={spell.definition.school}
-                          ></Spells>
-                        );
-                      });
-                    })}
-                  </SpellBook>
-                );
-              });
-            })}
+            <SpellBook characters={characters}></SpellBook>
           </TabPanel>
         </SwipeableViews>
       </Paper>
-
-      <SpellCard
-        spellName={"Fire Ball"}
-        avatar={
-          "https://www.dndbeyond.com/avatars/6984/464/637026335031473780.png?width=150&height=150&fit=crop&quality=95&auto=webp"
-        }
-        characterName={"Oz de Mezro"}
-        school={"Necromancy"}
-        level={"2"}
-        time={"1A"}
-        range={"60ft"}
-        hitDC={"WIS"}
-        duration={"1 Hour"}
-        components={"VM"}
-        link={"https://www.dndbeyond.com/spells/fireball"}
-      ></SpellCard>
 
       {/* <StatusCard
         avatar={

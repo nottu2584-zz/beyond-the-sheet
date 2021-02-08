@@ -12,7 +12,7 @@ import { SpellCard } from "../SpellCard";
 const Spells = (props) => {
   const {
     name,
-    lvl,
+    level,
     time,
     range,
     hit,
@@ -21,7 +21,6 @@ const Spells = (props) => {
     components,
     school,
     avatar,
-    card,
     link = "https://www.dndbeyond.com/spells/",
     characterName,
   } = props;

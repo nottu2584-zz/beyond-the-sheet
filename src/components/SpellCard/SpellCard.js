@@ -174,37 +174,7 @@ const SpellCard = (props) => {
       </Column>
     </Card>
 
-    // <Card className={classes.root}>
-    //   <CardContent className={classes.content}>
-    //     <TableRow>
-    //       <TableCell>y
-    //         <Typography variant="h5" component="h2">
-    //           {spellName}
-    //         </Typography>
-    //       </TableCell>
-    //     </TableRow>
-    //     <TableRow>
-    //       <TableCell></TableCell>
-    //       <TableCell></TableCell>
-    //       <TableCell></TableCell>
-    //       <TableCell>
-    //         <Chip
-    //           avatar={
-    //             <Avatar
-    //               alt={characterName}
-    //               src={avatar}
-    //               className={classes.avatar}
-    //             />
-    //           }
-    //         />
-    //       </TableCell>
-    //     </TableRow>
-    //     <Typography></Typography>
-    //     <Typography></Typography>
-    //     <Typography></Typography>
-    //     <Typography variant="body2" component="p"></Typography>
-    //   </CardContent>
-    // </Card>
+    
   );
 };
 
