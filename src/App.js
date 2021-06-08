@@ -3,7 +3,7 @@ import {
   createMuiTheme,
   makeStyles,
   ThemeProvider,
-  useTheme
+  useTheme,
 } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
@@ -21,7 +21,7 @@ import {
   Navigation,
   SpellBook,
   Spells,
-  Status
+  Status,
 } from "./components";
 import reducer from "./reducers/reducer";
 
@@ -59,7 +59,7 @@ TabPanel.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'block'
+    display: "block",
   },
 }));
 
@@ -86,6 +86,139 @@ const App = () => {
     setTab(index);
   };
 
+  const abilities = (
+    <GroupAbilities>
+      {state.characters?.map((character, key) => {
+        return (
+          <Abilities
+            key={key}
+            avatar={character.data.avatarUrl}
+            characterName={character.data.name}
+            race={character.data.race.baseRaceName}
+            hitPoints={character.hitPoints}
+            armorClass={character.armorClass}
+            conditions={character.conditions}
+            experience={character.experience}
+            levels={character.levels}
+            gender={character.data.gender}
+            abilities={character.abilities}
+            initiative={character.initiative}
+            savingThrows={character.savingThrows}
+            skills={character.skills}
+          ></Abilities>
+        );
+      })}
+    </GroupAbilities>
+  );
+
+  const status = (
+    <GroupStatus>
+      {state.characters?.map((character, key) => {
+        return (
+          <Status
+            avatar={character.data.avatarUrl}
+            characterName={character.data.name}
+            key={key}
+            hitPoints={character.hitPoints}
+            race={character.data.race.baseRaceName}
+            levels={character.levels}
+            gender={character.data.gender}
+            armorClass={character.armorClass}
+            experience={character.experience}
+            conditions={character.conditions}
+          ></Status>
+        );
+      })}
+    </GroupStatus>
+  );
+
+  const inventory = (
+    <GroupInventory characters={state.characters}></GroupInventory>
+  );
+
+  const currencies = (
+    <GroupCurrencies characters={state.characters}>
+      {state.characters?.map((character, key) => {
+        return (
+          <Currencies
+            key={key}
+            avatar={character.data.avatarUrl}
+            characterName={character.data.name}
+            race={character.data.race.baseRaceName}
+            hitPoints={character.hitPoints}
+            armorClass={character.armorClass}
+            conditions={character.conditions}
+            experience={character.experience}
+            levels={character.levels}
+            gender={character.data.gender}
+            pp={character.data.currencies.pp}
+            gp={character.data.currencies.gp}
+            ep={character.data.currencies.ep}
+            sp={character.data.currencies.sp}
+            cp={character.data.currencies.cp}
+          ></Currencies>
+        );
+      })}
+    </GroupCurrencies>
+  );
+
+  const spells = (
+    <>
+      {state.characters?.map((character, key) => {
+        return character.data.classes.map((characterClass, key) => {
+          return (
+            <SpellBook
+              key={key}
+              cantripsKnown={
+                characterClass.definition.spellRules.levelCantripsKnownMaxes[
+                  characterClass.level
+                ]
+              }
+              spellsKnown={
+                characterClass.definition.spellRules.levelSpellKnownMaxes[
+                  characterClass.level
+                ]
+              }
+              spellSlots={
+                characterClass.definition.spellRules.levelSpellSlots[
+                  characterClass.level
+                ]
+              }
+              characterName={character.data.name}
+            >
+              {character.data.classSpells.map((classSpells, key) => {
+                return classSpells.spells.map((spell, key) => {
+                  return (
+                    <Spells
+                      key={key}
+                      name={spell.definition.name}
+                      time={spell.activation.activationType}
+                      lvl={spell.definition.level}
+                      duration={
+                        spell.definition.duration.durationUnit
+                          ? spell.definition.duration.durationInterval +
+                            " " +
+                            spell.definition.duration.durationUnit
+                          : null
+                      }
+                      range={
+                        spell.definition.range.rangeValue
+                          ? spell.definition.range.rangeValue
+                          : spell.definition.range.origin
+                      }
+                      components={spell.definition.components}
+                      DC={spell.definition.saveDcAbilityId}
+                    ></Spells>
+                  );
+                });
+              })}
+            </SpellBook>
+          );
+        });
+      })}
+    </>
+  );
+
   return (
     <div className="App" className={classes.root}>
       <ThemeProvider theme={darkTheme}>
@@ -99,129 +232,19 @@ const App = () => {
               onChangeIndex={handleChangeIndex}
             >
               <TabPanel value={tab} index={0} dir={theme.direction}>
-                <GroupAbilities>
-                  {state.characters?.map((character, key) => {
-                    return (
-                      <Abilities
-                        key={key}
-                        avatar={character.data.avatarUrl}
-                        characterName={character.data.name}
-                        race={character.data.race.baseRaceName}
-                        hitPoints={character.hitPoints}
-                        armorClass={character.armorClass}
-                        conditions={character.conditions}
-                        experience={character.experience}
-                        levels={character.levels}
-                        gender={character.data.gender}
-                        abilities={character.abilities}
-                        initiative={character.initiative}
-                        savingThrows={character.savingThrows}
-                        skills={character.skills}
-                      ></Abilities>
-                    );
-                  })}
-                </GroupAbilities>
+                {abilities}
               </TabPanel>
               <TabPanel value={tab} index={1} dir={theme.direction}>
-                <GroupStatus>
-                  {state.characters?.map((character, key) => {
-                    return (
-                      <Status
-                        avatar={character.data.avatarUrl}
-                        characterName={character.data.name}
-                        key={key}
-                        hitPoints={character.hitPoints}
-                        race={character.data.race.baseRaceName}
-                        levels={character.levels}
-                        gender={character.data.gender}
-                        armorClass={character.armorClass}
-                        experience={character.experience}
-                        conditions={character.conditions}
-                      ></Status>
-                    );
-                  })}
-                </GroupStatus>
+                {status}
               </TabPanel>
               <TabPanel value={tab} index={2} dir={theme.direction}>
-                <GroupInventory characters={state.characters}></GroupInventory>
+                {inventory}
               </TabPanel>
               <TabPanel value={tab} index={3} dir={theme.direction}>
-                <GroupCurrencies characters={state.characters}>
-                  {state.characters?.map((character, key) => {
-                    return (
-                      <Currencies
-                        key={key}
-                        avatar={character.data.avatarUrl}
-                        characterName={character.data.name}
-                        race={character.data.race.baseRaceName}
-                        hitPoints={character.hitPoints}
-                        armorClass={character.armorClass}
-                        conditions={character.conditions}
-                        experience={character.experience}
-                        levels={character.levels}
-                        gender={character.data.gender}
-                        pp={character.data.currencies.pp}
-                        gp={character.data.currencies.gp}
-                        ep={character.data.currencies.ep}
-                        sp={character.data.currencies.sp}
-                        cp={character.data.currencies.cp}
-                      ></Currencies>
-                    );
-                  })}
-                </GroupCurrencies>
+                {currencies}
               </TabPanel>
               <TabPanel value={tab} index={4} dir={theme.direction}>
-                {state.characters?.map((character, key) => {
-                  return character.data.classes.map((characterClass, key) => {
-                    return (
-                      <SpellBook
-                        key={key}
-                        cantripsKnown={
-                          characterClass.definition.spellRules
-                            .levelCantripsKnownMaxes[characterClass.level]
-                        }
-                        spellsKnown={
-                          characterClass.definition.spellRules
-                            .levelSpellKnownMaxes[characterClass.level]
-                        }
-                        spellSlots={
-                          characterClass.definition.spellRules.levelSpellSlots[
-                            characterClass.level
-                          ]
-                        }
-                        characterName={character.data.name}
-                      >
-                        {character.data.classSpells.map((classSpells, key) => {
-                          return classSpells.spells.map((spell, key) => {
-                            return (
-                              <Spells
-                                key={key}
-                                name={spell.definition.name}
-                                time={spell.activation.activationType}
-                                lvl={spell.definition.level}
-                                duration={
-                                  spell.definition.duration.durationUnit
-                                    ? spell.definition.duration
-                                        .durationInterval +
-                                      " " +
-                                      spell.definition.duration.durationUnit
-                                    : null
-                                }
-                                range={
-                                  spell.definition.range.rangeValue
-                                    ? spell.definition.range.rangeValue
-                                    : spell.definition.range.origin
-                                }
-                                components={spell.definition.components}
-                                DC={spell.definition.saveDcAbilityId}
-                              ></Spells>
-                            );
-                          });
-                        })}
-                      </SpellBook>
-                    );
-                  });
-                })}
+                {spells}
               </TabPanel>
             </SwipeableViews>
           </content>

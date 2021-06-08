@@ -5,7 +5,6 @@ import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import React from "react";
 
-
 const StyledTabs = withStyles({
   indicator: {
     display: "flex",
@@ -39,9 +38,7 @@ const useStyles = makeStyles((theme) => ({
   padding: {
     padding: theme.spacing(3),
   },
-  tabs: {
-    backgroundColor: '#2e1534',
-  },
+  tabs: {},
 }));
 
 const Navigation = (props) => {
