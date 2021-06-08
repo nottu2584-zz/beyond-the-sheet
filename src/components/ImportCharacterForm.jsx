@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import ClearIcon from "@material-ui/icons/Clear";
 import SendIcon from "@material-ui/icons/Send";
 import React, { useContext, useState } from "react";
-import { StoreContext } from "../App/App";
+import { StoreContext } from "../App";
 
 const placeholder = "{ ... }";
 

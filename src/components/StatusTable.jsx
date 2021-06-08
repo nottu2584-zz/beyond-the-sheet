@@ -6,9 +6,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import React from "react";
-import { ExperienceBar } from "../ExperienceBar";
-import { CONDITIONS } from "../Status";
-import { CharacterTooltip } from "../CharacterTooltip";
+import { ExperienceBar } from ".";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -70,8 +68,8 @@ const StatusTable = (props) => {
         {conditions
           .map((condition) => {
             return condition.id === 4
-              ? `${CONDITIONS[condition.id - 1]} (Level ${condition.level})`
-              : CONDITIONS[condition.id - 1];
+              ? `${conditions[condition.id - 1]} (Level ${condition.level})`
+              : conditions[condition.id - 1];
           })
           .join(", ")}
       </TableCell>

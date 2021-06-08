@@ -1,7 +1,7 @@
 import React from "react";
 import { StatusCard, StatusTable } from ".";
 
-export const CONDITIONS = [
+export const conditions = [
   "Blinded",
   "Charmed",
   "Deafened",

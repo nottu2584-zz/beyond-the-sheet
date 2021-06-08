@@ -7,7 +7,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import React, { useEffect, useState } from "react";
-import { Item } from "../Item";
+import { Item } from ".";
 
 const useStyles = makeStyles({
   table: {},
@@ -36,7 +36,7 @@ const GroupInventory = (props) => {
                 return {
                   id: item.definition.id,
                   armorClass: item.definition.armorClass
-                    ? item.definition.armorClass + " AC"
+                    ? item.definition.armorClass
                     : null,
                   avatarUrl: item.definition.avatarUrl || null,
                   cost: item.definition.cost || "--",
