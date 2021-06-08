@@ -1,10 +1,7 @@
-import Avatar from "@material-ui/core/Avatar";
-import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
-import TableRow from "@material-ui/core/TableRow";
 import React from "react";
-import { CharacterTooltip } from "../CharacterTooltip";
+import { CharacterTooltip } from ".";
 
 const useSyles = makeStyles((theme) => ({
   root: {},
