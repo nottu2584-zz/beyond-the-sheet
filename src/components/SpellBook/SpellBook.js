@@ -64,11 +64,9 @@ const SpellBook = (props) => {
             spellsRace
           )
           .filter((spell) => spell != null);
-        console.log("level", level);
         levels[key] = level;
       }
     }
-    console.log("Levels: ", levels);
     return levels;
   };
 
