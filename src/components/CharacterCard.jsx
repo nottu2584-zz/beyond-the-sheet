@@ -1,18 +1,16 @@
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Autorenew } from "@material-ui/icons";
 import React from "react";
-import { ExperienceBar } from "../ExperienceBar";
-import { CONDITIONS } from "../Status";
+import { ExperienceBar } from ".";
+import { conditions } from "./Status";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    width: 450,
-    height: 250,
+    maxWidth: "300px",
   },
   details: {
     display: "flex",
@@ -21,23 +19,28 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flex: "1 0 auto",
   },
-  avatar: {
+  cover: {
     height: 150,
-    width: 150,
-    maxHeight: "100%",
-    maxWidth: "100%",
+    width: 300,
   },
-  characterMisc: {
-    span: {
-      marginRight: 3,
-    },
-    race: {},
-    gender: {},
+  controls: {
+    display: "flex",
+    alignItems: "center",
+    paddingLeft: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  playIcon: {
+    height: 38,
+    width: 38,
   },
 }));
 
-const StatusCard = (props) => {
+const CharacterCard = (props) => {
   const classes = useStyles();
+
+  const handleCharacter = () => {};
+
+  const theme = useTheme();
 
   const {
     avatar,
@@ -55,27 +58,16 @@ const StatusCard = (props) => {
   return (
     <Card className={classes.root}>
       <CardMedia
-        className={classes.avatar}
+        className={classes.cover}
         image={avatar}
         title="Character Avatar"
       />
       <div className={classes.details}>
-        <CardContent className={classes.content}>
+        <CardContent>
           <Typography variant="h5" component="h2">
             {characterName}
           </Typography>
-          <Typography
-            variant="subtitle1"
-            color="textSecondary"
-            className={classes.characterMisc}
-          >
-            <span className={classes.characterMisc.gender}>{gender}</span>
-            <span className={classes.characterMisc.race}>{race}</span>
-            <span className={classes.characterMisc.levels}>
-              {levels.classes
-                .map((charClass) => `${charClass.name} ${charClass.level}`)
-                .join("/")}
-            </span>
+          <Typography variant="subtitle1" color="textSecondary">
           </Typography>
           <Typography variant="body1" component="p">
             HP:{hitPoints.current} / {hitPoints.max} AC:{armorClass}
@@ -84,16 +76,15 @@ const StatusCard = (props) => {
             {conditions
               .map((condition) => {
                 return condition.id === 4
-                  ? `${CONDITIONS[condition.id - 1]} (Level ${condition.level})`
-                  : CONDITIONS[condition.id - 1];
+                  ? `${conditions[condition.id - 1]} (Level ${condition.level})`
+                  : conditions[condition.id - 1];
               })
               .join(", ")}
           </Typography>
           <Typography variant="body2" component="p">
             <ExperienceBar
-              currentXp={experience.currentXp}
-              nextLevelXp={experience.nextLevelXp}
-              level={levels.total}
+              currentXp={experience.level}
+              nextLevelXp={experience.nextLevel}
               percent={experience.percent}
             ></ExperienceBar>
           </Typography>
@@ -103,4 +94,4 @@ const StatusCard = (props) => {
   );
 };
 
-export default StatusCard;
+export default CharacterCard;

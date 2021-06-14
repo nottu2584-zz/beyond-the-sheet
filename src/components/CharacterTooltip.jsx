@@ -3,7 +3,7 @@ import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
 import React, { useState } from "react";
-import { Status } from "../Status";
+import { Status } from ".";
 
 const useStyles = makeStyles((theme) => ({
   root: {

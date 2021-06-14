@@ -1,4 +1,4 @@
-import { initialState } from "../components/App";
+import { initialState } from "../App";
 
 const characterAbilities = [
   "strength",
