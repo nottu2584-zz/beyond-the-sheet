@@ -13,7 +13,6 @@ import { GroupCurrencies } from "../GroupCurrencies";
 import { GroupInventory } from "../GroupInventory";
 import { GroupStatus } from "../GroupStatus";
 import { Status, StatusCard } from "../Status";
-import { SpellBookCard } from "../SpellBookCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -165,38 +164,7 @@ const Characters = (props) => {
         </SwipeableViews>
       </Paper>
 
-      {/* <StatusCard
-        avatar={
-          "https://www.dndbeyond.com/avatars/6984/464/637026335031473780.png?width=150&height=150&fit=crop&quality=95&auto=webp"
-        }
-        characterName={"Oz de Mezro"}
-        conditions={["exaustion", "rapapa"]}
-        hitPoints={{
-          base: 10,
-          // bonuses: [
-          //   {
-          //     description: "Tough",
-          //     value: 10,
-          //   }
-          // ],
-          current: 8,
-          max: 10,
-          temp: 0,
-        }}
-        armorClass={15}
-        experience={1222}
-        levels={{
-          classes: [
-            {
-              name: "Bard",
-              level: 10,
-            },
-          ],
-          total: 10,
-        }}
-        gender={"Machote"}
-        race={"Dimoni"}
-      ></StatusCard> */}
+
     </>
   );
 };
