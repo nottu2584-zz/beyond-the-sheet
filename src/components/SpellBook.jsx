@@ -1,19 +1,10 @@
-import {
-  Avatar,
-  Chip,
-  Paper,
-  TableContainer,
-  TableFooter,
-  Link,
-} from "@material-ui/core";
+import { Link, TableContainer } from "@material-ui/core";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { CloseOutlined } from "@material-ui/icons";
-import React from "react";
+import React, { useState } from "react";
+import Switch from "@material-ui/core/Switch";
 
 const useStyles = makeStyles({
   table: {},
@@ -32,6 +23,12 @@ const Levels = () => {
 };
 
 const SpellBook = (props) => {
+  const [toggle, setToggle] = useState(false);
+
+  const handleChange = (event) => {
+    setToggle(!toggle);
+  };
+
   const classes = useStyles();
   const { characters } = props;
 
@@ -153,56 +150,77 @@ const SpellBook = (props) => {
     );
   };
   return (
-    <TableContainer>
-      <Table className={classes.table}>
-        <TableRow>
-          <TableCell>CANTRIPS</TableCell>
-          <TableCell>1ST</TableCell>
-          <TableCell>2ND</TableCell>
-          <TableCell>3RD</TableCell>
-          <TableCell>4TH</TableCell>
-          <TableCell>5TH</TableCell>
-          <TableCell>6TH</TableCell>
-          <TableCell>7TH</TableCell>
-          <TableCell>8TH</TableCell>
-          <TableCell>9TH</TableCell>
-        </TableRow>
-        <TableRow>
-          {characters &&
-            SpellKeeper(characters).ViewSpellsByLevel.levels.map(
-              (level, key) => (
-                <TableCell key={key}>
-                  <ul>
-                    {level.map((spell) => (
-                      <li>
-                        <Link
-                          href={generateLink(spell.definition.name)}
-                          target="_blank"
-                        >
-                          {spell.definition.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </TableCell>
-              )
-            )}
-        </TableRow>
-      </Table>
-    </TableContainer>
+    <>
+      <Switch onChange={handleChange} color="default"></Switch>
+      {console.log("Toggle", toggle)}
+      <TableContainer>
+        <Table className={classes.table}>
+          <TableRow>
+            <TableCell>CANTRIPS</TableCell>
+            <TableCell>1ST</TableCell>
+            <TableCell>2ND</TableCell>
+            <TableCell>3RD</TableCell>
+            <TableCell>4TH</TableCell>
+            <TableCell>5TH</TableCell>
+            <TableCell>6TH</TableCell>
+            <TableCell>7TH</TableCell>
+            <TableCell>8TH</TableCell>
+            <TableCell>9TH</TableCell>
+          </TableRow>
+          {toggle ? (
+            <TableRow>
+              {characters &&
+                SpellKeeper(characters).ViewSpellsByLevel.levels.map(
+                  (level, key) => (
+                    <TableCell key={key}>
+                      <ul>
+                        {level.map((spell) => (
+                          <li>
+                            <Link
+                              href={generateLink(spell.definition.name)}
+                              target="_blank"
+                            >
+                              {spell.definition.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </TableCell>
+                  )
+                )}
+            </TableRow>
+          ) : (
+            <TableRow>
+              {characters &&
+                SpellKeeper(characters).ViewCharactersByLevel.levels.map(
+                  (level, key) => (
+                    <TableCell key={key}>
+                      <ul>
+                        {level.map((characterLevel, key) => (
+                          <React.Fragment key={characterLevel.id}>
+                            <li>{characterLevel.id}</li>
+                            {characterLevel.level.map((spell) => (
+                              <li>
+                                <Link
+                                  href={generateLink(spell.definition.name)}
+                                  target="_blank"
+                                >
+                                  {spell.definition.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </React.Fragment>
+                        ))}
+                      </ul>
+                    </TableCell>
+                  )
+                )}
+            </TableRow>
+          )}
+        </Table>
+      </TableContainer>
+    </>
   );
 };
 
 export default SpellBook;
-
-// <div className="container">
-//   <div>{characterName}</div>
-//   <div>Cantrips Known: {cantripsKnown}</div>
-//   <div>Spells Known: {spellsKnown}</div>
-//   <div>
-//     {spellSlots.map((index, acc) =>
-//       index !== 0 ? `Level ${acc + 1}: ${index}` : null
-//     )}
-//   </div>
-//   <div>{props.children}</div>
-// </div>
