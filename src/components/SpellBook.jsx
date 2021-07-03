@@ -5,6 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import React, { useState } from "react";
 import Switch from "@material-ui/core/Switch";
+import { SpellCard } from ".";
 
 const useStyles = makeStyles({
   table: {},
@@ -38,7 +39,7 @@ const SpellBook = (props) => {
     const ViewSpellsByLevel = Levels();
 
     for (let character of characters) {
-      const { id, classSpells, spells } = character.data;
+      const { avatarUrl, id, name, classSpells, spells } = character.data;
 
       for (let key = 0; key < 10; key++) {
         if (!Array.isArray(ViewCharactersByLevel.levels[key]))
@@ -62,7 +63,11 @@ const SpellBook = (props) => {
 
         //TODO: Substituir el array por un objeto con dos atributos
         const characterLevel = {
-          id: id,
+          character: {
+            id: id,
+            avatar: avatarUrl,
+            charName: name,
+          },
           level: [].concat.apply(
             spellsClass
               .concat(
@@ -198,17 +203,21 @@ const SpellBook = (props) => {
                       <ul>
                         {level.map((characterLevel, key) => (
                           <React.Fragment key={characterLevel.id}>
-                            <li>{characterLevel.id}</li>
-                            {characterLevel.level.map((spell) => (
-                              <li>
-                                <Link
-                                  href={generateLink(spell.definition.name)}
-                                  target="_blank"
-                                >
-                                  {spell.definition.name}
-                                </Link>
-                              </li>
-                            ))}
+                            <SpellCard
+                              charName={characterLevel.character.charName}
+                              avatar={characterLevel.character.avatar}
+                            >
+                              {characterLevel.level.map((spell) => (
+                                <li>
+                                  <Link
+                                    href={generateLink(spell.definition.name)}
+                                    target="_blank"
+                                  >
+                                    {spell.definition.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </SpellCard>
                           </React.Fragment>
                         ))}
                       </ul>

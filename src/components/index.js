@@ -18,4 +18,5 @@ export { default as Spells } from "./Spells";
 export { default as Status } from "./Status";
 export { default as StatusCard } from "./StatusCard";
 export { default as StatusTable } from "./StatusTable";
+export { default as SpellCard } from "./SpellCard";
 
