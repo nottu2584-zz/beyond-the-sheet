@@ -164,58 +164,7 @@ const App = () => {
 
   const spells = (
     <>
-      {state.characters?.map((character, key) => {
-        return character.data.classes.map((characterClass, key) => {
-          return (
-            <SpellBook
-              key={key}
-              cantripsKnown={
-                characterClass.definition.spellRules.levelCantripsKnownMaxes[
-                  characterClass.level
-                ]
-              }
-              spellsKnown={
-                characterClass.definition.spellRules.levelSpellKnownMaxes[
-                  characterClass.level
-                ]
-              }
-              spellSlots={
-                characterClass.definition.spellRules.levelSpellSlots[
-                  characterClass.level
-                ]
-              }
-              characterName={character.data.name}
-            >
-              {character.data.classSpells.map((classSpells, key) => {
-                return classSpells.spells.map((spell, key) => {
-                  return (
-                    <Spells
-                      key={key}
-                      name={spell.definition.name}
-                      time={spell.activation.activationType}
-                      lvl={spell.definition.level}
-                      duration={
-                        spell.definition.duration.durationUnit
-                          ? spell.definition.duration.durationInterval +
-                            " " +
-                            spell.definition.duration.durationUnit
-                          : null
-                      }
-                      range={
-                        spell.definition.range.rangeValue
-                          ? spell.definition.range.rangeValue
-                          : spell.definition.range.origin
-                      }
-                      components={spell.definition.components}
-                      DC={spell.definition.saveDcAbilityId}
-                    ></Spells>
-                  );
-                });
-              })}
-            </SpellBook>
-          );
-        });
-      })}
+      <SpellBook characters={state.characters}></SpellBook>
     </>
   );
 
