@@ -16,19 +16,17 @@ const useStyles = makeStyles((theme) => ({
 const SpellCard = (props) => {
   const classes = useStyles();
 
-  const handleCharacter = () => {};
-
   const theme = useTheme();
 
-  const { avatar, charName } = props;
+  const { avatar, characterName } = props;
 
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar alt={charName} src={avatar} className={classes.avatar} />
+          <Avatar alt={characterName} src={avatar} className={classes.avatar} />
         }
-        title={charName}
+        title={characterName}
       ></CardHeader>
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">

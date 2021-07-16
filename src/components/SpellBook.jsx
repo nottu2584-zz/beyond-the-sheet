@@ -66,7 +66,7 @@ const SpellBook = (props) => {
           character: {
             id: id,
             avatar: avatarUrl,
-            charName: name,
+            characterName: name,
           },
           level: [].concat.apply(
             spellsClass
@@ -204,7 +204,9 @@ const SpellBook = (props) => {
                         {level.map((characterLevel, key) => (
                           <React.Fragment key={characterLevel.id}>
                             <SpellCard
-                              charName={characterLevel.character.charName}
+                              characterName={
+                                characterLevel.character.characterName
+                              }
                               avatar={characterLevel.character.avatar}
                             >
                               {characterLevel.level.map((spell) => (
