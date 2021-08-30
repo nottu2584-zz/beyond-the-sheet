@@ -63,7 +63,7 @@ const SpellBook = (props) => {
     const ViewCharactersByLevel = Levels();
     const ViewSpellsByLevel = Levels();
 
-    for (let character of characters) {
+    for (let [characterKey, character] of Object.entries(characters)) {
       const {
         avatarUrl,
         classes,
@@ -77,51 +77,68 @@ const SpellBook = (props) => {
 
       //TODO: class slots && multiclass
       character.spellCasting = {
-        isSpellCaster: { value: false, level: 0 },
-        isHalfCaster: { value: false, level: 0 },
-        isPactMagic: { value: false, level: 0 },
+        spellCasterSlots: null,
+        spellCasterLevel: 0,
+        pactMagicSlots: null,
+        pactMagicLevel: 0,
       };
-      //TODO: 1r Spellcaster lvl de cada character (comprobar multiclass). 2nd SpellSlots "halfCaster, etc." (sacado de el json)
-      // for (let characterClass of classes) {
-      //   if (isSpellCaster(characterClass)) {
-      //     character.spellCasting.isSpellCaster.value = true;
-      //     character.spellCasting.isSpellCaster.level =
-      //       character.spellCasting.isSpellCaster.level + characterClass.level;
-      //   }
-      //   if (isHalfCaster(characterClass)) {
-      //     character.spellCasting.isHalfCaster.value = true;
-      //     character.spellCasting.isHalfCaster.level =
-      //       character.spellCasting.isHalfCaster.level + characterClass.level;
-      //   }
-      //   if (isPactMagic(characterClass)) {
-      //     character.spellCasting.isPactMagic.value = true;
-      //     character.spellCasting.isPactMagic.level =
-      //       character.spellCasting.isPactMagic.level + characterClass.level;
-      //   }
-      // }
 
-      // console.log(
-      //   "Suma Levels",
-      //   character.spellCasting.isHalfCaster.level +
-      //     character.spellCasting.isSpellCaster.level
-      // );
+      const spellCasterClasses = classes.filter(
+        (characterClass) =>
+          isSpellCaster(characterClass) ||
+          isHalfCaster(characterClass) ||
+          isThirdCaster(characterClass)
+      );
 
-      // const CharacterSpellCasterSlots =
-      //   character.spellCasting.isSpellCaster.value &&
-      //   character.spellCasting.isHalfCaster.value
-      //     ? spellCasterSlots[
-      //         character.spellCasting.isSpellCaster.level +
-      //           Math.floor(character.spellCasting.isHalfCaster.level / 2)
-      //       ]
-      //     : character.spellCasting.isSpellCaster.value
-      //     ? spellCasterSlots[character.spellCasting.isSpellCaster.level]
-      //     : character.spellCasting.isHalfCaster.value
-      //     ? spellCasterSlots[character.spellCasting.isHalfCaster.level - 2]
-      //     : null;
+      const pactMagicClasses = classes.filter((characterClass) =>
+        isPactMagic(characterClass)
+      );
 
+      if (spellCasterClasses.length > 1) {
+        character.spellCasting.spellCasterSlots = spellCasterSlots;
+        for (let characterClass of spellCasterClasses) {
+          character.spellCasting.spellCasterLevel = isSpellCaster(
+            characterClass
+          )
+            ? character.spellCasting.spellCasterLevel + characterClass.level
+            : isHalfCaster(characterClass)
+            ? character.spellCasting.spellCasterLevel +
+              Math.floor(characterClass.level / 2)
+            : character.spellCasting.spellCasterLevel +
+              Math.floor(characterClass.level / 3);
+          console.log(
+            characterClass.definition.name,
+            character.spellCasting.spellCasterLevel
+          );
+        }
+      } else if (spellCasterClasses) {
+        character.spellCasting.spellCasterSlots =
+          spellCasterClasses[0].definition.spellRules.levelSpellSlots;
+        character.spellCasting.spellCasterLevel = spellCasterClasses[0].level;
+      }
+      console.log("pactMagic", pactMagicClasses);
 
-      for (let key = 0; key < "spellCasterSlots[spellCasterLevel]"; key++) {
-        if (key > 0 && "spellCasterSlots[spellCasterLevel][key]" === 0) break;
+      if (pactMagicClasses.length > 0) {
+        character.spellCasting.pactMagicSlots =
+          pactMagicClasses[0].definition.spellRules.levelSpellSlots;
+        character.spellCasting.pactMagicLevel = pactMagicClasses[0].level;
+      }
+
+      console.log(
+        "SpellCasting",
+        character.spellCasting.spellCasterSlots[
+          character.spellCasting.spellCasterLevel
+        ]
+      );
+
+      for (let key = 0; key < 10; key++) {
+        if (
+          key > 0 &&
+          character.spellCasting.spellCasterSlots[
+            character.spellCasting.spellCasterLevel
+          ][key - 1] === 0
+        )
+          break;
         if (!Array.isArray(ViewCharactersByLevel.levels[key]))
           ViewCharactersByLevel.levels[key] = [];
 
@@ -157,28 +174,27 @@ const SpellBook = (props) => {
                 spellsItem,
                 spellsRace
               )
-              .filter((spell) => spell !== null)
+              .filter(
+                (spell) => spell !== null && key >= spell.definition.level
+              )
+              .map((parseSpell) => {
+                parseSpell.scaledLevel =
+                  parseSpell.definition.level !== key ? true : false;
+                return parseSpell;
+              })
           ),
-          // levelSpellSlots: key > 0 ? CharacterspellCasterSlots[key - 1] : null,
-          // levelSpendSlots: key > 0 ? spellSlots[key - 1].used : null,
-          // levelPactMagicSlots:
-          //   character.spellCasting.isPactMagic.value && key > 0
-          //     ? PactMagicSlots[character.spellCasting.isPactMagic.level][
-          //         key - 1
-          //       ] !== 0
-          //       ? PactMagicSlots[character.spellCasting.isPactMagic.level][
-          //           key - 1
-          //         ]
-          //       : null
-          //     : null,
-          // levelSpendPactMagicSlots:
-          //   key > 0 && key < 6 ? pactMagic[key - 1].used : null,
+          spellCasting: {
+            spellSlots:
+              key !== 0
+                ? character.spellCasting.spellCasterSlots[
+                    character.spellCasting.spellCasterLevel
+                  ][key - 1]
+                : null,
+            slotsSpended: key !== 0 ? spellSlots[key - 1].used : null,
+            pactMagicSlots : null,
+            pactMagicSlotsSpended : null,
+          },
         };
-        // if (
-        //   key === 0 ||
-        //   characterLevel.levelSpellSlots ||
-        //   characterLevel.levelPactMagicSlots
-        // )
 
         characterLevel.level.length &&
           ViewCharactersByLevel.levels[key].push(characterLevel);
@@ -202,6 +218,20 @@ const SpellBook = (props) => {
         ViewSpellsByLevel.levels[key] = ViewSpellsByLevel.levels[key]
           .concat(level)
           .filter((spell) => spell != null);
+      }
+      if (character.spellCasting.pactMagicSlots) {
+        for (let key = 1; key < 6; key++) {
+          ViewCharactersByLevel.levels[key][
+            characterKey
+          ].spellCasting.pactMagicSlots =
+            character.spellCasting.pactMagicSlots[
+              character.spellCasting.pactMagicLevel
+            ][key - 1] !== 0
+              ? character.spellCasting.pactMagicSlots[
+                  character.spellCasting.pactMagicLevel
+                ][key - 1]
+              : null;
+        }
       }
     }
     return { ViewCharactersByLevel, ViewSpellsByLevel };
@@ -258,9 +288,12 @@ const SpellBook = (props) => {
 
   const isHalfCaster = (characterClass) => {
     const { name } = characterClass.definition;
+    return name === "Paladin" || name === "Ranger";
+  };
+
+  const isThirdCaster = (characterClass) => {
+    const { name } = characterClass.definition;
     return (
-      name === "Paladin" ||
-      name === "Ranger" ||
       (name === "Fighter" &&
         characterClass.subclassDefinition?.name === "Eldritch Knight") ||
       (name === "Rogue" &&
@@ -339,6 +372,10 @@ const SpellBook = (props) => {
                             <SpellCard
                               characterName={
                                 characterLevel.character.characterName
+                              }
+                              slots={characterLevel.spellCasting.spellSlots}
+                              slotsSpended={
+                                characterLevel.spellCasting.slotsSpended
                               }
                               avatar={characterLevel.character.avatar}
                             >
